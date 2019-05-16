@@ -587,3 +587,268 @@ if(pattern.test(text)) {
     alert(RegExp["$`"]);        // RegExp.leftContext
 }
 ```
+
+### 5.5 Function 类型
+
+每个函数都是 Function 类型的实例，而且*具有属性和方法*（和其他引用类型一样）。
+```
+function sum(num1, num2) {
+    return num1 + num2;
+}
+
+var sum1 = function(num1, num2) {
+    return num1 + num2;
+}
+
+//极不推荐，二次解析代码
+//只是可以更直观理解”函数是对象，函数名是指针“的概念。
+var sum2 = new Function("num1", "num2", "return num1 + num2");
+```
+
+#### 5.5.1 没有重载
+
+```
+function addSomeNumber(num) {
+    return num + 100;
+}
+
+function addSomeNumber(num) {
+    return num + 200;
+}
+```
+等价如下：
+```
+var addSomeNumber = function(num) {
+    return num + 100;
+}
+
+//在创建第二个函数时，实际上覆盖了引用 第一个函数的变量 addSomeNumber 。
+addSomeNumber = function(num) {
+    return num + 200;
+}
+```
+
+#### 5.5.2 函数声明与函数表达式
+
+*函数声明*和*函数表达式*的区别：**解析器会率先读取函数声明，并使其在执行任何代码之前可用**（函数声明提升）；而函数表达式必须等到执行到该行。
+```
+//函数声明会被提前，正常运行
+alert(sum(10, 10));
+function sum(num1, num2) {
+    return num1 + num2;
+}
+```
+
+#### 5.5.3 作为值的函数
+
+1. 可以作为参数传递给另个函数
+```
+function callSomeFunction(someFunction, someArgument) {
+    return someFunction(someArgument);
+}
+
+function add10(num) {
+    return num + 10;
+}
+var result1 = callSomeFunction(add10, 10);  //20
+
+function getGreeting(name) {
+    return "Hello, " + name;
+}
+var result2 = callSomeFunction(getGreeting, "Kiyonami");    //"Hello, Kiyonami"
+```
+
+2. 可以从一个函数中返回另一个函数
+```
+function createComparisonFunction(propertyName) {   //接收一个字符串，表示属性
+
+    return function(object1, object2) {
+        var value1 = object1[propertyName];
+        var value2 = object2[property];
+
+        return value1 - value2;
+    }
+}
+
+var data = [{name: "Zachary", age: 28}, {name: "Kiyonami", age: 29}];
+
+data.sort(createComparisonFunction("name"));
+alert(data[0].name);    //Kiyonami
+
+data.sort(createComparisonFunction("age"));
+alert(data[0].name);    //Zachary
+```
+
+#### 5.5.4 函数内部属性
+
+在函数内部，有两个特殊的对象： arguments 和 this 。
+
+1. arguments
+
+arguments 中还有一个名叫 callee 的属性，是一个指向拥有这个 arguments 对象的*函数*的指针。
+
+例如
+
+```
+//阶乘函数递归（以前写Java差不多都是如下，没有任何问题
+function factorial(num) {
+    if(num <= 1) {
+        return 1;
+    } else {
+        return num * factorial(num - 1);    //与函数名 factorial 紧紧耦合在了一起（可以使用 arguments.callee 消除这一现象
+    }
+}
+//函数名不变化，没有问题；但是变化呢？
+```
+
+使用 arguments.callee 
+```
+function factorial(num) {
+    if(num <= 1) {
+        return 1;
+    } else {
+        return num * arguments.callee(num - 1); 
+    }
+}
+
+var trueFactorial = factorial;
+
+factorial = function() {
+    return 0;
+}
+
+alert(trueFactorial(5));    //5*4*3*2*1=120 ，若是没有使用 callee 则内部会调用 factorial ，返回 0
+alert(factorial(5));    //0
+```
+
+2. this
+
+this 引用的是函数以执行的环境对象。（在全局时引用的是 window
+
+**只有在调用的时候， this 的值才被确定！（定义时并不确定**
+
+```
+window.color = "red";
+var o = { color : "blue" };
+
+function sayColor() {
+    alert(this.color);  //调用前， this 的值并不确定
+}
+
+sayColor();     //"red"
+
+//o.sayColor = function() {
+//    alert(this.color);
+//}
+o.sayColor = sayColor;      //指向的仍是同一个函数！但是环境变了！
+o.sayColor();   //"blue"
+```
+
+3. caller
+
+这个属性保存着调用当前函数的*函数*的引用。
+
+```
+function outer() {
+    inner();
+}
+
+function inner() {
+    alert(inner.caller);    //更加解耦 -> alert(arguments.callee.caller);
+}
+
+outer();    //会导致警告框中显示 outer() 函数的源代码
+
+inner();    //在全局中调用当前函数，它的值为 null
+```
+
+#### 5.5.5 函数属性和方法
+
+每个函数都包含两个属性：length 和 prototype 。
+
+1. length
+
+    表示希望接收的命名参数的个数
+
+2. prototype
+
+    对于引用类型而言， prototype 是保存它们所有实例方法的真正所在。
+
+每个函数都包含两个两个： apply() 和 call() 。
+
+1. apply()
+
+    接收两个参数：在其中运行函数的作用域，一个是参数数组（可以是 Array 的实例，也可以是 arguments 对象）。
+
+    ```
+    function sum(num1, num2) {
+        return num1 + num2;
+    }
+
+    function callSum1(num1, num2) {
+        return sum.apply(this, arguments);
+    }
+
+    function callSum2(num1, num2) {
+        return sum.apply(this, [num1,  num2]);
+    }
+
+    alert(callSum1(10, 10));    //20    ////因为在全局调用，所以传递的是 window 对象
+    alert(callSum2(10, 10));    //20
+    ```
+
+2. call()
+
+    作用与 apply() 相同，就是参数不同。
+
+    第一个参数依旧是 this ，其余参数都要列举出来传递。
+
+    ```
+    function callSum3(num1, num2) {
+        return sum.call(this, num1, num2);
+    }
+
+    alert(callSum(10, 10)); //20
+    ```
+
+二者选择，取决于哪个函数传递参数方便。
+
+**真正强大的地方**是能够扩充函数赖以运行的作用域。扩充的最大好处，就是对象不需要与方法有任何耦合关系。
+
+```
+window.color = "red";
+var o = { color : "blue"};
+
+function sayColor() {
+    alert(this.color);
+}
+
+sayColor();             //red
+sayColor.call(this);    //red
+sayColor.call(window);  //red
+sayColor.call(o);       //blue      
+
+//之前的写法： 
+//o.sayColor() = sayColor;   先将 sayColor() 放到了对象 o 中，将其二者耦合
+//o.sayColor();              然后再通过 o 来调用它（永久绑定
+
+//现在就不需要这些多余的步骤了（但是上面的步骤都是一次性的，所以每次调用都要重新 call
+```
+
+3. bind()
+
+    这个方法会**创建一个函数**的实例，其 this 值会被绑定。（定义时永久绑定
+    
+    （前两个函数是在函数调用的时候才调用！临时绑上
+
+    ```
+    window.color = "red";
+    var o = { color: "blue" };
+
+    function sayColor() {
+        alert(this.color);
+    }
+
+    var objectSayColor = sayColor.bind(o);  //this 值定于 o
+    objectSayColor();   //blue
+    ```
