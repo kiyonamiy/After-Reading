@@ -315,7 +315,7 @@ if(Array.isArray(value)) {
 
 #### 5.2.2 转换方法
 
-如前所述，所有对象都具有 toString() （以逗号分隔的字符串）、 valueOf() （返回的还是数组）和toLocalString() （经常返回与两个方法相同的值）（唯一区别，取得每一项的值，调用的是每一项的 toLocalString ）方法。
+如前所述，所有对象都具有 toString() （以逗号分隔的字符串）、 valueOf() （返回的还是数组）和toLocaleString() （经常返回与两个方法相同的值）（唯一区别，取得每一项的值，调用的是每一项的 toLocaleString ）方法。
 
 可以使用 join() 方法，使用不同的分隔符来构建返回的字符串。
 ```
@@ -499,7 +499,7 @@ var result = stop - start;
 
 重写了如下方法：
 
-1. toLocalString()
+1. toLocaleString()
     - 按照 浏览器设置的递取相适应的格式 返回日期和时间。
 2. toString()
     - 通常返回带有时区信息的日期和时间
@@ -513,3 +513,77 @@ var result = stop - start;
     ```
 还介绍了三个日期格式化方法和一堆取部分时间的方法（比如只返回天数、只返回年数、返回毫秒值、设置日期的月份）
 
+### 5.4 RegExp 类型
+
+```
+var expression = /pattern/flags;
+```
+1. 模式（ pattern ）：字符类、限定符、分组、向前查找、反向引用
+    - 元字符：（ ( [ { \ ^ $ | ) ? * + . ] } ）
+2. 标志（ flags ）： g （全局（ global ）模式）、 i （不区分大小写（ case-insensitive ）模式）、 m （多行（ multiline ）模式）
+
+```
+//匹配第一个 "bat" 或 "cat“ ，不区分大小写
+var pattern1 = /[bc]at/i;                //字面量形式定义
+var pattern2 = new RegExp("[bc]at", "i");   //使用 RegExp 构造函数，完全等价（有些情况需要进行双重转义）
+```
+
+#### 5.4.1 RegExp 实例属性
+
+global 、 ignoreCase 、 lastIndex 、 multiline 、 source
+
+用处不大，这些信息都包含在模式声明中。
+
+```
+var pattern1 = /\[bc\]at/i;
+
+alert(pattern1.global); //false
+alert(pattern1.ignoreCase); //true
+alert(pattern1.multiline);  //false
+alert(pattern1.lastIndex);  //0 ，表示开始搜索 下一个匹配项 的字符位置
+alert(pattern1.source);     //"\[bc\]at"
+```
+
+#### 5.4.2 RegExp 实例方法
+
+1. exec()
+- 只接收一个参数---应用模式的字符串
+- 返回包含第一个匹配项信息的数组（没有匹配项则返回null）
+    - 虽然是 Array 实例，包含两个额外的属性： index （匹配项在字符串中的位置）和 input （应用模式的字符串）。
+```
+var text = "mom and dad and baby";
+var pattern = /mom( and dad( and baby)?)?/gi;     //包含两个捕获组，即使设置为g，每次只会返回一个匹配项（捕获组是对每个匹配项再次进行细分匹配）（g情况，多次执行才会继续查找新匹配项）
+
+var matches = pattern.exec(text);
+alert(matches.index);       //0 ，因为整个字符串本身与模式匹配
+alert(matches.input);       //"mom and dad and baby"
+alert(matches[0]);          //"mom and dad and baby" ，是匹配的字符串
+alert(matches[1]);          //" and dad and baby" ，第一个捕获组的内容
+alert(matches[2]);          //" and baby" ，第二个捕获组的内容
+
+alert(RegExp.$2);          //RegExp.$1 、 RegExp.$2 、 RegExp.$3 、 RegExp.$4 分别存储第一、第二个...第四个匹配的捕获组
+```
+2. test()
+- 只接受一个字符串参数
+- 匹配情况返回 true ；否则返回 false 。在只是想知道目标字符串是否与某个模式匹配，非常方便。
+
+#### 5.4.3 RegExp 构造函数属性
+
+这些属性适用于*作用域中*的所有正则表达式，基于所执行的*最近一次*正则表达式操作而变化。
+
+```
+var text = "this has been a short summer";
+var pattern = /(.)hort/g;
+
+if(pattern.test(text)) {
+    alert(RegExp.input);        //this has been a short summer
+    alert(RegExp.leftContext);  //this has been a 
+    alert(RegExp.rightContext); //summer
+    alert(RegExp.lastMatch);    //short
+    alert(RegExp.lastParen);    //s ，返回最近一次匹配的捕获组
+    alert(RegExp.multiline);    //false
+
+    alert(RegExp.$_);           //以上还有短属性名，比较恶心，举例 RegExp.input
+    alert(RegExp["$`"]);        // RegExp.leftContext
+}
+```
