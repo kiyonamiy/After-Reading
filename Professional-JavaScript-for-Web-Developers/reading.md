@@ -447,3 +447,69 @@ var sum = values.reduce(function(prev, cur, index, array) {
     return prev + cur;
 }); //15 ，即不断累加的结果
 ```
+
+### 5.3 Date 类型
+
+```
+var now = new Date();   //自动获取当前日期和时间
+```
+
+如果想创建特定的日期时间对象，必须传入该日期的毫秒数。为了简化计算过程，提供两个方法：`Date.parse()` 、 `Date.UTC()`。
+
+1. Date.parse()
+    - 接收表示日期的字符串
+
+2. Date.UTC()（可接收7个参数）（省略会取默认值）
+    - 年份
+    - 月份（ 0-11 ）
+    - 日期（ 0-31 ）
+    - 小时（ 0-23 ）
+    - 分钟
+    - 秒
+    - 毫秒
+3. Date.now()
+    - 取得调用该方法的时间
+```
+var someDate = new Date(Date.parse("May, 16, 2019"));   //Date.parse 尝试解析日期的字符串，返回毫秒数，若是解析失败，返回 NaN 。
+
+var someDate1 = new Date("May, 16, 2019");  //直接传入字符串，后台会调用 Date.parse() ，二者等价
+
+//GMT 时间 2000 年 1 月 1 日午夜 0 时
+var someDate2 = new Date(Date.UTC(2000, 0));
+
+//GMT 时间 2005 年 4 月 5 日下午 5:55:55
+var someDate3 = new Date(Date.UTC(2005, 4, 5, 17, 55, 55));
+
+//本地时间 2000 年 1 月 1 日午夜 0 时
+var someDate4 = new Date(2000, 0);  //一样可直接传入参数，但是与调用 UTC 不同的一点是，是基于本地时区，而不是GMT来创建。
+
+//取得调用该方法的时间
+var start = Date.now();
+
+doSomething();
+
+var stop = Date.now();
+
+//根据二者的时间差，可计算函数调用时间
+var result = stop - start;
+
+```
+
+#### 5.3.1 继承的方法
+
+重写了如下方法：
+
+1. toLocalString()
+    - 按照 浏览器设置的递取相适应的格式 返回日期和时间。
+2. toString()
+    - 通常返回带有时区信息的日期和时间
+3. valueOf()
+    - 根本不返回字符串，返回日期的毫秒。因此可以方便地比较日期
+    ```
+    var date1 = new Date(2019, 0, 1);
+    var date2 = new Date(2019, 1, 1);
+    
+    alert(date1 < date2);   //true ，2019 年 1 月 1 日毫秒值小于 2019 年 2 月 1 日毫秒值
+    ```
+还介绍了三个日期格式化方法和一堆取部分时间的方法（比如只返回天数、只返回年数、返回毫秒值、设置日期的月份）
+
