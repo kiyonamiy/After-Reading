@@ -852,3 +852,86 @@ sayColor.call(o);       //blue
     var objectSayColor = sayColor.bind(o);  //this 值定于 o
     objectSayColor();   //blue
     ```
+
+### 5.6 基本包装类
+
+三个特殊的引用类型： Boolean 、 Number 和 String 。
+
+实际上，后台会自动在读取基本类型时，创建对应的包装类对象。（读取完毕后，立即销毁。如果直接new，在离开作用域之前都一直保存在内存中（区别）。
+
+#### 5.6.1 Boolean 类型
+
+Boolean ：建议永远不要使用。
+```
+var falseObject = new Boolean(false);
+alert(falseObject && true);             //true
+alert(typeof falseObject);              //object
+alert(falseObject instanceof Boolean);  //true
+
+var falseValue = false;
+alert(falseValue && true);              //true
+alert(typeof falseValue);               //boolean
+alert(falseValue instanceof Boolean);   //false
+```
+
+#### 5.6.2 Number 类型
+
+Number ：不建议直接实例化。原因和 Boolean 一样。
+- toString() 方法可传递一个参数表示基数，返回几进制表示的字符串
+- toFixed() 保留几位小数（四舍五入
+```
+var num = 10.005;
+alert(num.toFixed(2));      //10.01
+```
+- toExponential() 返回以指数表示法表示的字符串。
+- toPrecision() 会选取合适的格式返回。接收一个参数，即表示所有数字的位数（不包括指数）。
+```
+var num = 99;
+alert(num.toPrecision(1));      //1e+2
+alert(num.toPrecision(2));      //99
+alert(num.toPrecision(3));      //99.0
+```
+
+#### 5.6.3 String
+
+都有一个属性，length。
+
+1. 字符方法
+- charAt() 返回给定位置的单字符串，也可以stringValue[1]
+- charCodeAt()  输出的是字符编码
+
+2. 字符串操作方法
+- concat() 字符串拼接，但是更多还是用加号（ + ）
+- slice() 、 substr() 、 substring() 返回子串
+
+3. 字符串位置方法
+- indexOf()
+- lastIndexOf()
+
+4. trim() 删除前置以及后缀的所有空格，返回结果
+
+5. 字符串大小写转换方法
+- toLowerCase()
+- toLocaleLowerCase()
+- toUpperCase()
+- toLocaleUpperCase()
+
+6. 字符串的模式匹配方法
+- match() 只接受一个参数，正则表达式（ RegExp 对象），返回和调用 RegExp 的 exec()方法相同的结果
+- search() 参数与 match() 相同，返回第一个匹配项的索引
+- replace() 接收两个参数：正则或者字符串，字符串或者函数。
+- split() 基于指定的分隔符分割字符串，子串结果放在一个数组中。
+
+7. localeCompare() 比较两个字符串，返回 -1 ， 0 ， 1 （大多数情况）
+
+8. fromCharCode() 静态方法，接收一或多个字符编码，转化一个字符串。
+
+9. HTML 方法
+
+动态格式化 HTML 的需求。
+
+不推荐使用，因为它们创建的标记通常无法表达语义。
+
+anchor(name), big(), bold(), fixed(), fontcolor(color), fontsize(size), italics(), link(url), small(), strike(), sub(), sup()
+
+例如`string.link(url)`结果为 <a href = "url">string</a>
