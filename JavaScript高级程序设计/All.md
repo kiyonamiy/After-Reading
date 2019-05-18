@@ -26,7 +26,7 @@ Javascript三部分组成
 
 ## 第二章 在 HTML 中使用 JavaScript
 
-### 2.1  script 元素
+### 2.1 script 元素
 
 主要介绍了一下`<script>`标签的使用
 
@@ -42,7 +42,7 @@ Javascript三部分组成
 
 `async`
 
-#### 2.4 noscript 元素
+### 2.4 noscript 元素
 
 使用`<noscript>`元素可以指定在不支持脚本的浏览器中显示的替代内容。
 
@@ -892,7 +892,7 @@ alert(num.toPrecision(2));      //99
 alert(num.toPrecision(3));      //99.0
 ```
 
-#### 5.6.3 String
+#### 5.6.3 String 类型
 
 都有一个属性，length。
 
