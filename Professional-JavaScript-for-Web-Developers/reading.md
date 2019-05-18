@@ -171,7 +171,7 @@ changeColor();
 
 以上涉及3个执行环境：全局环境、 changeColor() 的局部环境和 swapColor() 的局部环境。
 
-![](https://raw.githubusercontent.com/514723273/.md-Pictures/master/window.png)
+![作用域示意图](https://raw.githubusercontent.com/514723273/.md-Pictures/master/window.png)
 
 #### 4.2.2 没有块级作用域
 
@@ -993,4 +993,64 @@ ECMAScript5 禁止给 undefined 、 NaN 和 Infinity 赋值。（所以都是对
 通过访问 window 对象来访问 Global 对象（作为 window 对象的一部分）。
 
 因此，在全局作用域声明的所有变量和函数，就都成为了 window 对象的属性。
+
+#### 5.7.2 Math 对象
+
+为保存数学公式和信息提供了一共公共位置。
+
+Math 对象提供的计算功能快很多（和我们自己编写相比
+
+1. Math 对象的属性
+
+|属性|说明|
+| -- | -- |
+|Math.E|自然对数的底数，即常量 e 的值|
+|Math.LN10| 10 的自然对数|
+|Math.LN2| 2 的自然对数|
+|Math.LOG2E| 以 2 为底 e 的对数|
+|Math.LOG10E| 以 10 为底 e 的对数|
+|Math.PI| pi 的值|
+|Math.SQRT1_2| 1/2 的平方根（即 2 平方根的倒数）|
+|Math.SQRT2| 2 的平方根|
+
+2. min() 和 max() 方法
+
+```
+//接收任意多个数值参数
+var max = Math.max(3, 54, 32, 16);  //54
+
+//运用 apply 传递数组
+var min = Math.min.apply(Math, [3, 54, 32, 16]);    //3
+```
+3. 舍入方法
+
+|方法|说明|
+|--|--|
+|Math.ceil()|执行向上舍入|
+|Math.floor()|执行向下舍入|
+|Math.round()|四舍五入|
+
+4. random() 方法
+
+返回介于 0 和 1之间一个随机数，不包括 0 和 1 。
+
+从整数范围内随机取值的标准公式**值 = Math.floor(Math.random() * 可能值的总数 + 第一个可能的值)**  
+```
+var num = Math.floor(Math.random() * 9 + 2);   //选一个 2-10 的数值
+```
+
+5. 其他方法
+
+- Math.abs(num)
+- Math.exp(num)     返回 Math.E 的 num 次幂
+- Math.log(num)     返回 num 的自然对数
+- Math.pow(num, power)     返回 num 的 power 次幂
+- Math.sqrt(num)
+- Math.acos(num)
+- Math.asin(num)
+- Math.atan(num)
+- Math.atan2(y, x)
+- Math.cos(num)
+- Math.sin(num)
+- Math.tan(num)
 
