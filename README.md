@@ -3,40 +3,40 @@
 
 ## JavaScript 高级程序设计
 
-- [第一章 JavaScript 简介](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#%E7%AC%AC%E4%B8%80%E7%AB%A0-javascript%E7%AE%80%E4%BB%8B)
+- 第一章 JavaScript 简介
     - [1.1 JavaScript简史](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#11-javascript%E7%AE%80%E5%8F%B2)
     - [1.2 JavaScript实现](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#12-javascript%E5%AE%9E%E7%8E%B0)
 - 第二章 在 HTML 中使用 JavaScript
-    - 2.1 script 元素
+    - [2.1 script 元素](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#21-script-%E5%85%83%E7%B4%A0)
         - 2.1.1 标签的位置
         - 2.1.2 延迟脚本
         - 2.1.3 异步脚本
-    - 2.4 noscript 元素
+    - [2.4 noscript 元素](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#24-noscript-%E5%85%83%E7%B4%A0)
 - 第三章 基本概念
-    - 3.1 语法
-    - 3.4 数据类型
+    - [3.1 语法](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#31-%E8%AF%AD%E6%B3%95)
+    - [3.4 数据类型](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#34-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B)
         - 3.4.1 typeof 操作符
-    - 3.5 操作符
+    - [3.5 操作符](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#35-%E6%93%8D%E4%BD%9C%E7%AC%A6)
         - 3.5.7 相等操作符
-    - 3.6 语句
-    - 3.7 函数
+    - [3.6 语句](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#36-%E8%AF%AD%E5%8F%A5)
+    - [3.7 函数](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#37-%E5%87%BD%E6%95%B0)
         - 3.7.1 理解函数
         - 3.7.2 没有重载
 - 第四章 变量、作用域和内存问题
-    - 4.1 基本类型和引用类型
+    - [4.1 基本类型和引用类型](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#41-%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B)
         - 4.1.1 动态的属性
         - 4.1.4 检测类型
-    - 4.2 执行环境及作用域
+    - [4.2 执行环境及作用域](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#42-%E6%89%A7%E8%A1%8C%E7%8E%AF%E5%A2%83%E5%8F%8A%E4%BD%9C%E7%94%A8%E5%9F%9F)
         - 4.2.2 没有块级作用域
-    - 4.3 垃圾收集
+    - [4.3 垃圾收集](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#43-%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86)
         - 4.3.1 标记清除
         - 4.3.2 引用计数
         - 4.3.3 性能问题
         - 4.3.4 管理内存
     - 4.4 小结
-- [第五章 引用类型](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#%E7%AC%AC%E4%BA%94%E7%AB%A0-%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B)
-    - 5.1 Object 类型
-    - 5.2 Array 类型
+- 第五章 引用类型
+    - [5.1 Object 类型](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#51-object-%E7%B1%BB%E5%9E%8B)
+    - [5.2 Array 类型](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#52-array-%E7%B1%BB%E5%9E%8B)
         - 5.2.1 检测数组
         - 5.2.2 转换方法
         - 5.2.3 栈方法
@@ -46,22 +46,22 @@
         - 5.2.7 位置方法
         - 5.2.8 迭代方法
         - 5.2.9 缩小方法
-    - 5.3 Date 类型
+    - [5.3 Date 类型](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#53-date-%E7%B1%BB%E5%9E%8B)
         - 5.3.1 继承的方法
-    - 5.4 RegExp 类型
+    - [5.4 RegExp 类型](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#54-regexp-%E7%B1%BB%E5%9E%8B)
         - 5.4.1 RegExp 实例属性
         - 5.4.2 RegExp 实例方法
         - 5.4.3 RegExp 构造函数属性
-    - 5.5 Function 类型
+    - [5.5 Function 类型](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#55-function-%E7%B1%BB%E5%9E%8B)
         - 5.5.1 没有重载
         - 5.5.2 函数声明与函数表达式
         - 5.5.3 作为值的函数
         - 5.5.4 函数内部属性
         - 5.5.5 函数属性和方法
-    - 5.6 基本包装类
+    - [5.6 基本包装类](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#56-%E5%9F%BA%E6%9C%AC%E5%8C%85%E8%A3%85%E7%B1%BB)
         - 5.6.1 Boolean 类型
         - 5.6.2 Number 类型
         - 5.6.3 String 类型
-    - 5.7 单体内置对象
+    - [5.7 单体内置对象](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/All.md#57-%E5%8D%95%E4%BD%93%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1)
         - 5.7.1 Global 对象
         - 5.7.2 Math 对象
