@@ -934,7 +934,7 @@ alert(num.toPrecision(3));      //99.0
 
 anchor(name), big(), bold(), fixed(), fontcolor(color), fontsize(size), italics(), link(url), small(), strike(), sub(), sup()
 
-例如`string.link(url)`结果为 <a href = "url">string</a>
+例如`string.link(url)`结果为 `<a href = "url">string</a>`
 
 ### 5.7 单体内置对象
 
@@ -1054,3 +1054,95 @@ var num = Math.floor(Math.random() * 9 + 2);   //选一个 2-10 的数值
 - Math.sin(num)
 - Math.tan(num)
 
+## 第六章 面向对象的程序设计
+
+可以把 ECMAScript 的对象（引用类型）想象成散列表：无非就是一组名值对，其中值可以是数据或函数。
+
+### 6.1 理解对象
+
+```
+var person = {
+    name: "Kiyonami", 
+    age: 23,
+    job: "Software Engineer",
+
+    sayName: function() {
+        alert(this.name);
+    }
+}
+```
+
+#### 6.1.1 属性类型
+
+特性（ attribute ）：描述属性（ property ）的各种特征。（只有内部才用）（不能直接访问）
+
+为了表示特性是内部值，该规范把它们放在了两对方括号中，例如`[[Enumerable]]`。
+
+ECMAScript 中有两种属性：数据属性，访问器属性。
+
+1. 数据属性
+
+|特性|说明|
+|---|---|
+|[[Configurable]]|表示能否通过 delete 删除属性，能否修改属性的特性，或者能否把属性修改为访问器属性。（默认为 true ）|
+|[[Enumerable]]|表示能否通过 for-in 循环返回属性。（默认为 true ）|
+|[[Writable]]|表示能否修改属性的值。（默认为 true ）|
+|[[Value]]|属性的数据值。读写都在这个位置。（默认为 undefined ）|
+
+要修改属性默认的特性，必须使用`Object.defineProperty()`方法。（不常用，助于理解对象）
+
+```
+var person = {};
+//接收三个参数：属性所在的对象、属性的名字和一个描述符对象。
+//描述符对象的属性必须是四者内。
+Object.defineProperty(person, "name", {
+    configurable: false,    //不能从对象中删除。此时，再调用 Object.defineProperty() 只能修改 writable ，其他不能修改会导致错误
+    writable: false,        //不可修改值
+    value: "Kiyoanmi"       //设置值
+});
+
+alert(person.name);     //Kiyonami
+
+delete person.name;     //严格模式下报错
+alert(person.name);     //Kiyonami
+
+person.name = "Greg";   //严格模式下报错
+alert(person.name);     //Kiyonami
+
+```
+
+2. 访问器属性
+
+不包含数据值；包含一对 getter 和 setter 函数（不是必须）。
+
+若只指定 getter 意味着属性是不能写。
+
+|特性|说明|
+|---|---|
+|[[Configurable]]|表示能否通过 delete 删除属性，能否修改属性的特性，或者能否把属性修改为数据属性。（默认为 true ）|
+|[[Enumerable]]|表示能否通过 for-in 循环返回属性。（默认为 true ）|
+|[[Get]]|在读取属性时调用的函数。（默认为 undefined ）|
+|[[Set]]|在写入属性时调用的函数。（默认为 undefined ）|
+
+```
+var book = {
+    _year : 2000,
+    edition: 1
+}
+
+//新定义一个访问器属性： year
+Object.defineProperty(book, "year", {
+    get: function() {
+        return this._year;
+    },
+    set: function(newValue) {
+        this._year = newValue;
+        if(newValue > 2000) {
+            this.edition += newValue - 2000;
+        }
+    }
+});
+
+book.year = 2005;
+alert(book.year);   //1 + (2005 - 2000) = 6
+```
