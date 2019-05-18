@@ -935,3 +935,62 @@ alert(num.toPrecision(3));      //99.0
 anchor(name), big(), bold(), fixed(), fontcolor(color), fontsize(size), italics(), link(url), small(), strike(), sub(), sup()
 
 例如`string.link(url)`结果为 <a href = "url">string</a>
+
+### 5.7 单体内置对象
+
+ECMAScript实现提供地、不依赖于宿主环境地对象，在程序执行前就存在了。（不需要显示实例化
+
+例如 Object 、 Array 和 String 。
+
+还定义了两个单体内置对象： Global 和 Math 。
+
+#### 5.7.1 Global 对象
+
+最特别的对象。
+
+不属于任何其他对象的属性和方法， 最终都是它的属性和方法。
+
+事实上，没有全局变量或全局函数；所有在全局作用域中定义的属性和函数，都是 Global 对象的属性。
+
+例如`isNaN()`、`parseFloat()`都是 Global 对象的方法。
+
+1. URI 编码方法
+
+两个 URI 方法都对 URI 进行编码，用特殊的 UTF-8 编码*替换*所有无效的字符（例如空格），从而让浏览器能够接收和理解。
+
+- encodeURI() 主要用于整个 URI （例如， http://wwww.wrox.com/illegal value.htm ）的编码。（只有空格被替换）
+- encodeURIComponent() 主要用于对 URI 中的某一段（例如 illegal value.htm ）进行编码。（会使用对应的编码替换所有非字母数字字符）
+- decodeURI()
+- decodeURIComponent()
+
+2. eval() 方法
+
+大概是最强大的方法。
+
+就像是一个完整的 ECMAScript 解析器，只接受一个参数，即要执行的 ECMAScript 字符串。
+
+（我觉得这方法并没有什么意义，只是将代码写到了字符串里，再通过这个函数执行。
+
+使用必须极为谨慎，防止恶意用户**代码注入**。
+
+```
+eval("function sayHi() { alert('hi'); }");
+sayHi();
+```
+
+3. Global 对象的属性
+
+undefined 、 NaN 以及 Infinity 都是 Global 对象的属性。
+
+所有原生引用类型的构造函数，例 Object 和 Function ，也都是 Global 对象的属性。
+
+所有： undefined 、 NaN 、 Infinity 、 Object 、 Array 、 Function 、  Boolean 、 String 、 Number 、 Date 、 RegExp 、 Error 、 EvalError 、 RangeError 、 ReferenceError 、 SyntaxError 、 TypeError 、 URIError
+
+ECMAScript5 禁止给 undefined 、 NaN 和 Infinity 赋值。（所以都是对象，只是禁止赋值了
+
+4. window 对象
+
+通过访问 window 对象来访问 Global 对象（作为 window 对象的一部分）。
+
+因此，在全局作用域声明的所有变量和函数，就都成为了 window 对象的属性。
+
