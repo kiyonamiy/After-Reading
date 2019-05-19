@@ -1182,6 +1182,7 @@ Object.defineProperty(book, {
 #### 6.1.3 读取属性的特性
 
 `Object.getOwnPropertyDescriptor()`方法，可以取得给定属性的描述符。
+
 根据是访问器属性还是数值属性，返回对应的描述符对象。
 
 ```
@@ -1190,3 +1191,115 @@ alert(descriptor.value);    //2000
 alert(descriptor.configurable); //false，调用 defineProperty 后，未重新定义 configurable ，则默认为 false
 alert(typeof descriptor.get);   //undefined, 因为是数值属性 
 ```
+
+### 6.2 创建对象
+
+#### 6.2.1 工厂模式
+
+```
+function createPerson(name, age, job) {
+    var o = new Object();
+    o.name = name;
+    o.age = age;
+    o.job = job;
+    o.sayName = function() {
+        alert(this.name);
+    };
+    return o;
+}
+
+var person1 = createPerson("Kiyonami", 23, "Software Engineer");
+var person2 = createPerson("Greg", 27, "Doctor");
+```
+
+**问题**：工厂模式虽然解决了创建多个相似对象的问题，但却没有解决对象识别的问题（即怎么知道一个对象的类型）。
+
+#### 6.2.2 构造函数模式
+
+```
+function Person(name, age, job) {
+    this.name = name;
+    this.age = age;
+    this.job = job;
+    this.sayName = function() {
+        alert(this.name);
+    };
+}
+
+var person1 = new Person("Kiyonami", 23, "Software Engineer");
+var person2 = new Person("Greg", 27, "Doctor");
+```
+
+在这个例子中，注意`Person()`函数和`createPerson()`函数的**区别**：
+- 没有显式地创建对象（ createPerson -> var o = new Object(); ）
+- 直接将属性和方法赋给了 this 对象（ createPerson -> o.name = name; ）
+- 没有 return 语句（ createPerson -> return o; ）
+
+要创建 Person 新实例，必须使用 new 操作符。
+
+以这种构造函数地方式会经历以下 4 个步骤：
+- 创建一个新对象（ new ）
+- 将构造函数地作用域赋值给新对象（因此 this 就指向了这个新对象）
+- 执行构造函数中的代码（ 为这个新对象添加属性 ）
+- 返回新对象
+
+person1 和 person2 都有一个 constructor 属性，该属性指向 Person 。
+```
+alert(person1.constructor == Person);   //true
+alert(person2.constructor == Person);   //true
+```
+
+对象的 constructor 属性最初是用来标识对象类型的（所以不常使用），但还是使用 instanceof 操作符更靠谱一些。例子中创建的对象既是 Object 实例，也是 Person 实例。
+```
+alert(person1 instanceof Person);   //true
+alert(person1 instanceof Object);   //true
+```
+
+**相较于工厂模式的优点**：可以将它的实例标识为一种特定的类型。
+
+1. 将构造函数当作函数
+
+构造函数与其他函数的**唯一区别**，就在于调用它们的方式不同。（不存在特殊语法）
+
+任何函数，只要通过 new 操作符来调用，那它就可以作为构造函数。
+```
+//当作构造函数使用
+var person = new Person("Kiyonami", 23, "Software Engineer");
+person.sayName();   //Kiyonami
+
+//作为普通函数
+Person("Bob", 20, "Doctor");    //直接全局执行该函数，作用域是 Global ，函数中的 this 对应于 Global ，所以是为 Global 绑定了属性和方法
+window.sayName();  //Bob    
+
+//在另一个对象的作用域中调用
+var o = new Object();
+Person.call(o, "Marvel", 22, "Nurse");  //通过 call() 在 o 对象的作用域中调用，和全局一样的过程（觉得通过 new 操作符，与这种函数调用，内部过程极为相似）
+o.sayName();    //Marvel
+```
+
+2. 构造函数的问题
+
+```
+//不同实例上的同名函数是不相等的（都是另外新建的）
+alert(person1.sayName == person2.sayName);  //false
+```
+
+问题1：创建两个完成同样任务的 Function 实例没有必要。
+
+使用如下方式解决：把 sayName() 函数的定义转移到构造函数外部。这样一来，由于 sayName 包含的是一个指向函数的指针，因此 对象共享了全局作用域中顶底的同一个 sayName() 函数。
+```
+function Person(name, age, job) {
+    this.name = name;
+    this.age = age;
+    this.job = job;
+    this.sayName = sayName;
+}
+
+function sayName() {
+    alert(this.name);
+}
+
+var person1 = new Person("Kiyonami", 23, "Software Engineer");
+```
+
+**新问题**：在全局作用域中定义的函数实际上只能被某个对象调用（名不副实），并且如果对象需要定义很多方法，这样就要定义很多全局函数，丝毫没有封装性可言！
