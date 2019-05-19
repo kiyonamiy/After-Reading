@@ -1146,3 +1146,47 @@ Object.defineProperty(book, "year", {
 book.year = 2005;
 alert(book.year);   //1 + (2005 - 2000) = 6
 ```
+
+#### 6.1.2 定义多个属性
+
+上面的`Object.defineProperty(object, attribute, {property})`，一次只能定义一个属性的多个特性。
+
+要同时定义多个属性，选择`Object.defineProperties(object, {attribute: {property}})`，一次定义多个属性。（只有参数和同时的区别）
+
+```
+var book = {};
+
+Object.defineProperty(book, {
+    //数值属性
+    _year: {
+        value: 2000
+    },
+    edition: {
+        value: 1
+    },
+    //访问器属性
+    year: {
+        get: function() {
+            return this._year;
+        },
+        set: function(newValue) {
+            this._year = newValue;
+            if(newValue > 2000) {
+                edition  += newValue - 2000;
+            }
+        } 
+    }
+});
+```
+
+#### 6.1.3 读取属性的特性
+
+`Object.getOwnPropertyDescriptor()`方法，可以取得给定属性的描述符。
+根据是访问器属性还是数值属性，返回对应的描述符对象。
+
+```
+var descriptor = Object.getOwnPropertyDescriptor(book, "_year");
+alert(descriptor.value);    //2000
+alert(descriptor.configurable); //false，调用 defineProperty 后，未重新定义 configurable ，则默认为 false
+alert(typeof descriptor.get);   //undefined, 因为是数值属性 
+```
