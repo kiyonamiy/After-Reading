@@ -1707,3 +1707,88 @@ alert(SubType.prototype.isPrototypeOf(instance));
 最主要的问题来自*引用类型值*的原型。
 
 因为重写子类的原型对象，是通过`new SuperType()`，会把父类的构造函数中的属性（本来应该人手一份副本）放入子类原型中，放入原型是一定会被共享的！（就等于往原型里面放了一个前面说的 friends ，子类创建出来的一个实例添加朋友，所有的都会有影响）
+
+#### 6.3.2 借用构造函数
+
+在子类构造函数的内部调用超类构造函数。
+
+```js
+function SuperType() {
+    this.color = ["red", "blue", "green"];
+}
+
+function SubType() {
+    //继承了 SuperType
+    //如果只是单纯调用 SuperType(); SubType并不会有 color 属性（调用完后，作用域销毁，this.color 销毁，并没有绑定！）。
+    //只有通过 call or apply 传入作用域，绑定在 SubType 上
+    SuperType.call(this);
+}
+
+var instance1 = new SubType();
+instance1.color.push("black");
+alert(instance1.color);             //red,blue,green,black
+
+var instance2 = new SubType();
+alert(instance2.color);             //red,blue,green
+```
+
+1. 传递参数
+
+```js
+function SuperType(name) {
+    this.name = name;
+}
+
+//SubType 感受不到
+SuperType.prototype.sayName = function() {
+    alert(this.name);
+}
+
+function SubType() {
+    SuperType.call(this, "Kiyonami");
+
+    this.age = 23;      //为了确保 SuperType 构造函数不会重写子类的属性
+}
+
+var person = new SubType();
+alert(person.age);      //23
+//person.sayName();     //error
+```
+
+2. 借用构造函数的问题
+
+如果仅仅是借用构造函数，那将无法避免和构造函数模式一样的问题---方法都在构造函数中定义，因此函数复用就无从谈起。
+
+而且定义在超类的原型的方法，对子类是不可见的！
+
+
+#### 6.3.3 组合继承
+
+也叫伪经典继承。将原型链和借用构造函数的技术组合到一块，发挥二者长处。
+
+```js
+function SuperType(name) {
+    this.name = name;
+    this.friends = ["AA", "BB", "CC"];
+}
+SuperType.prototype.sayName = function() {
+    alert(this.name);
+}
+
+function SubType(name, age) {
+    SuperType.call(this, name);             //继承所有的属性，这里屏蔽了 new SuperType() 所带来的负影响！（因为创建了同名的属性）
+    this.age = age;
+}
+SubType.prototype = new SuperType();      //继承所有的方法，该子类的原型依旧存在着 name, friends ，只不过是被屏蔽了！
+SubType.prototype.sayAge = function() {
+    alert(this.age);
+}
+
+var person = new SubType("Kiyonami", 23);
+
+person.friends.push("DD");
+alert(person.friends);  //AA,BB,CC,DD 每人一份副本，互不干扰
+person.sayAge();        //23
+person.sayName();       //Kiyonami
+```
+
