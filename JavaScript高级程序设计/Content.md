@@ -64,7 +64,7 @@ JavaScript 变量可以用来保存两种类型的值：基本类型值和引用
 #### 3.4.1 typeof 操作符
 
 例：
-```
+```js
 var message = "some string";
 alert(typeof(message));     // typeof是一个操作符而不是函数，括号不是必须！！
 alert(typeof message);      // "string"
@@ -86,7 +86,7 @@ alert(typeof message);      // "string"
 #### 3.5.7 相等操作符
 
 全等（===）只在两个操作数在比较时，不能发生转换。
-```
+```js
 var result1 = ("55" == 55);      //true ，因为转换后相等。
 var result2 = ("55" === 55);    //false ，因为不同的数据类型不相等。
 ```
@@ -125,7 +125,7 @@ ECMAScript 函数不介意传递进来多少个参数，即使你定义的函数
 #### 4.1.4 检测类型
 
 确定一个值是哪种**基本类型**可以使用 typeof 操作符，而确定一个值是哪种**引用类型**可以使用 instanceof 操作符。
-```
+```js
 result = variable instanceof constructor    //返回 true or false ； typeof 返回基本类型字符串
 ```
 
@@ -143,7 +143,7 @@ result = variable instanceof constructor    //返回 true or false ； typeof �
 
 例：
 
-```
+```js
 var color = "blue";
 
 function changeColor() {
@@ -206,7 +206,7 @@ changeColor();
 
 **严重问题**：循环引用！
 
-```
+```js
 function problem() {
     var o1 = new Object();
     var o2 = new Object();
@@ -217,7 +217,7 @@ function problem() {
 ```
 
 为了避免循环引用，最好手工断开引用。
-```
+```js
 o1.someOtherObject = null;
 o2.anotherObject = null;
 ```
@@ -247,21 +247,21 @@ IE7 做出改变：各项临界值初始与 IE6 相等。如果垃圾回收例�
 创建 Object 实例的方法有两种。
 
 第一种：使用 new 操作符后跟 Object 构造函数。
-```
+```js
 var person = new Object();
 person.name = "Kiyonami";
 person.age = 20;
 ```
 
 第二种：使用对象字面量表示法。（更青睐）
-```
+```js
 var person = {
     name : "Kiyonami",
     age : 20,
     5 : true        //测试用，这里的 数值属性名 会自动转换为 字符串
 };
 ```
-```
+```js
 var person = {};    //不会调用 Object 构造函数
 person.name = "Kiyonami";       //还可以person["name"]，但通常是点表示法
 person.age = 20;
@@ -274,7 +274,7 @@ person.age = 20;
 同样，创建 Array 实例的方法有两种。
 
 第一种：使用 Array 构造函数。
-```
+```js
 var colors1 = new Array();
 
 var colors2 = new Array(3);  //创建 length 值为 3 的数组
@@ -285,7 +285,7 @@ var color4 = Array(3);  //可以省略 new 操作符。
 ```
 
 第二种：使用数组字面量表示法。
-```
+```js
 var colors = ["red", "blue", "green"];
 
 var names = [];
@@ -294,7 +294,7 @@ var values = [1, 2,,];  //不要这样！这样会创建一个包含 3 或 4 项
 ```
 
 数组的 length 不是只读的！
-```
+```js
 var colors = ["red", "blue", "green"];
 colors.length = 2;
 alert(colors[2]);   //undefined
@@ -307,7 +307,7 @@ alert(colors.length);   //100，访问其他为 undefined
 
 #### 5.2.1 检测数组
 
-```
+```js
 if(Array.isArray(value)) {
     //对数组执行某些操作
 }
@@ -318,7 +318,7 @@ if(Array.isArray(value)) {
 如前所述，所有对象都具有 toString() （以逗号分隔的字符串）、 valueOf() （返回的还是数组）和toLocaleString() （经常返回与两个方法相同的值）（唯一区别，取得每一项的值，调用的是每一项的 toLocaleString ）方法。
 
 可以使用 join() 方法，使用不同的分隔符来构建返回的字符串。
-```
+```js
 var colors = ["red", "blue", "green"];
 alert(colors.join("||"));   // red||blue||green，只接受一个参数---分隔符的字符串。
 ```
@@ -340,14 +340,14 @@ alert(colors.join("||"));   // red||blue||green，只接受一个参数---分隔
 `reverse()`、`sort()`（默认升序，**比较的是字符串！**）
 
 为了实现排序，`sort()`方法会调用每个数组项的 toString() 转型方法，比较得到的字符串，即使是数值。
-```
+```js
 var values = [0, 1, 5, 10, 15];
 values.sort();  //0, 1, 10, 15, 5，按字符串大小排序的
 ```
 
 因此，`sort()`方法可以接收一个比较函数。
 比较函数接收两个参数(a, b)，如果 a 应该位于 b 之*前*（不改变顺序），则返回一个负数。（即升序）
-```
+```js
 function compare(a, b) {
     return a - b;
 }
@@ -360,14 +360,14 @@ values.sort(compare);   //接收一个比较函数
 
 1. `concat()`，创建一个新数组，并将原数组的所有项添加到末尾。
 
-    ```
+    ```js
     var colors = ["red", "green", "blue"];  //原数组一直保持不变
     var colors1 = colors.concat();  //["red", "green", "blue"] ，不传递参数时，作用只是复制当前数组并返回副本
     var colors2 = conlors.concat("yellow", ["black", "brown"]); //["red", "green", "blue"， "yellow", "black", "brown"] ，传递一个或多个数组时，则会将每一项都添加到结果数组
     ```
 
 2. `slice()`，选择原数组中的一段（一个或多个项）（切割），并创建一个新的数组存储。
-    ```
+    ```js
     var colors = ["red", "green", "blue"， "yellow", "purple"];
     var colors1 = colors.slice(1);  //["green", "blue"， "yellow", "purple"]
     var colors2 = colors.slice(1, 4);   //["green", "blue"， "yellow"] ，不包括第四项
@@ -401,7 +401,7 @@ values.sort(compare);   //接收一个比较函数
 - `map()`，将数组所有项进行操作，返回操作后的数组。
 - `forEach`，没有返回值，只做遍历操作。
 
-```
+```js
 var numbers = [1, 2, 3, 4, 5, 4, 3, 2, 1];
 
 //false ，并没有每项都大于2
@@ -441,7 +441,7 @@ numbers.foreach(function(item, index, array) {
 
 第一次迭代发生在数组的第二项。
 
-```
+```js
 var values = [1, 2, 3, 4, 5];
 var sum = values.reduce(function(prev, cur, index, array) {
     return prev + cur;
@@ -450,7 +450,7 @@ var sum = values.reduce(function(prev, cur, index, array) {
 
 ### 5.3 Date 类型
 
-```
+```js
 var now = new Date();   //自动获取当前日期和时间
 ```
 
@@ -469,7 +469,7 @@ var now = new Date();   //自动获取当前日期和时间
     - 毫秒
 3. Date.now()
     - 取得调用该方法的时间
-```
+```js
 var someDate = new Date(Date.parse("May, 16, 2019"));   //Date.parse 尝试解析日期的字符串，返回毫秒数，若是解析失败，返回 NaN 。
 
 var someDate1 = new Date("May, 16, 2019");  //直接传入字符串，后台会调用 Date.parse() ，二者等价
@@ -505,7 +505,7 @@ var result = stop - start;
     - 通常返回带有时区信息的日期和时间
 3. valueOf()
     - 根本不返回字符串，返回日期的毫秒。因此可以方便地比较日期
-    ```
+    ```js
     var date1 = new Date(2019, 0, 1);
     var date2 = new Date(2019, 1, 1);
     
@@ -515,14 +515,14 @@ var result = stop - start;
 
 ### 5.4 RegExp 类型
 
-```
+```js
 var expression = /pattern/flags;
 ```
 1. 模式（ pattern ）：字符类、限定符、分组、向前查找、反向引用
     - 元字符：（ ( [ { \ ^ $ | ) ? * + . ] } ）
 2. 标志（ flags ）： g （全局（ global ）模式）、 i （不区分大小写（ case-insensitive ）模式）、 m （多行（ multiline ）模式）
 
-```
+```js
 //匹配第一个 "bat" 或 "cat“ ，不区分大小写
 var pattern1 = /[bc]at/i;                //字面量形式定义
 var pattern2 = new RegExp("[bc]at", "i");   //使用 RegExp 构造函数，完全等价（有些情况需要进行双重转义）
@@ -534,7 +534,7 @@ global 、 ignoreCase 、 lastIndex 、 multiline 、 source
 
 用处不大，这些信息都包含在模式声明中。
 
-```
+```js
 var pattern1 = /\[bc\]at/i;
 
 alert(pattern1.global); //false
@@ -550,7 +550,7 @@ alert(pattern1.source);     //"\[bc\]at"
 - 只接收一个参数---应用模式的字符串
 - 返回包含第一个匹配项信息的数组（没有匹配项则返回null）
     - 虽然是 Array 实例，包含两个额外的属性： index （匹配项在字符串中的位置）和 input （应用模式的字符串）。
-```
+```js
 var text = "mom and dad and baby";
 var pattern = /mom( and dad( and baby)?)?/gi;     //包含两个捕获组，即使设置为g，每次只会返回一个匹配项（捕获组是对每个匹配项再次进行细分匹配）（g情况，多次执行才会继续查找新匹配项）
 
@@ -571,7 +571,7 @@ alert(RegExp.$2);          //RegExp.$1 、 RegExp.$2 、 RegExp.$3 、 RegExp.$4
 
 这些属性适用于*作用域中*的所有正则表达式，基于所执行的*最近一次*正则表达式操作而变化。
 
-```
+```js
 var text = "this has been a short summer";
 var pattern = /(.)hort/g;
 
@@ -591,7 +591,7 @@ if(pattern.test(text)) {
 ### 5.5 Function 类型
 
 每个函数都是 Function 类型的实例，而且*具有属性和方法*（和其他引用类型一样）。
-```
+```js
 function sum(num1, num2) {
     return num1 + num2;
 }
@@ -607,7 +607,7 @@ var sum2 = new Function("num1", "num2", "return num1 + num2");
 
 #### 5.5.1 没有重载
 
-```
+```js
 function addSomeNumber(num) {
     return num + 100;
 }
@@ -617,7 +617,7 @@ function addSomeNumber(num) {
 }
 ```
 等价如下：
-```
+```js
 var addSomeNumber = function(num) {
     return num + 100;
 }
@@ -631,7 +631,7 @@ addSomeNumber = function(num) {
 #### 5.5.2 函数声明与函数表达式
 
 *函数声明*和*函数表达式*的区别：**解析器会率先读取函数声明，并使其在执行任何代码之前可用**（函数声明提升）；而函数表达式必须等到执行到该行。
-```
+```js
 //函数声明会被提前，正常运行
 alert(sum(10, 10));
 function sum(num1, num2) {
@@ -642,7 +642,7 @@ function sum(num1, num2) {
 #### 5.5.3 作为值的函数
 
 1. 可以作为参数传递给另个函数
-```
+```js
 function callSomeFunction(someFunction, someArgument) {
     return someFunction(someArgument);
 }
@@ -659,7 +659,7 @@ var result2 = callSomeFunction(getGreeting, "Kiyonami");    //"Hello, Kiyonami"
 ```
 
 2. 可以从一个函数中返回另一个函数
-```
+```js
 function createComparisonFunction(propertyName) {   //接收一个字符串，表示属性
 
     return function(object1, object2) {
@@ -689,7 +689,7 @@ arguments 中还有一个名叫 callee 的属性，是一个指向拥有这个 a
 
 例如
 
-```
+```js
 //阶乘函数递归（以前写Java差不多都是如下，没有任何问题
 function factorial(num) {
     if(num <= 1) {
@@ -702,7 +702,7 @@ function factorial(num) {
 ```
 
 使用 arguments.callee 
-```
+```js
 function factorial(num) {
     if(num <= 1) {
         return 1;
@@ -727,7 +727,7 @@ this 引用的是函数以执行的环境对象。（在全局时引用的是 wi
 
 **只有在调用的时候， this 的值才被确定！（定义时并不确定**
 
-```
+```js
 window.color = "red";
 var o = { color : "blue" };
 
@@ -748,7 +748,7 @@ o.sayColor();   //"blue"
 
 这个属性保存着调用当前函数的*函数*的引用。
 
-```
+```js
 function outer() {
     inner();
 }
@@ -780,7 +780,7 @@ inner();    //在全局中调用当前函数，它的值为 null
 
     接收两个参数：在其中运行函数的作用域，一个是参数数组（可以是 Array 的实例，也可以是 arguments 对象）。
 
-    ```
+    ```js
     function sum(num1, num2) {
         return num1 + num2;
     }
@@ -803,7 +803,7 @@ inner();    //在全局中调用当前函数，它的值为 null
 
     第一个参数依旧是 this ，其余参数都要列举出来传递。
 
-    ```
+    ```js
     function callSum3(num1, num2) {
         return sum.call(this, num1, num2);
     }
@@ -815,7 +815,7 @@ inner();    //在全局中调用当前函数，它的值为 null
 
 **真正强大的地方**是能够扩充函数赖以运行的作用域。扩充的最大好处，就是对象不需要与方法有任何耦合关系。
 
-```
+```js
 window.color = "red";
 var o = { color : "blue"};
 
@@ -841,7 +841,7 @@ sayColor.call(o);       //blue
     
     （前两个函数是在函数调用的时候才调用！临时绑上
 
-    ```
+    ```js
     window.color = "red";
     var o = { color: "blue" };
 
@@ -862,7 +862,7 @@ sayColor.call(o);       //blue
 #### 5.6.1 Boolean 类型
 
 Boolean ：建议永远不要使用。
-```
+```js
 var falseObject = new Boolean(false);
 alert(falseObject && true);             //true
 alert(typeof falseObject);              //object
@@ -879,13 +879,13 @@ alert(falseValue instanceof Boolean);   //false
 Number ：不建议直接实例化。原因和 Boolean 一样。
 - toString() 方法可传递一个参数表示基数，返回几进制表示的字符串
 - toFixed() 保留几位小数（四舍五入
-```
+```js
 var num = 10.005;
 alert(num.toFixed(2));      //10.01
 ```
 - toExponential() 返回以指数表示法表示的字符串。
 - toPrecision() 会选取合适的格式返回。接收一个参数，即表示所有数字的位数（不包括指数）。
-```
+```js
 var num = 99;
 alert(num.toPrecision(1));      //1e+2
 alert(num.toPrecision(2));      //99
@@ -973,7 +973,7 @@ ECMAScript实现提供地、不依赖于宿主环境地对象，在程序执行�
 
 使用必须极为谨慎，防止恶意用户**代码注入**。
 
-```
+```js
 eval("function sayHi() { alert('hi'); }");
 sayHi();
 ```
@@ -1015,7 +1015,7 @@ Math 对象提供的计算功能快很多（和我们自己编写相比
 
 2. min() 和 max() 方法
 
-```
+```js
 //接收任意多个数值参数
 var max = Math.max(3, 54, 32, 16);  //54
 
@@ -1035,7 +1035,7 @@ var min = Math.min.apply(Math, [3, 54, 32, 16]);    //3
 返回介于 0 和 1之间一个随机数，不包括 0 和 1 。
 
 从整数范围内随机取值的标准公式**值 = Math.floor(Math.random() * 可能值的总数 + 第一个可能的值)**  
-```
+```js
 var num = Math.floor(Math.random() * 9 + 2);   //选一个 2-10 的数值
 ```
 
@@ -1060,7 +1060,7 @@ var num = Math.floor(Math.random() * 9 + 2);   //选一个 2-10 的数值
 
 ### 6.1 理解对象
 
-```
+```js
 var person = {
     name: "Kiyonami", 
     age: 23,
@@ -1091,7 +1091,7 @@ ECMAScript 中有两种属性：数据属性，访问器属性。
 
 要修改属性默认的特性，必须使用`Object.defineProperty()`方法。（不常用，助于理解对象）
 
-```
+```js
 var person = {};
 //接收三个参数：属性所在的对象、属性的名字和一个描述符对象。
 //描述符对象的属性必须是四者内。
@@ -1124,7 +1124,7 @@ alert(person.name);     //Kiyonami
 |[[Get]]|在读取属性时调用的函数。（默认为 undefined ）|
 |[[Set]]|在写入属性时调用的函数。（默认为 undefined ）|
 
-```
+```js
 var book = {
     _year : 2000,
     edition: 1
@@ -1153,7 +1153,7 @@ alert(book.year);   //1 + (2005 - 2000) = 6
 
 要同时定义多个属性，选择`Object.defineProperties(object, {attribute: {property}})`，一次定义多个属性。（只有参数和同时的区别）
 
-```
+```js
 var book = {};
 
 Object.defineProperty(book, {
@@ -1185,7 +1185,7 @@ Object.defineProperty(book, {
 
 根据是访问器属性还是数值属性，返回对应的描述符对象。
 
-```
+```js
 var descriptor = Object.getOwnPropertyDescriptor(book, "_year");
 alert(descriptor.value);    //2000
 alert(descriptor.configurable); //false，调用 defineProperty 后，未重新定义 configurable ，则默认为 false
@@ -1196,7 +1196,7 @@ alert(typeof descriptor.get);   //undefined, 因为是数值属性
 
 #### 6.2.1 工厂模式
 
-```
+```js
 function createPerson(name, age, job) {
     var o = new Object();
     o.name = name;
@@ -1216,7 +1216,7 @@ var person2 = createPerson("Greg", 27, "Doctor");
 
 #### 6.2.2 构造函数模式
 
-```
+```js
 function Person(name, age, job) {
     this.name = name;
     this.age = age;
@@ -1244,13 +1244,13 @@ var person2 = new Person("Greg", 27, "Doctor");
 - 返回新对象
 
 person1 和 person2 都有一个 constructor 属性，该属性指向 Person 。（原型模式中的 constructor）
-```
+```js
 alert(person1.constructor == Person);   //true
 alert(person2.constructor == Person);   //true
 ```
 
 对象的 constructor 属性最初是用来标识对象类型的（所以不常使用），但还是使用 instanceof 操作符更靠谱一些。例子中创建的对象既是 Object 实例，也是 Person 实例。
-```
+```js
 alert(person1 instanceof Person);   //true
 alert(person1 instanceof Object);   //true
 ```
@@ -1262,7 +1262,7 @@ alert(person1 instanceof Object);   //true
 构造函数与其他函数的**唯一区别**，就在于调用它们的方式不同。（不存在特殊语法）
 
 任何函数，只要通过 new 操作符来调用，那它就可以作为构造函数。
-```
+```js
 //当作构造函数使用
 var person = new Person("Kiyonami", 23, "Software Engineer");
 person.sayName();   //Kiyonami
@@ -1279,7 +1279,7 @@ o.sayName();    //Marvel
 
 2. 构造函数的问题
 
-```
+```js
 //不同实例上的同名函数是不相等的（都是另外新建的）
 alert(person1.sayName == person2.sayName);  //false
 ```
@@ -1287,7 +1287,7 @@ alert(person1.sayName == person2.sayName);  //false
 问题1：创建两个完成同样任务的 Function 实例没有必要。
 
 使用如下方式解决：把 sayName() 函数的定义转移到构造函数外部。这样一来，由于 sayName 包含的是一个指向函数的指针，因此 对象共享了全局作用域中顶底的同一个 sayName() 函数。
-```
+```js
 function Person(name, age, job) {
     this.name = name;
     this.age = age;
@@ -1312,7 +1312,7 @@ prototype 就是通过*调用构造函数而创建的那个对象实例*的原�
 
 使用原型对象的好处是可以让所有对象实例共享它所包含的属性和方法。
 
-```
+```js
 function Person() {
 }
 
@@ -1349,7 +1349,7 @@ alert(person1.sayName == person2.sayName);  //true
 - Person.prototype.constructor 指回 Person
 
 虽然所有实现无法访问到 [[Prototype]] ，但可以通过 isPrototypeOf() 和 Object.getPrototypeOf() （新增）方法来确定对象之间是否存在这种关系。
-```
+```js
 alert(Person.prototype.isPrototypeOf(person1));     //true ，因为内部都有一个指向 Person.prototype 的指针
 
 alert(Object.getPrototypeOf(person1) == Person.prototype);     //true
@@ -1360,7 +1360,7 @@ alert(Object.getPrototypeOf(person1) == Person.prototype);     //true
 如前例，我们调用 person1.sayName() 的时候，会先后执行两次搜索。（实例 person1 、 person1 的原型）
 
 可以通过对象实例访问原型中的值，但不能通过对象实例重写。添加一个与原型对象中重名的属性，则屏蔽原型中的属性（只会阻止我们访问原型中的那个属性，但不会修改）。可以使用 delete 操作符删除实例属性，从而重新访问原型中的属性。
-```
+```js
 var person1 = new Person();
 var person2 = new Person();
 
@@ -1373,7 +1373,7 @@ alert(person1.name);    //"Kiyonami" --- 来自原型
 ```
 
 hasOwnProperty() 方法（ Object 继承来的）可以检测一个属性是否存在于实例中，存在则返回true。
-```
+```js
 var person1 = new Person();
 
 alert(person1.hasOwnProperty("name"));      //false     实例没有，原型有
@@ -1390,13 +1390,13 @@ alert(person1.hasOwnProperty("name"));      //false
 两种方式使用 in 操作符：单独使用和在 for-in 循环中使用。
 
 in 操作符会在通过对象能够访问给定属性时返回 true （无论实例或原型）。
-```
+```js
 var person1 = new Person();
 alert("name" in person1);   //true
 ```
 
 所以可以定义一个函数确定属性是否存在于原型（之前一个函数时判断属性是否存在于实例）：
-```
+```js
 function hasPrototypeProperty(object, attribute) {
     return (attribute in object) && !object.hasOwnProperty(attribute);    //存在该属性，但不存在实例上 => 存在原型上
 }
@@ -1405,7 +1405,7 @@ function hasPrototypeProperty(object, attribute) {
 for-in 循环时，返回实例属性和原型属性。（能够通过对象访问的、可枚举的属性）
 
 要取得对象上所有可枚举的*实例*属性，可以使用 Object.keys() 方法。
-```
+```js
 var keys = Object.keys(Person.prototype);
 alert(keys);        //name, age, job, sayName
 
@@ -1417,14 +1417,14 @@ alert(p1keys);      //name, age
 ```
 
 要取得所有实例属性（无论是否可枚举），可以使用 Object.getOwnPropertyNames() 方法。
-```
+```js
 var keys = Object.getOwnPropertyName(Person.prototype);
 alert(keys);        //constructor, name, age, job, sayName
 ```
 
 3. 更简单的原型语法
 
-```
+```js
 //不需要每行敲一遍 Person.prototype
 function Person() {
 }
@@ -1455,7 +1455,7 @@ Object.defineProperty(Peson.prototype, "constructor", {
 4. 原型的动态性
 
 我们对原型对象所作的任何修改都能立即从实例上反映出来---即使先创建实例后修改原型。
-```
+```js
 var person4 = new Person();
 Person.prototype.sayHi = function() {
     alert("Hi");
@@ -1465,7 +1465,7 @@ person4.sayHi();    //"Hi"
 
 但是重写整个原型对象，那情况完全不一样了。我们知道，调用构造函数时会为实例添加一个指向最初原型的 [[Prototype]]指针，而把原型修改为另外一个对象就等于*切断*了构造函数和最初原型之间的联系。
 **请记住：实例中的指针仅指向原型，而不是构造函数。**
-```
+```js
 function Person() {
 }
 var person5 = new Person();
@@ -1498,7 +1498,7 @@ person5.sayName();      //error
 省略了为构造函数传递初始化参数这一环节，结果所有实例在默认情况下都取得相同的属性值。
 
 **最大问题**是由其共享的本性导致的（对于引用类型值的属性）。
-```
+```js
 function Person() {
 }
 Person.prototype = {
@@ -1518,4 +1518,65 @@ person1.friends.push("Van");
 alert(person1.friends);     //Count, Bob, Van
 alert(person2.friends);     //Count, Bob, Van   两个人的朋友应该是相互独立的！各管各
 alert(person1.friends == person2.friends);  //true
-``
+```
+
+#### 6.2.4 组合使用构造函数模式和原型模式
+
+创建自定义类型的**最常见**的方式。
+
+构造函数模式用于定义实例属性，而原型模式用于定义方法和共享的属性。
+
+优点：最大限度地节省内存；支持向构造函数传递参数。（每个实例都有一根实例属性地副本，同时又共享着对方法地引用）
+
+```js
+//（私有的）每个实例都有一份自己地副本（放这）
+function Person(name, age, job) {
+    this.name = name;
+    this.age = age;
+    this.job = job;
+    this.friends = ["Count", "Bob"];
+}
+
+//（共享的）所有方法和共享属性（放这）
+Person.prototype = {
+    constructor: Person,
+    sayName: function() {
+        alert(this.name);
+    }
+}
+
+var person1 = new Person("Kiyonami", 23, "Software Engineer");
+var person2 = new Person("Greg", 27, "Doctor");
+
+person1.friends.push("Van");
+alert(person1.friends);     //"Count", "Bob", "Van"
+alert(person2.friends);     //"Count", "Bob"
+alert(person1.friends == person2.friends);      //false
+alert(person1.sayName ==  person2.sayName);     //true
+```
+
+#### 6.2.5 动态原型模式
+
+解决一问题：其他 OO 语言经验的开发人员在看到*独立的构造函数和原型*时感到困惑。
+
+```js
+function Person(name, age, job) {
+    this.name = name;
+    this.age = age;
+    this.job = job;
+    //当第一次调用构造函时，this.sayName 未定义，typeof 为 undefined ，所以会执行 if 语句内的添加原型函数和属性的方法（只要 if 语句判断其中任意一个即可，不需要一大堆 if 语句，都会在一个 if 内添加完所有方法）
+    if(typeof this.sayName != "function") {
+        Person.prototype.sayName = function() {
+            alert(this.name);
+        };
+        Person.prototype.sayHi = function() {
+            alert("Hi");
+        }
+    }
+}
+```
+
+使用动态原型模式时，不能重写原型对象，就相当于断开了连接（前一小节解释）。
+
+#### 6.2.6 寄生构造函数模式
+
