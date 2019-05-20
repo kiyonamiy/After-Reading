@@ -1580,3 +1580,130 @@ function Person(name, age, job) {
 
 #### 6.2.6 寄生构造函数模式
 
+通常，前面五种模式不适用的情况下使用。
+
+```js
+function Person(name, age, job) {
+    var o = new Object();
+    o.name = name;
+    o.age = age;
+    o.job = job;
+    o.sayName = function() {
+        alert(this.name);
+    };
+    return o;
+}
+
+var person = new Person("Kiyonami", 23, "Software Engineer");
+person.sayName();
+```
+
+与工厂模式的差别只有：使用了 new 操作符，把函数称之为构造函数。（二者其实一模一样）
+
+（ new 操作符）构造函数在不返回值的情况下，*默认会返回新对象实例*。而通过在构造函数的末尾添加一个 return 语句，可以重写调用构造函数时返回的值。（返回的对象与构造函数或者构造函数的原型没有任何关系）
+
+这个模式只用在特殊情况，其他情况不推荐（理由和工厂模式一致）。
+```js
+//假设我们想创建一个具有额外方法的特殊数组。
+
+function SpecialArray() {
+    //创建数组
+    var values = new Array();
+
+    //数组内添加初始项（应该是 push() 不能直接添加一整个数组）
+    values.push.apply(values, arguments);
+
+    //添加方法
+    values.toPipedString = function() {
+        return values.join("|");
+    }
+
+    //返回数组
+    return values;
+}
+
+var colors = new SpecialArray("red", "blue", "green");
+alert(colors.toPipedString());      //red|blue|green
+```
+
+#### 6.2.7 稳妥构造函数模式
+
+所谓稳妥对象，值得是没有公共属性，而且其方法也不引用 this 的对象。
+
+（所以不常用）稳妥对象最适合在一些安全的环境中（这些环境会禁止使用 this 和 new ），或者在防止数据被其他应用程序改动时使用。
+
+与寄生构造函数类似，但有两点不同：不引用 this ；不使用 new 操作符。
+
+```js
+function Person(name, age, job) {
+    var o = new Object();
+
+    //可以在这里定义私有变量和函数
+
+    o.sayName = function() {
+        alert(name);        //与传入的参数完成绑定
+    };
+
+    return o;
+}
+
+var person = Person("Kiyonami", 23, "Software Engineer");
+person.sayName();
+//除了调用 sayName() ， 没有别的方式可以访问其数据成员（通过构造函数传入的参数）。
+//创建的对象与构造函数之间也没有什么关系，因此 instanceof 没意义。
+```
+
+### 6.3 继承
+
+OO语言都支持两种继承方式：接口继承（只继承方法签名）和实现继承（继承实际的方法）。
+
+ECMAScript 只支持实现继承，而且其实现继承主要是依靠*原型链*来实现的。
+
+#### 6.3.1 原型链
+
+```js
+function SuperType() {
+    this.property = true;
+}
+SuperType.prototype.getSuperValue = function() {
+    return this.property;
+}
+
+function SubType() {
+    this.subproperty = false;
+}
+SubType.prototype = new SuperType();        //相当于重写原型对象
+SubType.prototype.getSubValue = function() {    //在重写后的原型对象添加新方法
+    return this.subproperty;
+}
+var instance = new SubType();
+alert(instance.getSuperValue());    //true
+```
+
+![](https://raw.githubusercontent.com/514723273/.md-Pictures/master/%E5%8E%9F%E5%9E%8B%E9%93%BE.png)
+
+1. 别忘记默认的原型
+
+![](https://raw.githubusercontent.com/514723273/.md-Pictures/master/%E9%BB%98%E8%AE%A4%E7%9A%84%E5%8E%9F%E5%9E%8B%E9%93%BE.png)
+
+2. 确定原型和实例的关系
+
+```js
+alert(instance instanceof Object);      //true
+alert(instance instanceof SuperType);   //true
+alert(instance instanceof SubType);     //true
+
+alert(Object.prototype.isPrototypeOf(instance));
+alert(SuperType.prototype.isPrototypeOf(instance));
+alert(SubType.prototype.isPrototypeOf(instance));
+```
+
+3. 谨慎定义方法
+
+重写超类的某个方法或添加新方法，都一定要放在替换原型的语句之后。（重写原型对象之后）
+
+4. 原型链的问题
+
+最主要的问题来自*引用类型值*的原型。
+
+因为重写子类的原型对象，是通过`new SuperType()`，会把父类的构造函数中的属性（本来应该人手一份副本）放入子类原型中，放入原型是一定会被共享的！（就等于往原型里面放了一个前面说的 friends ，子类创建出来的一个实例添加朋友，所有的都会有影响）
