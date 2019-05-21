@@ -1803,7 +1803,7 @@ alert("prototype -> " + person.friends);
 
 在第二次调用 SuperType 构造函数时，这一次又在新对象上创建了**实例属性** name 和 colors 。这两个属性就屏蔽了原型中的两个同名属性。
 
-已经找到了解决这个问题的方法---寄生组合式继承。（ 6.3.6 ）
+已经找到了解决这个问题的方法---[寄生组合式继承](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#636-%E5%AF%84%E7%94%9F%E7%BB%84%E5%90%88%E5%BC%8F%E7%BB%A7%E6%89%BF)。 
 
 #### 6.3.4 原型式继承
 
@@ -1896,4 +1896,159 @@ SubType.prototype.sayAge = function() {
     alert(this.age);
 }
 
+```
+
+## 第七章 函数表达式
+
+定义函数的方式有两种：函数声明，函数表达式。
+
+1. 函数声明：
+```js
+
+functionName();     //函数声明提升，在执行代码之前会先读取函数声明
+
+function functionName(arg0, arg1, arg2) {
+    //函数体
+}
+
+alert(functionName.name);       //functionName 非标准属性
+```
+
+2. 函数表达式（有几种不同的语法形式）最常见：
+```js
+//匿名函数也叫 拉姆达函数（ Lambda ）
+var functionName = function(arg0, arg1, arg2) { //没有函数提升
+    //函数体
+};
+```
+
+### 7.1 递归
+
+与[5.5.4 函数内部属性](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#554-%E5%87%BD%E6%95%B0%E5%86%85%E9%83%A8%E5%B1%9E%E6%80%A7)内容类似
+
+```js
+function factorial(num) {
+    if(num <= 1) {
+        return 1;
+    } else {
+        return num * arguments.callee(num - 1);     //是一个指向正在执行的函数的指针
+    }
+}
+```
+
+但在严格模式下，不能通过脚本访问 arguments.callee ，访问这个属性会导致错误。有如下解决办法：
+```js
+var factorial = (function f(num) {
+    if(num <= 1) {
+        return 1;
+    } else {
+        return num * f(num - 1);        //即便把函数复制给了另一个变量，函数的名字 f 仍然有效。
+    }
+})
+```
+
+### 7.2 闭包
+
+过度使用闭包可能会导致内存占用过多，只有在绝对必要时再考虑使用闭包。
+
+分清匿名函数和闭包两个概念。
+
+闭包是指有权访问另一个函数作用域中的变量的*函数*。
+
+创建闭包的常见方式，就是在一个函数内部创建另一个函数。
+
+
+例如前面提过的 createComparisonFunction() 函数。再看下面的例子：
+
+```js
+function compare(value1, value2) {
+    return value1 - value2;
+}
+
+var result = compare(5, 10);        //在全局作用域中调用了它
+```
+
+![作用域链](https://raw.githubusercontent.com/514723273/.md-Pictures/master/%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE1.png)
+
+后台的每个执行环境都有一个表示变量的对象---变量对象。全局环境的变量对象始终存在，像 compare() 函数这样的局部环境变量对象，则*只在函数执行的过程中存在*。（执行完，立刻销毁）
+
+在创建 compare() 函数时，会创建一个预先包含全局变量对象的作用域链，这个作用域链被保存在内部的[[Scope]]属性中。（注意：创建函数时，预先，*只有*全局变量对象的作用域，函数内部的[[Scope]]）（只创建了作用域链）
+
+当调用 compare 函数时，会为函数创建一个执行环境，然后通过复制函数的 [[Scope]] 属性中的对象构建起执行环境的作用域链。（注意：调用时，）（创建了函数的执行环境）
+
+此后，又有一个活动对象被创建并推入执行环境作用域的前端。（创建了变量对象）
+
+无论什么时候再函数中访问一个变量时，就会从作用域中搜索具有相应名字的变量。
+
+#### 7.2.1 闭包与变量
+
+```js
+function createComparisonFunction(propertyName) {
+
+    return function(object1, object2) {
+        var value1 = object1[propertyName];
+        var value2 = object2[propertyName];
+
+        //return value1 - value2;       字符串比较，返回 NaN
+        if(value1 < value2) {
+            return -1;
+        } else if(value1 > value2) {
+            return 1;
+        } else {
+            return 0;
+        }
+    }
+}
+
+//创建函数
+var compareNames = createComparisonFunction("name");
+
+//调用函数
+var result = compareNames({name: "AA"}, {name: "BB"});      //-1
+
+//解除对匿名函数的引用（以便释放内存）
+compareNames = null;
+```
+
+![作用域链2](https://raw.githubusercontent.com/514723273/.md-Pictures/master/%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE2.png)
+
+createComparisonFunction() 函数在执行完毕后，其活动对象也不会销毁，因为匿名函数的作用域链仍然引用这个活动对象。（环境销毁，活动对象没有销毁）（作用域链链的依旧是对象）（所以才能访问到 name 这个变量）
+
+
+#### 7.2.1 闭包与变量
+
+副作用：即闭包只能取得包含函数中任何变量的最后一个值（执行到尾，不会再变化了）。
+
+```js
+function createFunctions() {
+    var result = new Array();
+
+    for(var i = 0; i < 10; i ++) {
+        result[i] = function(i) {
+            return i;
+        };
+    }
+
+    return result;
+}
+```
+
+这个函数会返回一个函数数组，结果是每个函数都返回 10 。因为作用域链上保存的是活动对象，引用的都是同一个 i ，当 createFunctions() 返回后，变量 i 的值是 10 。（创建了 10 个作用域链，但是链接的对象依旧只有三个， 全局， createFunction() ， 本身匿名（ 10 个））
+
+```js
+//创建另一个匿名函数强制让闭包的行为符合预期
+//可以思考下此时的作用域链
+function createFunctions() {
+    var result = new Array();
+
+    for(var i = 0; i < 10; i ++) {
+        result[i] = function(num) {
+            return function() {
+                return num;
+            };
+        } (i);
+    }
+
+    return result;
+}
 ```
