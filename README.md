@@ -65,3 +65,23 @@
     - [5.7 单体内置对象](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#57-%E5%8D%95%E4%BD%93%E5%86%85%E7%BD%AE%E5%AF%B9%E8%B1%A1)
         - 5.7.1 Global 对象
         - 5.7.2 Math 对象
+- 第六章 面向对象的程序设计
+    - [6.1 理解对象](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#61-%E7%90%86%E8%A7%A3%E5%AF%B9%E8%B1%A1)
+        - 6.1.1 属性类型
+        - 6.1.2 定义多个属性
+        - 6.1.3 读取属性的特性
+    - [6.2 创建对象](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#62-%E5%88%9B%E5%BB%BA%E5%AF%B9%E8%B1%A1)
+        - 6.2.1 工厂模式
+        - 6.2.2 构造函数模式
+        - 6.2.3 原型模式
+        - 6.2.4 组合使用构造函数模式和原型模式
+        - 6.2.5 动态原型模式
+        - 6.2.6 寄生构造函数模式
+        - 6.2.7 稳妥构造函数模式
+    - [6.3 继承](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#63-%E7%BB%A7%E6%89%BF)
+        - 6.3.1 原型链
+        - 6.3.2 借用构造函数
+        - 6.3.3 组合继承
+        - 6.3.4 原型式继承
+        - 6.3.5 寄生式继承
+        - 6.3.6 寄生组合式继承
