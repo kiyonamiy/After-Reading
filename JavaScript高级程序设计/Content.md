@@ -1706,7 +1706,7 @@ alert(SubType.prototype.isPrototypeOf(instance));
 
 最主要的问题来自*引用类型值*的原型。
 
-因为重写子类的原型对象，是通过`new SuperType()`，会把父类的构造函数中的属性（本来应该人手一份副本）放入子类原型中，放入原型是一定会被共享的！（就等于往原型里面放了一个前面说的 friends ，子类创建出来的一个实例添加朋友，所有的都会有影响）
+因为重写子类的原型对象，是通过`new SuperType()`，会把父类的构造函数中的*属性*（本来应该人手一份副本）放入子类原型中，放入原型是一定会被共享的！（就等于往原型里面放了一个前面说的 friends ，子类创建出来的一个实例添加朋友，所有的都会有影响）
 
 #### 6.3.2 借用构造函数
 
@@ -1776,10 +1776,11 @@ SuperType.prototype.sayName = function() {
 }
 
 function SubType(name, age) {
-    SuperType.call(this, name);             //继承所有的属性，这里屏蔽了 new SuperType() 所带来的负影响！（因为创建了同名的属性）
+    SuperType.call(this, name);             //第二次调用 SuperType() 继承所有的属性，这里屏蔽了 new SuperType() 所带来的负影响！（因为创建了同名的属性）
     this.age = age;
 }
-SubType.prototype = new SuperType();      //继承所有的方法，该子类的原型依旧存在着 name, friends ，只不过是被屏蔽了！
+SubType.prototype = new SuperType();      //第一次调用 SuperType() 继承所有的方法，该子类的原型依旧存在着 name, friends 属性，只不过是被屏蔽了！
+//SubType.prototype = new SuperType("YY");      //上一行代码本身也没有传递参数，所以原型对象的 name = undefined 。
 SubType.prototype.sayAge = function() {
     alert(this.age);
 }
@@ -1790,5 +1791,109 @@ person.friends.push("DD");
 alert(person.friends);  //AA,BB,CC,DD 每人一份副本，互不干扰
 person.sayAge();        //23
 person.sayName();       //Kiyonami
+
+//这两行测试出，原型依旧存在属性。（原型中存在方法（共享）是应该的，但是存在本应该私有的（会被共享）不好）
+delete person.friends;
+alert("prototype -> " + person.friends);
 ```
 
+**不足**：两次调用超类构造函数。
+
+在第一次调用 SuperType 构造函数时， SubType.prototype 会得到两个属性： name 和 colors ；它们都是 SuperType 的实例属性，只不是现在位于 SubType 的**原型**中（原型属性）。
+
+在第二次调用 SuperType 构造函数时，这一次又在新对象上创建了**实例属性** name 和 colors 。这两个属性就屏蔽了原型中的两个同名属性。
+
+已经找到了解决这个问题的方法---寄生组合式继承。（ 6.3.6 ）
+
+#### 6.3.4 原型式继承
+
+借助原型，可以基于已有的对象，创建新对象，同时还不必因此创建自定义类型。
+
+```js
+function object(o) {
+    function F() {
+    }
+    F.prototype = o;
+    return new F();
+}
+```
+
+```js
+var person = {
+    name: "Kiyonami",
+    friends: ["AA", "BB", "CC"]
+}
+
+var person1 = object(person);
+person1.name = "Greg";
+person1.friends.push("DD");
+
+var person2 = object(person);
+person2.friends.push("EE");
+
+var person3 = Object.create(person, {
+    name: {
+        value: "Greg"
+    }
+});
+
+alert(person.friends);      //AA,BB,CC,DD,EE
+alert(person1.friends);     //AA,BB,CC,DD,EE ，这样 person.friends 不仅属于 person 所有，而且也会被 person1 和 person2 共享（同时这又是原型链方式的缺点）
+```
+
+ECMAScript 新增 Object.create() 方法，规范原型式继承。接收两个参数：对象，额外属性对象（可选）。传入一个参数时，与 object() 方法的行为相同。
+
+在没有必要创建构造函数，只是想让一个对象与另一个对象保持类似的情况下，原型式继承式完全可以胜任的。（但始终会共享）
+
+#### 6.3.5 寄生式继承
+
+寄生式继承与原型式继承紧密相关，思路与寄生构造函数和工厂模式类似。
+
+在主要考虑对象而不是自定义类型和构造函数的情况下，寄生式继承也是一种有用的模式。
+```js
+function createAnother(original) {
+    var clone = object(original);   //不是必须，任何能够返回新对象的函数
+    clone.sayHi = function() {      //以某种方式来增强这个对象
+        alert("hi");
+    }
+    return clone;
+}
+```
+
+#### 6.3.6 寄生组合式继承
+
+普遍认为是最理想的继承范式。
+
+通过借用构造函数来继承属性，通过原型链的混成形式来继承方法。
+
+其背后的基本思路是：不必为了指定子类型的原型而调用超类型的构造函数（第一次调用超类构造函数），我们所需要的只是超类型原型的一个副本。
+
+```js
+function inheritPrototype(subType, superType) {
+    var prototype = object(superType.prototype);        //创建对象
+    prototype.constructor = subType;                    //增强对象
+    
+    subType.prototype = prototype;                       //指定对象
+}
+```
+
+```js
+function SuperType(name) {
+    this.name = name;
+    this.friends = ["AA", "BB", "CC"];
+}
+SuperType.prototype.sayName = function() {
+    alert(this.name);
+}
+
+function SubType(name, age) {
+    Super.call(this, name);                 //这里拿到父类属性
+    this.age = age;
+}
+inheritPrototype(SubType, SuperType);       //这里拿到父类方法，原型里面只存在方法（通常）
+
+SubType.prototype.sayAge = function() {
+    alert(this.age);
+}
+
+```
