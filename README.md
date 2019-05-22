@@ -85,3 +85,14 @@
         - 6.3.4 原型式继承
         - 6.3.5 寄生式继承
         - 6.3.6 寄生组合式继承
+- 第七章 函数表达式
+    - [7.1 递归](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#71-%E9%80%92%E5%BD%92)
+    - [7.2 闭包](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#72-%E9%97%AD%E5%8C%85)
+         - 7.2.1 闭包与变量
+         - 7.2.2 关于 this 对象
+         - 7.2.3 内存泄漏
+    - [7.3 模仿块级作用域](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#73-%E6%A8%A1%E4%BB%BF%E5%9D%97%E7%BA%A7%E4%BD%9C%E7%94%A8%E5%9F%9F)
+    - [7.4 私有变量](https://github.com/514723273/After-Reading/blob/master/JavaScript%E9%AB%98%E7%BA%A7%E7%A8%8B%E5%BA%8F%E8%AE%BE%E8%AE%A1/Content.md#74-%E7%A7%81%E6%9C%89%E5%8F%98%E9%87%8F)
+        - 7.4.1 静态私有变量
+        - 7.4.2 模块模式
+        - 7.4.3 增强的模块模式
