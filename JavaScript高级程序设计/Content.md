@@ -2052,3 +2052,176 @@ function createFunctions() {
     return result;
 }
 ```
+
+#### 7.2.2 关于 this 对象
+
+匿名函数的执行环境具有全局性，因此其 this 对象通常指向 window 。
+
+一些关于 this 的细节。
+
+```js
+var name = "The Window";
+
+var object = {
+    name: "My Object",
+    getNameFunc: function() {
+        //var that = this;              //可以把外部作用域中的 this 对象保存在一个闭包能够访问到的变量里，就可以让闭包访问该对象了。
+        return function() {
+            return this.name;
+            //return that.name;         //My Object 修改后的输出
+        };
+    }
+}
+
+//返回出来的就是一个普通匿名函数，当前的执行环境为 Window
+alert(object.getNameFunc()());      //The Window （在非严格模式下）
+```
+
+#### 7.2.3 内存泄漏
+
+如果闭包的作用域中保存着一个 HTML 元素，那么就意味着该元素将无法被销毁。
+
+```js
+function assignHandler() {
+    var element = document.getElementById("someElement");
+
+    //var id = element.id;  //消除循环引用
+    element.onclick = function() {  //闭包创建了一个循环引用，导致无法减少 element 的引用数。
+        alert(element.id);
+        //alert(id);
+    };
+    //element = null;   手动释放
+}
+```
+
+### 7.3 模仿块级作用域
+
+```js
+function outputNumbers(count) {
+    for(var i = 0; i < count; i ++) {
+        alert(i);
+    }
+    //var i;    //即使这样错误地重新声明同一个变量，也不会改变它地值（对后续地声明视而不见，但若有初始化则执行）
+    alert(i);   //是定义在函数的活动对象中，可以在函数内部随处访问它
+
+    // (function() {
+    //     for(var i = 0; i < count; i ++) {
+    //         alert(i);
+    //     }
+    // })();
+}
+```
+
+匿名函数可以模仿块级作用域避免这个问题。
+```js
+(function() {
+    //这里是块级作用域
+})();
+
+// function() {
+//     //这里是块级作用域
+// }();     //出错
+//因为 JavaScript 将 function 关键字当作一个函数声明地开始，而函数声明不能跟括号。
+//要将函数声明转换成函数表达式（加对括号即可）
+```
+
+这种技术经常在全局作用域中被用在函数外部，从而限制向全局作用域中添加过多的变量和函数。
+
+### 7.4 私有变量
+
+```js
+function Person(name) {
+    //特权方法，有权访问私有变量 name
+    this.getName = function() {
+        return name;
+    };
+    //特权方法，有权访问私有变量 name
+    this.setName = function(value) {
+        name = value;
+    };
+}
+
+var person = new Person("AA");
+alert(person.getName());    //AA    感觉是闭包方面，作用域
+person.setName("BB");
+alert(person.getName());    //BB
+
+//缺点和构造函数模式一样，每个实例创建同样一组新方法
+```
+
+#### 7.4.1 静态私有变量
+
+通过在私有作用域中定义私有变量或函数，同样也可以创建特权方法。
+
+```js
+(function() {
+    //私有变量和函数由实例共享
+    var name = "";      //外面访问不到块级作用域中的内容
+
+    Person = function(value) {  //创建全局变量，没有使用 var 关键字（严格模式报错）
+        name = value;
+    }
+
+    Person.prototype.getName() {
+        return name;
+    }
+    Person.prototype.setName(value) {
+        name = value;
+    }
+})();
+
+var person1 = new Person("AA");
+alert(person1.getName());   //AA
+var person2 = new Person("BB");
+person2.setName("DD");
+alert(person2.getName());   //DD
+alert(person1.getName());   //DD
+```
+
+#### 7.4.2 模块模式
+
+前面的模式是用于自定义类型创建私有变量和特权方法的。而模块模式则是为**单例**创建私有变量和特权方法。
+
+```js
+var application = function() {
+    //私有变量和函数
+    var components = new Array();
+
+    //初始化
+    components.push(new BaseComponent());
+
+    return {
+        getComponentCount: function() {
+            return components.length;
+        },
+        registerComponent: function(component) {
+            if(typeof component == "object") {
+                components.push(component);
+            }
+        }
+    };
+} ();
+```
+
+#### 7.4.3 增强的模块模式
+
+在返回对象之前加入对其增强的代码。
+
+```js
+var application = function() {
+    var components = new Array();
+
+    components.push(new BaseComponent());
+
+    var app = new BaseComponent();      //不同之处，app 是 BaseComponent 实例（增强）
+    app.getComponentCount = function() {
+        return components.length;
+    }
+    app.registerComponent = function(component) {
+        if(typeof component == "object") {
+            components.push(component);
+        }
+    }
+    return app;
+}();
+```
