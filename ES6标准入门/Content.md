@@ -571,3 +571,180 @@ for(let [key, value] of map) {
 const {SourceMapConsumer, SourceNode} = require("source-map");
 ```
 
+## 第四章 字符串的扩展
+
+### 4.1 字符的 Unicode 表示法
+
+JavaScript 共有6 种方法可以表示一个字符。
+```js
+
+/**
+* JavaScript 允许采用 \uxxxx 形式表示一个字符，其中 xxxx 表示字符的 Unicode 码点。但是，这种表示法只限于码点在\u0000~\uFFFF之间的字符
+**/
+// 1字节(Byte） = 8位(bit) 
+"\u0061"    //"a"
+/**
+* 超出这个范围的字符，必须用 2 个双字节的形式表达。
+**/
+"\uD842\uDFB7"
+// "𠮷"
+
+/**
+* 只要将码点放入大括号，就能正确解读该字符。
+**/
+"\u{20BB7}"
+```
+
+JavaScript 共有6 种方法可以表示一个字符。
+```js
+'\z' === 'z'  // true
+'\172' === 'z' // true
+'\x7A' === 'z' // true
+'\u007A' === 'z' // true
+'\u{7A}' === 'z' // true
+```
+
+### 4.2 codePointAt()
+
+ES6 提供了 codePointAt 方法，能够正确处理4 个字节储存的字符，返回一个字符的码点。
+
+### 4.3 String.fromCodePoint()
+
+ES6 提供了String .fromCodePoint 方法，可以识别大于OxFFFF 的字符，弥补了String . fromCharCode 方法的不足。在作用上，正好与codePointAt 方法相反。
+
+### 4.4 字符串的遍历器接口
+
+ES6 为字符串添加了遍历器接口（详见第 15 章） ，使得字符串可以由 for ... of 循环遍历。
+
+这个遍历器最大的优点是可以识别大于 0xFFFF 的码点，传统的 for 循环无法识别这样的码点（for(let i = 0; i < text.length; i ++) 无法做到）。
+
+```js
+for(let codePoint of 'foo') {
+    console.log(codePoint);
+}
+// f
+// o
+// o
+```
+
+### 4.5 at()
+
+可以识别 Unicode 编号大于 0xFFFF 的字符，返回正确的字符。
+```js
+'𠮷'.at(0);     //𠮷 
+//'𠮷'.charAt(0);   //\uD842 无法显示 该方法不能识别码点大于 0xFFFF 的字符。
+```
+
+### 4.6 normalize()
+
+许多欧洲语言有语调符号和重音符号。ES6 为字符串实例提供了 normalize 方法， 用来将字符的不同表示方法统一为同样的形式，这称为 Unicode 正规化。
+
+### 4.7 includes() 、 startsWith() 、 endsWith()
+
+- includes() 返回布尔值，表示是否找到了参数字符串。
+- startsWith() 返回布尔值， 表示参数字符串是否在源字符串的头部。
+- endsWith() 返回布尔值， 表示参数字符串是否在源字符串的尾部。
+
+```js
+var s = 'Hello world!';
+
+s.startsWith('world', 6);   //true      从第 6 个字符开始
+s.endsWith('Hello', 5);     //true      针对前 5 个字符
+s.includes('Hello', 6);     //false     从第 6 个字符开始
+```
+
+### 4.8 repeat()
+
+repeat 方法返回一个新字符串，表示将原字符串重复 n 次。
+```js
+'Hello'.repeat(2)   //'HelloHello'
+'na'.repeat(1.9)    //'nana'    取整
+```
+
+### 4.9 padStart() 、 padEnd()
+
+如果某个字符串不够指定长度，会在头部或尾部补全。 padStart() 用于头部补全， padEnd() 用于尾部补全。
+```js
+'x'.padStart(4, 'ab');  //'abax'
+
+'xxx'.padStart(2, 'ab');    //'xxx' 如果原字符串的长度等于或大于指定的最小长度，则返回原字符串
+
+'x'.padStart(4)     // '   x' 如果省略第二个参数， 则会用空格来补全。
+
+'09-12'.padStart(10, 'YYYY-MM-DD')  // "YYYY-09-12"
+```
+
+### 4.10 模板字符串
+
+传统的 JavaScript 输出模板通常是这样写的。
+```js
+$('#result').append(
+    'There are <b>' + basket.count + '</b> ' +
+    'items in your basket, ' +
+    '<em>' + basket.onSale +
+    '</em> are on sale!'
+);
+```
+
+上面这种写法相当烦琐且不方便， ES6 引入了模板字符串来解决这个问题。
+```js
+$('#result').append(`
+    There are <b>${basket.count}</b> items
+     in your basket, <em>${basket.onSale}</em>
+    are on sale!
+`)
+```
+
+模板字符串（ template string ）是增强版的字符串，用反引号（ ` ）标识。它可以当作普通字符串使用，也可以用来定义多行字符串，或者在字符串中嵌入变量。
+
+在模板字符串中嵌入变量，需要将变量名写在 $() 中。模板字符串中还能调用函数。
+
+### 4.12 标签模板
+
+模板字符可以紧跟在一个函数名后面， 该函数将被调用来处理这个模板字符串。这被称为“ 标签模板”功能（ tagged template ）。
+
+标签模板其实不是模板，而是函数调用的一种特殊形式。“标签”指的就是函数，紧跟在后面的模板字符串就是它的参数。
+```js
+alert`123`;
+//等同于
+alert(123);
+```
+
+但是，如果模板字符中*有变量*，就不再是简单的调用了，而是要将模板字符串*先处理成多个参数*，再调用函数。
+```js
+//tag 函数的第一个参数是一个数组，该数组的成员是模板字符串中那些没有变量替换的部分
+//tag 函数的其他参数都是模板字符串各个变量被替换后的值。（本里中包含两个变量）
+function tag(stringArr, value1, value2) {
+    alert(stringArr[0]);
+    alert(stringArr[1]);
+    alert(stringArr[2]);
+    alert(value1);
+    alert(value2);
+}
+var a = 5;
+var b = 10;
+
+tag`Hello ${a + b} world ${a * b}`;
+//"Hello "
+//" world "
+//""
+//15
+//50
+
+//等同于
+tag(['Hello ', ' world', ''], 15, 50);
+```
+
+“标签模板”的一个重要应用就是过滤HTML 字符串，防止用户输入恶意内容。
+
+#### 4.13 String.raw()
+
+往往用来充当模板字符串的处理函数， 返回一个反斜线都被转义（即反斜线前面再加一个反斜线）的字符串，对应于替换变量后的模板字符串。
+```js
+String.raw`Hi\n${2+3}!`;
+//"Hi\\n5!"     // \\表示\
+```
+
+#### 4.14 模板字符串的限制
+
+前面提到，标签模板中可以内嵌其他语言。但是，模板字符串默认会将字符串转义，导致无法嵌入其他语言。
