@@ -101,43 +101,44 @@
 
 - 第一章 ECMAScript 6 简介
 - 第二章 let 和 const 命令
-    - 2.1 let 命令
+    - [2.1 let 命令](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#21-let-%E5%91%BD%E4%BB%A4)
         - 2.1.1 基本用法
         - 2.1.2 不存在变量提升
         - 2.1.3 暂时性死区
         - 2.1.4 不允许重复声明
-    - 2.2 块级作用域
+    - [2.2 块级作用域](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#22-%E5%9D%97%E7%BA%A7%E4%BD%9C%E7%94%A8%E5%9F%9F)
         - 2.2.1 为什么需要块级作用域
         - 2.2.2 ES6 的块级作用域
         - 2.2.3 块级作用域与函数声明
-    - 2.3 const 命令
+    - [2.3 const 命令](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#23-const-%E5%91%BD%E4%BB%A4)
         - 2.3.1 基本用法
         - 2.3.2 本质
         - 2.3.3 ES6 声明变量的 6 种方法
-    - 2.4 顶层对象的属性
-    - 2.5 global 对象
+    - [2.4 顶层对象的属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#24-%E9%A1%B6%E5%B1%82%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7)
+    - [2.5 global 对象](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#25-global-%E5%AF%B9%E8%B1%A1)
 - 第三章 变量的解构赋值
-    - 3.1 数组的解构赋值
+    - [3.1 数组的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#31-%E6%95%B0%E7%BB%84%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
         - 3.1.1 基本用法
         - 3.1.2 默认值
-    - 3.2 对象的解构赋值
-    - 3.3 字符串的解构赋值
-    - 3.4 数值和布尔值的解构赋值
-    - 3.5 函数参数的解构赋值
-    - 3.6 圆括号问题
+    - [3.2 对象的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#32-%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
+    - [3.3 字符串的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#33-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
+    - [3.4 数值和布尔值的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#34-%E6%95%B0%E5%80%BC%E5%92%8C%E5%B8%83%E5%B0%94%E5%80%BC%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
+    - [3.5 函数参数的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#35-%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
+    - [3.6 圆括号问题](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#36-%E5%9C%86%E6%8B%AC%E5%8F%B7%E9%97%AE%E9%A2%98)
         - 3.6.1 不能使用圆括号的情况
         - 3.6.2 可以使用圆括号的情况
+    - [3.7 用途](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#37-%E7%94%A8%E9%80%94)
 - 第四章 字符串的扩展
-    - 4.1 字符的 Unicode 表示法
-    - 4.2 codePointAt()
-    - 4.3 String.fromCodePoint()
-    - 4.4 字符串的遍历器接口
-    - 4.5 at()
-    - 4.6 normalize()
-    - 4.7 includes() 、 startsWith() 、 endsWith()
-    - 4.8 repeat()
-    - 4.9 padStart() 、 padEnd()
-    - 4.10 模板字符串
-    - 4.12 标签模板
-    - 4.13 String.raw()
-    - 4.14 模板字符串的限制
+    - [4.1 字符的 Unicode 表示法](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#41-%E5%AD%97%E7%AC%A6%E7%9A%84-unicode-%E8%A1%A8%E7%A4%BA%E6%B3%95)
+    - [4.2 codePointAt()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#42-codepointat)
+    - [4.3 String.fromCodePoint()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#43-stringfromcodepoint)
+    - [4.4 字符串的遍历器接口](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#44-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%81%8D%E5%8E%86%E5%99%A8%E6%8E%A5%E5%8F%A3)
+    - [4.5 at()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#45-at)
+    - [4.6 normalize()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#46-normalize)
+    - [4.7 includes() 、 startsWith() 、 endsWith()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#47-includes--startswith--endswith)
+    - [4.8 repeat()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#48-repeat)
+    - [4.9 padStart() 、 padEnd()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#49-padstart--padend)
+    - [4.10 模板字符串](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#410-%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2)
+    - [4.12 标签模板](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#412-%E6%A0%87%E7%AD%BE%E6%A8%A1%E6%9D%BF)
+    - [4.13 String.raw()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#413-stringraw)
+    - [4.14 模板字符串的限制](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#414-%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%99%90%E5%88%B6)
