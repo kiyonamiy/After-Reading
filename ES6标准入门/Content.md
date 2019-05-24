@@ -57,7 +57,7 @@ let bar = 2;
 在代码块内，使用let命令声明变量之前，该变量都是不可用的。这在语法上，称为“暂时性死区”（temporal dead zone，简称 TDZ）
 ```js
 if (true) {
-  // TDZ开始
+  // TDZ 开始
   tmp = 'abc'; // ReferenceError
   console.log(tmp); // ReferenceError
 

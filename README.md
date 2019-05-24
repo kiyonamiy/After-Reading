@@ -142,3 +142,26 @@
     - [4.12 标签模板](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#412-%E6%A0%87%E7%AD%BE%E6%A8%A1%E6%9D%BF)
     - [4.13 String.raw()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#413-stringraw)
     - [4.14 模板字符串的限制](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#414-%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%99%90%E5%88%B6)
+- 第五章 正则的扩展
+- 第六章 数值的扩展
+    - [6.1 二进制和八进制表示法](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#61-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%92%8C%E5%85%AB%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E6%B3%95)
+    - [6.2 Number.isFinite(), Number.isNaN()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#62-numberisfinite-numberisnan)
+    - [6.3 Number.parseInt() 、 Number.parseFloat()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#63-numberparseint--numberparsefloat)
+    - [6.4 Number.isInteger()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#64-numberisinteger)
+    - [6.5 Number.EPSILON](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#65-numberepsilon)
+    - [6.6 安全整数和 Number.isSafeInteger()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#66-%E5%AE%89%E5%85%A8%E6%95%B4%E6%95%B0%E5%92%8C-numberissafeinteger)
+    - [6.7 Math 对象的扩展](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#67-math-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%89%A9%E5%B1%95)
+        - 6.7.1 Math.trunc()
+        - 6.7.2 Math.sign()
+        - 6.7.3 Math.cbrt()
+        - 6.7.4 Math.clz32()
+        - 6.7.5 Math.imul()
+        - 6.7.6 Math.fround()
+        - 6.7.7 Math.hypot()
+        - 6.7.8 对数方法
+        - 6.7.9 双曲函数方法
+    - [6.8 Math.signbit()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#68-mathsignbit)
+    - [6.9 指数运算符](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#69-%E6%8C%87%E6%95%B0%E8%BF%90%E7%AE%97%E7%AC%A6)
+    - [6.10 Integer 数据类型](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#610-integer-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B)
+        - 6.10.1 简介
+        - 6.10.2 运算
