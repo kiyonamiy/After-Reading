@@ -1014,3 +1014,141 @@ new Integer()   //error
 //精确相等运算符（ === ）不会改变数据类型，因此可以混合使用。
 0n === 0    //false
 ```
+
+## 第七章 函数的扩展
+
+### 7.1 函数参数的默认值
+
+#### 7.1.1 基本用法
+
+ES6 允许为函数的参数设置默认值，即直接写在参数定义的后面。
+
+好处：
+- 阅读代码的人可以立刻意识到哪些参数是可以省略的，不用查看函数体或文档
+- 有利于将来的代码优化，即使未来的版本彻底拿掉这个参数，也不会导致以前的代码无法运行。
+
+```js
+function foo(x = 0, y = 0) {
+    this.x = x;
+    this.y = y;
+}
+var p = new Point();
+p   // {x: 0, y: 0}
+
+//参数默认值不是传值的，而是每次都重新计算默认值表达式的值。也就是说，参数默认值是惰性求值的。
+let x = 99;
+function foo(p = x + 1) {
+    alert(p);
+}
+foo();  //100
+
+x = 200;
+foo();  //201   //重新计算 x + 1
+```
+
+#### 7.1.2 与解构赋值默认值结合使用
+
+```js
+function foo({x, y = 5}) {
+    alert(x, y);
+}
+foo({});    //undefined, 5
+foo({x: 1}); //1, 5
+foo({x:1, y: 2});    //1, 2
+
+foo();   //error 只使用了对象的解构赋值默认值，而没有使用函数参数的默认值。只有当 foo 的参数是一个对象时，才解构。
+```
+
+对比下面两种写法的差别：
+```js
+//1
+function m1({x: 0, y: 0} = {}) {
+    return [x, y];
+}
+//2
+function m2({x, y} = {x: 0, y: 0})  {
+    return [x, y];
+}
+```
+区别：
+- 写法一中函数参数的默认值是*空对象*，但是设置了对象解构赋值的默认值
+- 写法二中函数参数的默认值是*一个有具体属性的对象*，但是没有设置对象解构赋值的默认值
+```js
+//都有值正常
+
+//函数没有参数的情况
+m1()    //[0, 0]
+m2()    //[0, 0]
+//x 有值， y 无值的情况
+m1({x:1})   //[1, 0]
+m2({x:1})   //[1, undefined]    //因为传入了对象，不需要默认值，没有解构导致 y undefined
+
+//x 和 y 都无值的情况
+m1({})  //[0, 0]
+m2({})  //[undefined, undefined]
+m1({z: 1})  //[0, 0]
+m1({z: 1})  //[undefined, undefined]
+```
+
+#### 7.1.3 参数默认值的位置
+
+通常情况下，定义了默认值的参数应该是函数的尾参数。因为这样比较容易看出到底省略了哪些参数。如果非尾部的参数设置默认值，实际上这个参数是无法省略的。（设置默认值只能设置在尾部的，不能尾部不设置，设置头部的，调用时报错）
+
+```js
+function f(x = 1, y) {
+    return [x, y];
+}
+f();        //[1, undefined]
+f(2)        //[2, undefined]
+f(, 2);     //error!
+f(undefined, 2);    //[1, 2]
+f(null, 2);         //[null, 2] //如果传入 undefined ，将触发该参数等于默认值， null 则没有这个效果。
+```
+
+#### 7.1.4 函数的 length 属性
+
+指定了默认值以后，函数的 length 属性将返回没有指定默认值的参数个数。（失真）
+```js
+(function (a) {}).length // 1
+(function (a = 5) {}).length // 0
+(function (a, b, c = 5) {}).length // 2
+(function (a, b = 1, c) {}).length // 1     //如果设置了默认值的参数不是尾参数，那么length属性也不再计入后面的参数了。
+```
+
+#### 7.1.5 作用域
+
+```js
+var x = 1;
+function f(x, y = x) {
+    alert(y);
+}
+//调用函数 f 时，参数形成一个单独的作用域。
+f(2)    //2     在这个作用域里面，默认值变量 x 指向第一个参数 x ，而不是全局变量 x
+```
+
+```js
+var x = 1;
+function foo(x, y = function() {x = 2;}) {      //y 函数内部的 x 是指 第一个参数 x （参数形成单独作用域）
+    var x = 3;
+    y();
+    console.log(x);
+}
+foo()   //3 foo内部的 var x = 3;
+x       //1 全局的 var x = 1;
+```
+
+#### 7.1.6 应用
+
+利用参数默认值可以指定某一个参数不得省略，如果省略就抛出一个错误。
+```js
+function throwIfMissing() {
+  throw new Error('Missing parameter');
+}
+
+function foo(mustBeProvided = throwIfMissing()) {       //如果参数省略，默认值等于等于一个函数调用，抛出错误
+  return mustBeProvided;
+}
+
+foo()
+// Error: Missing parameter
+```
