@@ -1,6 +1,6 @@
 # ECMAScript 6入门
 
-## 第一章 ECMAScript 6 简介
+## 第一章 ECMAScript 6 简介（跳）
 
 ## 第二章 let 和 const 命令
 
@@ -571,7 +571,7 @@ for(let [key, value] of map) {
 const {SourceMapConsumer, SourceNode} = require("source-map");
 ```
 
-## 第四章 字符串的扩展
+## 第四章 字符串的扩展（略）
 
 ### 4.1 字符的 Unicode 表示法
 
@@ -735,7 +735,7 @@ tag`Hello ${a + b} world ${a * b}`;
 tag(['Hello ', ' world', ''], 15, 50);
 ```
 
-“标签模板”的一个重要应用就是过滤HTML 字符串，防止用户输入恶意内容。
+“标签模板”的一个重要应用就是过滤 HTML 字符串，防止用户输入恶意内容。
 
 ### 4.13 String.raw()
 
@@ -750,3 +750,267 @@ String.raw`Hi\n${2+3}!`;
 前面提到，标签模板中可以内嵌其他语言。但是，模板字符串默认会将字符串转义，导致无法嵌入其他语言。
 
 ## 第五章 正则的扩展
+
+## 第六章 数值的扩展
+
+### 6.1 二进制和八进制表示法
+
+ES6 提供了二进制和八进制数值的新写法，分别用前缀 0b （ 或 0B ）和 0o （或 0O ）表示。（ binary octal ）
+```js
+0b111110111 === 503 // true
+0o767 === 503       // true
+```
+
+如果要将 0b 和 0o 前缀的字符串数值转为十进制，要使用 Number 方法。
+```js
+Number('0b111')  // 7
+Number('0o10')  // 8
+```
+
+### 6.2 Number.isFinite(), Number.isNaN() 
+
+Number.isFinite() 用来检查一个数值是否为有限的（ finite ），即不是 Infinity 。
+
+Number.isNaN() 用来检查一个值是否为 NaN 。
+
+这两个新方法与传统的全局方法 isFinite() 和 isNaN() 的区别在于：
+- 传统方法先调用 Number() 将非数值转为数值，再进行判断，
+- 而新方法只对数值有效，对于非数值一律返回 false 。
+```js
+isFinite(25)            //true
+isFinite("25")          //true
+Number.isFinite(25)     //true
+Number.isFinite("25")   //false
+
+//Number.isNaN() 只有对于 NaN 才返回 true ，非 NaN 一律返回 false 。
+isNaN(NaN)              //true
+isNaN("NaN")            //true
+Number.isNaN(NaN)       //true
+Number.isNaN("NaN")     //false
+Number.isNaN(1)         //false
+```
+
+### 6.3 Number.parseInt() 、 Number.parseFloat()
+
+ES6 将全局方法 parseInt() 和 parseFloat() 移植到了 Number 对象上面，行为完全保持不变。
+
+### 6.4 Number.isInteger()
+
+Number.isInteger() 用来判断一个值是否为整数。 3 和 3.0 被视为同一个值。
+
+#### 6.5 Number.EPSILON
+
+新增的一个极小的常量。目的在于为浮点数计算设置一个误差范围。
+
+```js
+Number.EPSILON
+// 2.220446049250313e-16
+```
+
+### 6.6 安全整数和 Number.isSafeInteger()
+
+JavaScript 能够准确表示的整数范围在 -2^53 到 2^53 之间（不含两个端点），超过这个范围就无法精确表示。
+
+```js
+Math.pow(2, 53) // 9007199254740992
+
+9007199254740992  // 9007199254740992
+9007199254740993  // 9007199254740992   //超过了，无法精确表示
+
+Math.pow(2, 53) === Math.pow(2, 53) + 1     //true
+// true
+```
+
+ES6 引入了 Number.MAX_SAFE_INTEGER 和 Number.MIN_SAFE_INTEGER 两个常量，用来表示这个范围的上下限。
+```js
+Number.MAX_SAFE_INTEGER === Math.pow(2, 53) - 1
+// true
+Number.MAX_SAFE_INTEGER === 9007199254740991
+// true
+```
+
+Number.isSafeInteger() 则是用来判断一个整数是否落在这个范围之内。实际使用这个函数时，需要注意验证运算结果是否落在安全整数的范围内，另外不要只验证运算结果，还要同时验证参与运算的每个值。
+```js
+Number.isSafeInteger(9007199254740993)
+// false
+Number.isSafeInteger(990)
+// true
+Number.isSafeInteger(9007199254740993 - 990)
+// true
+9007199254740993 - 990
+// 返回结果 9007199254740002
+// 正确答案应该是 9007199254740003
+// 因为 9007199254740993 这个数超出了精度范围，导致在计算机内部以 9007199254740992 的形式储存。
+```
+
+### 6.7 Math 对象的扩展
+
+ES6 在 Math 对象上新增了 17 个与数学相关的方法。所有这些方法都是静态方法，只能在 Math 对象上调用。
+
+#### 6.7.1 Math.trunc()
+
+Math.trunc 方法用于去除一个数的小数部分，返回整数部分。
+
+```js
+Math.trunc(-0.1234);     //-0
+
+//对于非数值， Math.trunc 内部使用 Number 方法将其先转为数值。
+Math.trunc("123.456");   //123
+
+//对于空值和无法截取整数的值， 返回 NaN 。
+Math.trunc("foo");      //NaN
+```
+
+#### 6.7.2 Math.sign()
+
+Math.sign 方法用来判断一个数到底是正数、负数、还是零。对于非数值，会先将其转换为数值。
+
+它会返回五种值
+- 参数为正数，返回 +1
+- 参数为负数，返回 -1
+- 参数为 0 ，返回 0
+- 参数为 -0 ，返回 -0
+- 其他值，返回 NaN
+
+```js
+Math.sign('')  // 0
+Math.sign(true)  // +1
+Math.sign(false)  // 0
+Math.sign(null)  // 0
+Math.sign('9')  // +1
+Math.sign('foo')  // NaN
+Math.sign()  // NaN
+Math.sign(undefined)  // NaN
+```
+
+#### 6.7.3 Math.cbrt()
+
+Math.cbrt 方法用于计算一个数的立方根。
+
+```js
+Math.cbrt(2)        //1 . 2599210498948734
+
+//对于非数值， Math.cbrt 方法内部也是先使用 Number 方法将其转为数值。
+Math.cbrt('8')      //2
+Math.cbrt('Hello')  //NaN
+```
+
+#### 6.7.4 Math.clz32()
+
+JavaScript 的整数使用 32 位二进制形式表示， Math.clz32 方法返回一个数的 32 位无符号整数形式有多少个前导 0 。
+
+```js
+Math.clz32(0)   //32
+Math.clz32(1)   //31
+```
+
+#### 6.7.5 Math.imul()
+
+Math.imul 方法返回两个数以 32 位带符号整数形式相乘的结果，返回的也是一个 32 位的带符号整数。
+
+之所以需要部署这个方法，是因为 JavaScript 有精度限制，超过 2 的 53 次方的值无法精确表示。这就是说，对于那些很大的数的乘法，低位数值往往都是不精确的， Math.imul 方法可以返回正确的低位数值。
+
+```js
+Math.imul(-2, -2)   //4
+```
+
+#### 6.7.6 Math.fround()
+
+Math.fround 方法返回一个数的单精度浮点数形式。
+```js
+Math.fround(1)  //1
+Math.fround(1.337)  //1. 3370000123977661
+Math.fround(1.5)    //1.5
+```
+
+#### 6.7.7 Math.hypot()
+
+Math.hypot 方法返回所有参数的平方和的平方根。
+
+```js
+Math.hypot(3, 4);   //5
+Math.hypot(3, 4, '5');    //7.0710678118654755
+```
+
+#### 6.7.8 对数方法
+
+- Math.expm1()  返回 e^x - 1 ，即 Math.exp(x) - 1
+- Math.log1p()  返回 ln(1 + x) ，即 Math.log(1 + x)
+- Math.log10()  返回以 10 为底的 x 的对数
+- Math.log2()   返回以 2 为底的 x 的对数
+
+#### 6.7.9 双曲函数方法
+
+- Math.sinh(x) 返回x的双曲正弦（hyperbolic sine）
+- Math.cosh(x) 返回x的双曲余弦（hyperbolic cosine）
+- Math.tanh(x) 返回x的双曲正切（hyperbolic tangent）
+- Math.asinh(x) 返回x的反双曲正弦（inverse hyperbolic sine）
+- Math.acosh(x) 返回x的反双曲余弦（inverse hyperbolic cosine）
+- Math.atanh(x) 返回x的反双曲正切（inverse hyperbolic tangent）
+
+### 6.8 Math.signbit()
+
+Math.sign() 用来判断一个值的正负，但是如果参数是 -0 ，它便会返回 -0 。
+
+sighbit() 判断一个数的符号位是否己经设置。
+
+```js
+Math.signbit(2)     //false
+Math.signbit(-2)    //true
+Math.signbit(0)     //false
+Math.signbit(-0)    //true
+```
+
+### 6.9 指数运算符
+
+ES2016 新增了一个指数运算符（ ** ）。
+```js
+2 ** 4  //16
+
+let b = 4;
+b **= 3;
+//b = b * b * b;
+```
+
+### 6.10 Integer 数据类型
+
+#### 6.10.1 简介
+
+JavaScript 所有数字都保存成 64 位浮点数，这决定了整数的精确程度只能到 53 个二进制位。
+
+大于这个范围的整数， JavaScript 是无法精确表示的，这使得 JavaScript 不适合进行科学和金融方面的精确计算。
+
+现在有一个提案，其中引入了新的数据类型 Integer （整数）来解决这个问题。整数类型的数据只用来表示整数，**没有位数的限制**，任何位数的整数都可以精确表示。
+
+为了与 Number 类型区别， Integer 类型的数据必须使用后缀`n`来表示。
+```js
+1n + 2n //3n
+
+//二进制、八进制、十六进制的表示法都要加上后缀 n
+0b1101n     //二进制
+0o777n      //八进制
+0xFFn       //十六进制
+
+//对于 Integer 类型的数据， typeof 运算符将返回 integer
+typeof 123n     //'integer'
+
+//JavaScript 原生提供 Integer 对象， 用来生成 Integer 类型的数值。转换规则基本与 Number() 一致。
+Integer(123)    //123
+Integer('123')  //123n
+Integer(true)   //1
+new Integer()   //error
+```
+
+#### 6.10.2 运算
+
+在数学运算方面， Integer 类型的 + 、 - 、 * 、 ** 这四个二元运算符与 Number 类型的行为一致。除法运算 / 会舍去小数部分，返回一个整数。
+```js
+9n / 5n // 1n
+
+//Integer 类型不能与 Number 类型进行混合运算。
+1n + 1  //error
+//相等运算符（ == ）会改变数据类型，也是不允许混合使用的。
+0n == 0 //error
+//精确相等运算符（ === ）不会改变数据类型，因此可以混合使用。
+0n === 0    //false
+```
