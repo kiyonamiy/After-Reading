@@ -1152,3 +1152,292 @@ function foo(mustBeProvided = throwIfMissing()) {       //如果参数省略，�
 foo()
 // Error: Missing parameter
 ```
+
+### 7.2 rest 参数
+
+ES6 引入 rest 参数（形式为...变量名），用于获取函数的多余参数，这样就不需要使用arguments对象了。rest 参数搭配的变量是一个数组，该变量将多余的参数放入数组中。
+
+```js
+
+// arguments变量的写法
+//arguments对象不是数组，而是一个类似数组的对象。所以为了使用数组的方法，必须使用Array.prototype.slice.call先将其转为数组。
+function sortNumbers() {
+  return Array.prototype.slice.call(arguments).sort();
+}
+
+//// rest参数的写法
+//rest 参数就不存在这个问题，它就是一个真正的数组，数组特有的方法都可以使用。
+const sortNumbers = (...numbers) => numbers.sort();
+
+/**
+ * * 注意，rest 参数之后不能再有其他参数（即只能是最后一个参数），否则会报错。
+ * /
+// 报错
+function f(a, ...b, c) {
+  // ...
+}
+
+/**
+* 函数的length属性，不包括 rest 参数。
+**/
+(function(a) {}).length  // 1
+(function(...a) {}).length  // 0
+(function(a, ...b) {}).length  // 1
+```
+
+### 7.3 严格模式
+
+从 ES5 开始，函数内部可以设定为严格模式。
+```js
+function doSomething(a, b) {
+  'use strict';
+  // code
+}
+```
+
+ES2016 做了一点修改，规定只要函数参数使用了默认值、解构赋值、或者扩展运算符，那么函数内部就不能显式设定为严格模式，否则会报错。
+```js
+// 报错
+function doSomething(a, b = a) {
+  'use strict';
+  // code
+}
+
+// 报错
+const doSomething = function ({a, b}) {
+  'use strict';
+  // code
+};
+
+// 报错
+const doSomething = (...a) => {
+  'use strict';
+  // code
+};
+
+const obj = {
+  // 报错
+  doSomething({a, b}) {
+    'use strict';
+    // code
+  }
+};
+```
+
+两种方法可以规避这种限制。第一种是设定全局性的严格模式。第二种是把函数包在一个无参数的立即执行函数里面。
+
+### 7.4 name 属性
+
+函数的 name 属性，返回该函数的函数名。
+```js
+function foo() {}
+foo.name // "foo"
+```
+
+### 7.5 箭头函数
+
+#### 7.5.1 基本用法
+
+允许使用“箭头”（ => ）定义函数，使得表达更加简洁。简化回调函数。
+```js
+var f = v => v;
+//等同于
+var f = function(v) {
+    return v;
+}
+
+/**
+ * 如果箭头函数不需要参数或需要多个参数，就使用一个圆括号代表参数部分。
+**/
+var f = () => 5;
+//等同于
+var f = function() {
+    return 5;
+}
+
+/**
+ * 如果箭头函数的代码块部分多于一条语句，就要使用大括号将它们括起来，并且使用return语句返回。
+**/
+var sum = (num1, num2) => {return num1 + num2;}
+
+/**
+ * 由于大括号被解释为代码块，所以如果箭头函数直接返回一个对象，必须在对象外面加上括号，否则会报错。
+**/
+//报错
+let getTempItem = id => {id: id, name: "temp"};
+//不报错
+let getTempItem = id => ({id: id, name: "temp"});
+//特殊情况，可以运行，但是拿到错误的结果 // foo()  undefined
+let foo = () => {a: 1};     //愿意图返回对象。但大括号作为代码块，执行语句 a: 1 。解析 a 为标签，执行语句 1 ，函数没有返回值。
+
+/**
+ * 箭头函数可以与变量解构结合使用。
+**/
+const full = ({first, last}) => first + ' ' + last;
+//等同于
+function full(person) {
+    return person.first + ' ' + person.last;
+}
+
+/**
+ * 如果箭头函数只有一行语句，且不需要返回值，可以采用下面的写法，就不用写大括号了。
+**/
+let fn = () => void doesNotReturn();
+```
+
+#### 7.5.2  使用注意点
+箭头函数有几个使用注意点：
+- 函数体内的this对象，就是定义时所在的对象，而不是使用时所在的对象。
+- 不可以当作构造函数，也就是说，不可以使用 new 命令，否则会抛出一个错误。
+- 不可以使用 arguments 对象，该对象在函数体内不存在。如果要用，可以用 rest 参数代替。
+- 不可以使用 yield 命令，因此箭头函数不能用作 Generator 函数。
+
+
+上面四点中，第一点尤其值得注意。 this 对象的指向是可变的，但是在箭头函数中，它是固定的。 this 指向的固定化，并不是因为箭头函数内部有绑定 this 的机制，实际原因是箭头函数根本没有自己的 this ，导致内部的 this 就是外层代码块的 this 。正是因为它没有 this ，所以也就不能用作构造函数。
+
+除了 this ，以下三个变量在箭头函数之中也是不存在的，**指向外层函数的对应变量**： arguments 、 super 、 new.target 。
+
+另外，由于箭头函数没有自己的 this ，所以当然也就不能用 call() 、 apply() 、 bind() 这些方法去改变 this 的指向。
+```js
+//ES6
+function foo() {
+    setTimeout(() => {
+        console.log('id: ', this.id);   //箭头函数里面根本没有自己的 this ，而是引用外层的 this 。
+    }, 100);
+}
+//ES5 等价
+function foo() {
+    var _this = this;   //
+    setTimeout(function() {
+        console.log('id: ', _this.id);
+    }, 100);
+}
+```
+
+#### 7.5.3 不适用场合
+
+第一个场合是定义对象的方法，且该方法内部包括this。
+```js
+const cat = {
+    lives: 9,
+    jumps: () => {
+        this.lives--;    //使得this指向全局对象（对象不构成单独的作用域），因此不会得到预期结果
+    }
+}
+```
+第二个场合是需要动态this的时候，也不应使用箭头函数。
+```js
+var button = document.getElementById('press');
+button.addEventListener('click', () => {
+  this.classList.toggle('on');  //this 全局对象
+});
+```
+
+#### 7.5.4 嵌套的箭头函数
+
+```js
+let insert = (value) => ({into: (array) => ({after: (afterValue) => {
+    array.splice(array.indexOf(afterValue) + 1, 0, value);
+    return array;
+}})});
+insert(2).into([1, 3]).after(1);    //[1, 2, 3]
+//insert(value) 返回一个对象， 这个对象只包含一个函数 into(array) ，
+//into(array) 数也返回一个对象，这个对象也只包含一个函数 after(afterValue)
+//after(afterValue) 返回最后组合的结果
+```
+
+### 7.6 尾调用优化
+
+#### 7.6.1 什么是尾调用？
+
+尾调用（ Tail Call ）是函数式编程的一个重要概念，本身非常简单，一句话就能说清楚，就是指*某个函数的最后一步是调用另一个函数*。
+```js
+function f(x) {
+    return g(x);
+}
+
+//以下三种情况，都不属于尾调用。
+//情况一 是调用函数g之后，还有赋值操作
+function f(x){
+  let y = g(x);
+  return y;
+}
+//情况二 调用后还有操作，即使写在一行内
+function f(x){
+  return g(x) + 1;
+}
+//情况三 等同于 g(x); return undefined;
+function f(x){
+  g(x);
+}
+```
+
+#### 7.6.2 尾调用优化
+
+因为调用栈。尾调用由于是函数的最后一步操作，所以不需要保留外层函数的调用帧（调用记录），因为调用位置、内部变量等信息都不会再用到了，只要直接用内层函数的调用帧，取代外层函数的调用帧就可以了。
+
+注意，只有不再用到外层函数的内部变量，内层函数的调用帧才会取代外层函数的调用帧，否则就无法进行“尾调用优化”。
+```js
+function f() {
+  let m = 1;
+  let n = 2;
+  return g(m + n);
+}
+f();
+
+// 等同于
+function f() {
+  return g(3);
+}
+f();
+
+// 等同于
+g(3);
+```
+
+#### 7.6.3 尾递归
+
+函数调用自身，称为递归。如果尾调用自身，就称为尾递归。
+
+递归非常耗费内存，因为需要同时保存成千上百个调用帧，很容易发生“栈溢出”错误（stack overflow）。但对于尾递归来说，由于只存在一个调用帧，所以永远不会发生“栈溢出”错误。
+```js
+//计算 n 的阶乘，最多需要保存 n 个调用记录，复杂度 O(n)
+function factorial(n) {
+    if(n === 1) return 1;
+    return n * factorial(n - 1);
+}
+factorial(5)    //120
+
+//改写成尾递归，只保留一个调用记录，复杂度 O(1)
+function factorial(n, total) {
+    if(n === 1) return total;
+    return factorial(n - 1, n * total);
+}
+factorial(5, 1);    //120
+```
+
+#### 7.6.4 递归函数的改写
+
+#### 7.6.5 严格模式
+
+ES6 的尾调用优化只在严格模式下开启，正常模式是无效的。
+
+这是因为在正常模式下，函数内部有两个变量，可以跟踪函数的调用栈。严格模式禁用这两个变量，所以尾调用模式仅在严格模式下生效。
+
+#### 7.6.6 尾递归优化的实现
+
+### 7.7 函数参数的尾逗号
+
+ES2017 允许函数的最后一个参数有尾逗号（trailing comma）。
+
+```js
+function clownsEverywhere(
+  param1,
+  param2,           //此前，函数定义和调用时，都不允许最后一个参数后面出现逗号。
+) { /* ... */ }
+
+clownsEverywhere(
+  'foo',
+  'bar',
+);
+```
