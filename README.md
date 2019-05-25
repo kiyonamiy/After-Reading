@@ -166,32 +166,26 @@
         - 6.10.1 简介
         - 6.10.2 运算
 - 第七章 函数的扩展
-    -[7.1 函数参数的默认值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#71-%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E9%BB%98%E8%AE%A4%E5%80%BC)
+    - [7.1 函数参数的默认值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#71-%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E9%BB%98%E8%AE%A4%E5%80%BC)
         - 7.1.1 基本用法
         - 7.1.2 与解构赋值默认值结合使用
         - 7.1.3 参数默认值的位置
         - 7.1.4 函数的 length 属性
         -  7.1.5 作用域
         - 7.1.6 应用
-    -[7.2 rest 参数](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#72-rest-%E5%8F%82%E6%95%B0)
-    -[7.3 严格模式](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#73-%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F)
-    -[7.4 name 属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#74-name-%E5%B1%9E%E6%80%A7)
-    -[7.5 箭头函数](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#75-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0)
+    - [7.2 rest 参数](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#72-rest-%E5%8F%82%E6%95%B0)
+    - [7.3 严格模式](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#73-%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F)
+    - [7.4 name 属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#74-name-%E5%B1%9E%E6%80%A7)
+    - [7.5 箭头函数](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#75-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0)
         - 7.5.1 基本用法
         - 7.5.2  使用注意点
         - 7.5.3 不适用场合
         - 7.5.4 嵌套的箭头函数
-    -[7.6 尾调用优化](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#76-%E5%B0%BE%E8%B0%83%E7%94%A8%E4%BC%98%E5%8C%96)
+    - [7.6 尾调用优化](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#76-%E5%B0%BE%E8%B0%83%E7%94%A8%E4%BC%98%E5%8C%96)
         - 7.6.1 什么是尾调用？
         - 7.6.2 尾调用优化
         - 7.6.3 尾递归
         - 7.6.4 递归函数的改写
         - 7.6.5 严格模式
         - 7.6.6 尾递归优化的实现
-    -[7.7 函数参数的尾逗号](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#77-%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E5%B0%BE%E9%80%97%E5%8F%B7)
-    -[]()
-    -[]()
-    -[]()
-    -[]()
-    -[]()
-    -[]()
+    - [7.7 函数参数的尾逗号](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#77-%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E5%B0%BE%E9%80%97%E5%8F%B7)
