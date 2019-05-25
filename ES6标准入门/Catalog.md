@@ -1,0 +1,106 @@
+# [ES6 标准入门](https://es6.ruanyifeng.com/)
+
+- 第一章 ECMAScript 6 简介
+- 第二章 let 和 const 命令
+    - [2.1 let 命令](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#21-let-%E5%91%BD%E4%BB%A4)
+        - 2.1.1 基本用法
+        - 2.1.2 不存在变量提升
+        - 2.1.3 暂时性死区
+        - 2.1.4 不允许重复声明
+    - [2.2 块级作用域](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#22-%E5%9D%97%E7%BA%A7%E4%BD%9C%E7%94%A8%E5%9F%9F)
+        - 2.2.1 为什么需要块级作用域
+        - 2.2.2 ES6 的块级作用域
+        - 2.2.3 块级作用域与函数声明
+    - [2.3 const 命令](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#23-const-%E5%91%BD%E4%BB%A4)
+        - 2.3.1 基本用法
+        - 2.3.2 本质
+        - 2.3.3 ES6 声明变量的 6 种方法
+    - [2.4 顶层对象的属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#24-%E9%A1%B6%E5%B1%82%E5%AF%B9%E8%B1%A1%E7%9A%84%E5%B1%9E%E6%80%A7)
+    - [2.5 global 对象](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#25-global-%E5%AF%B9%E8%B1%A1)
+- 第三章 变量的解构赋值
+    - [3.1 数组的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#31-%E6%95%B0%E7%BB%84%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
+        - 3.1.1 基本用法
+        - 3.1.2 默认值
+    - [3.2 对象的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#32-%E5%AF%B9%E8%B1%A1%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
+    - [3.3 字符串的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#33-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
+    - [3.4 数值和布尔值的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#34-%E6%95%B0%E5%80%BC%E5%92%8C%E5%B8%83%E5%B0%94%E5%80%BC%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
+    - [3.5 函数参数的解构赋值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#35-%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E8%A7%A3%E6%9E%84%E8%B5%8B%E5%80%BC)
+    - [3.6 圆括号问题](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#36-%E5%9C%86%E6%8B%AC%E5%8F%B7%E9%97%AE%E9%A2%98)
+        - 3.6.1 不能使用圆括号的情况
+        - 3.6.2 可以使用圆括号的情况
+    - [3.7 用途](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#37-%E7%94%A8%E9%80%94)
+- 第四章 字符串的扩展
+    - [4.1 字符的 Unicode 表示法](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#41-%E5%AD%97%E7%AC%A6%E7%9A%84-unicode-%E8%A1%A8%E7%A4%BA%E6%B3%95)
+    - [4.2 codePointAt()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#42-codepointat)
+    - [4.3 String.fromCodePoint()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#43-stringfromcodepoint)
+    - [4.4 字符串的遍历器接口](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#44-%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%81%8D%E5%8E%86%E5%99%A8%E6%8E%A5%E5%8F%A3)
+    - [4.5 at()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#45-at)
+    - [4.6 normalize()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#46-normalize)
+    - [4.7 includes() 、 startsWith() 、 endsWith()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#47-includes--startswith--endswith)
+    - [4.8 repeat()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#48-repeat)
+    - [4.9 padStart() 、 padEnd()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#49-padstart--padend)
+    - [4.10 模板字符串](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#410-%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2)
+    - [4.12 标签模板](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#412-%E6%A0%87%E7%AD%BE%E6%A8%A1%E6%9D%BF)
+    - [4.13 String.raw()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#413-stringraw)
+    - [4.14 模板字符串的限制](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#414-%E6%A8%A1%E6%9D%BF%E5%AD%97%E7%AC%A6%E4%B8%B2%E7%9A%84%E9%99%90%E5%88%B6)
+- 第五章 正则的扩展
+- 第六章 数值的扩展
+    - [6.1 二进制和八进制表示法](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#61-%E4%BA%8C%E8%BF%9B%E5%88%B6%E5%92%8C%E5%85%AB%E8%BF%9B%E5%88%B6%E8%A1%A8%E7%A4%BA%E6%B3%95)
+    - [6.2 Number.isFinite(), Number.isNaN()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#62-numberisfinite-numberisnan)
+    - [6.3 Number.parseInt() 、 Number.parseFloat()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#63-numberparseint--numberparsefloat)
+    - [6.4 Number.isInteger()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#64-numberisinteger)
+    - [6.5 Number.EPSILON](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#65-numberepsilon)
+    - [6.6 安全整数和 Number.isSafeInteger()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#66-%E5%AE%89%E5%85%A8%E6%95%B4%E6%95%B0%E5%92%8C-numberissafeinteger)
+    - [6.7 Math 对象的扩展](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#67-math-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%89%A9%E5%B1%95)
+        - 6.7.1 Math.trunc()
+        - 6.7.2 Math.sign()
+        - 6.7.3 Math.cbrt()
+        - 6.7.4 Math.clz32()
+        - 6.7.5 Math.imul()
+        - 6.7.6 Math.fround()
+        - 6.7.7 Math.hypot()
+        - 6.7.8 对数方法
+        - 6.7.9 双曲函数方法
+    - [6.8 Math.signbit()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#68-mathsignbit)
+    - [6.9 指数运算符](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#69-%E6%8C%87%E6%95%B0%E8%BF%90%E7%AE%97%E7%AC%A6)
+    - [6.10 Integer 数据类型](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#610-integer-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B)
+        - 6.10.1 简介
+        - 6.10.2 运算
+- 第七章 函数的扩展
+    - [7.1 函数参数的默认值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#71-%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E9%BB%98%E8%AE%A4%E5%80%BC)
+        - 7.1.1 基本用法
+        - 7.1.2 与解构赋值默认值结合使用
+        - 7.1.3 参数默认值的位置
+        - 7.1.4 函数的 length 属性
+        -  7.1.5 作用域
+        - 7.1.6 应用
+    - [7.2 rest 参数](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#72-rest-%E5%8F%82%E6%95%B0)
+    - [7.3 严格模式](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#73-%E4%B8%A5%E6%A0%BC%E6%A8%A1%E5%BC%8F)
+    - [7.4 name 属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#74-name-%E5%B1%9E%E6%80%A7)
+    - [7.5 箭头函数](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#75-%E7%AE%AD%E5%A4%B4%E5%87%BD%E6%95%B0)
+        - 7.5.1 基本用法
+        - 7.5.2  使用注意点
+        - 7.5.3 不适用场合
+        - 7.5.4 嵌套的箭头函数
+    - [7.6 尾调用优化](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#76-%E5%B0%BE%E8%B0%83%E7%94%A8%E4%BC%98%E5%8C%96)
+        - 7.6.1 什么是尾调用？
+        - 7.6.2 尾调用优化
+        - 7.6.3 尾递归
+        - 7.6.4 递归函数的改写
+        - 7.6.5 严格模式
+        - 7.6.6 尾递归优化的实现
+    - [7.7 函数参数的尾逗号](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#77-%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E5%B0%BE%E9%80%97%E5%8F%B7)
+- 第八章 数组的扩展
+    - [8.1 扩展运算符](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#81-%E6%89%A9%E5%B1%95%E8%BF%90%E7%AE%97%E7%AC%A6)
+        - 8.1.1 含义
+        - 8.1.2 替代函数的 apply 方法
+        - 8.1.3 扩展运算符的应用
+    - [8.2 Array.from()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#82-arrayfrom)
+    - [8.3 Array.of()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#83-arrayof)
+    - [8.4 数组实例的 copyWithin()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#84-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-copywithin)
+    - [8.5 数组实例的 find() 和 findIndex()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#85-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-find-%E5%92%8C-findindex)
+    - [8.6 数组实例的 fill()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#86-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-fill)
+    - [8.7 数组实例的 entries() 、 keys() 和 values()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#87-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-entries--keys-%E5%92%8C-values)
+    - [8.8 数组实例的 includes()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#88-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-includes)
+    - [8.9 数组实例的 flat() ， flatMap()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#89-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-flat--flatmap)
+    - [8.10 数组的空位](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#810-%E6%95%B0%E7%BB%84%E7%9A%84%E7%A9%BA%E4%BD%8D)
