@@ -189,3 +189,17 @@
         - 7.6.5 严格模式
         - 7.6.6 尾递归优化的实现
     - [7.7 函数参数的尾逗号](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#77-%E5%87%BD%E6%95%B0%E5%8F%82%E6%95%B0%E7%9A%84%E5%B0%BE%E9%80%97%E5%8F%B7)
+- 第八章 数组的扩展
+    - [8.1 扩展运算符](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#81-%E6%89%A9%E5%B1%95%E8%BF%90%E7%AE%97%E7%AC%A6)
+        - 8.1.1 含义
+        - 8.1.2 替代函数的 apply 方法
+        - 8.1.3 扩展运算符的应用
+    - [8.2 Array.from()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#82-arrayfrom)
+    - [8.3 Array.of()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#83-arrayof)
+    - [8.4 数组实例的 copyWithin()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#84-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-copywithin)
+    - [8.5 数组实例的 find() 和 findIndex()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#85-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-find-%E5%92%8C-findindex)
+    - [8.6 数组实例的 fill()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#86-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-fill)
+    - [8.7 数组实例的 entries() 、 keys() 和 values()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#87-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-entries--keys-%E5%92%8C-values)
+    - [8.8 数组实例的 includes()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#88-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-includes)
+    - [8.9 数组实例的 flat() ， flatMap()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#89-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-flat--flatmap)
+    - [8.10 数组的空位](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#810-%E6%95%B0%E7%BB%84%E7%9A%84%E7%A9%BA%E4%BD%8D)
