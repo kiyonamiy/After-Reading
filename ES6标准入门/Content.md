@@ -1855,3 +1855,463 @@ arr.map(()=> void console.log(1111));
 // findIndex()
 [,'a'].findIndex(x => true) // 0
 ```
+
+## 第九章 对象的扩展
+
+### 9.1 属性的简洁表达式
+
+ES6 允许直接写入变量和函数，作为对象的属性和方法。这样的书写更加简洁。
+
+```js
+const foo = 'bar';
+const baz = {foo};      //在对象之中，直接写变量 属性名为变量名, 属性值为变量的值。
+baz // {foo: "bar"}
+//等同于
+const baz = {foo: foo};
+
+function f(x, y) {
+    return {x, y};
+}
+//等同于
+function f(x, y) {
+    return {x: x, y: y};
+}
+f(1, 2) // {x: 1, y: 2}
+
+/**
+ * 除了属性简写，方法也可以简写。
+**/
+const o = {
+    method() {
+        return "Hello";
+    }
+};
+//等同于
+const o = {
+    method: function() {
+        return "Hello";
+    }
+};
+
+//实际例子
+let age = 23;
+const person = {
+    name: "Kiyonami",
+    age,
+    Method() {
+        console.log("hello");
+    }
+}
+
+/**
+ * 属性的赋值器（ setter ）和取值器（ getter ），事实上也是采用这种写法。
+**/
+const cart = {
+  _wheels: 4,
+
+  get wheels () {
+    return this._wheels;
+  },
+
+  set wheels (value) {
+    if (value < this._wheels) {
+      throw new Error('数值太小了！');
+    }
+    this._wheels = value;
+  }
+}
+
+/**
+ * 如果某个方法的值是一个 Generator 函数，前面需要加上星号。
+**/
+const obj = {
+  * m() {
+    yield 'hello world';
+  }
+};
+```
+
+### 9.2 属性名表达式
+
+JavaScript 定义对象的属性，有两种方法。
+```js
+//方法一 直接用 标识符 作为 属性名
+obj.foo = true;
+//方法二 用 表达式 作为属性名，这时要将表达式放在方括号之内
+obj['a' + 'bc'] = 123;
+```
+但是，如果使用字面量方式定义对象（使用大括号），在 ES5 中只能使用方法一（标识符）定义属性。
+
+ES6 允许字面量定义对象时，用方法二（表达式）作为对象的属性名，即把表达式放在方括号内。
+```js
+//ES5
+var obj = {
+    foo: true,
+    abc: 123
+}
+//ES6
+let propKey = 'foo';
+let obj = {
+    [proKey]: true,
+    ['a' + 'bc']: 123
+    ['h' + 'ello']() {
+        return 'hi';
+    }
+};
+obj.hello();
+
+/**
+ * 注意，属性名表达式与简洁表示法，不能同时使用，会报错。
+**/
+// 报错
+const foo = 'bar';
+const bar = 'abc';
+const baz = { [foo] };
+
+// 正确
+const foo = 'bar';
+const baz = { [foo]: 'abc'};    // {bar: "abc"}
+
+/**
+ * 注意，属性名表达式如果是一个对象，默认情况下会自动将对象转为字符串[object Object]，这一点要特别小心。
+**/
+const keyA = {a: 1};
+const keyB = {b: 2};
+
+const myObject = {
+  [keyA]: 'valueA',
+  [keyB]: 'valueB'
+};
+
+myObject // Object {[object Object]: "valueB"}
+```
+
+
+### 9.3 方法的 name 属性
+
+函数的name属性，返回函数名。对象方法也是函数，因此也有name属性。
+```js
+const person = {
+  sayName() {
+    console.log('hello!');
+  },
+};
+
+person.sayName.name   // "sayName"
+
+/**
+ * 如果对象的方法使用了取值函数（getter）和存值函数（setter），则name属性不是在该方法上面，而是该方法的属性的描述对象的get和set属性上面，返回值是方法名前加上get和set。
+**/
+const obj = {
+  get foo() {},
+  set foo(x) {}
+};
+
+obj.foo.name
+// TypeError: Cannot read property 'name' of undefined
+
+const descriptor = Object.getOwnPropertyDescriptor(obj, 'foo');
+
+descriptor.get.name // "get foo"
+descriptor.set.name // "set foo"
+
+/**
+ * 有两种特殊情况： bind 方法创造的函数， name 属性返回 bound 加上原函数的名字； Function 构造函数创造的函数， name 属性返回 anonymous 。
+**/
+(new Function()).name // "anonymous"
+
+var doSomething = function() {
+  // ...
+};
+doSomething.bind().name // "bound doSomething"
+
+/**
+ * 如果对象的方法是一个 Symbol 值，那么 name 属性返回的是这个 Symbol 值的描述。
+**/
+const key1 = Symbol('description');
+const key2 = Symbol();
+let obj = {
+  [key1]() {},
+  [key2]() {},
+};
+obj[key1].name // "[description]"
+obj[key2].name // ""
+```
+
+### 9.4 Object.is()
+
+ES5 比较两个值是否相等，只有两个运算符：相等运算符（ == ）和严格相等运算符（===）。它们都有缺点，前者（ == ）会自动转换数据类型，后者（===）的 NaN 不等于自身，以及 +0 等于 -0 。
+
+Object.is 用来比较两个值是否严格相等，与严格相等运算符（ === ）的行为基本一致。
+```js
+Object.is('foo', 'foo');    //true
+Object.is({}, {})           //false     //依旧只是比较引用
+//不同之处只有两个： 一是 +0 不等于 -0 ， 二是 NaN 等于自身。
++0 === -0               //true
+NaN === NaN             //false
+Object.is(+0 , -0)      //false
+Object.is(NaN , NaN)    //true
+```
+
+### 9.5 Object.assign()
+
+#### 9.5.1 基本用法
+
+方法用于将源对象（ source ）的所有*可枚举属性*复制到目标对象（ target ）。
+
+如果目标对象与源对象有同名属性，或多个源对象有对象有同名属性，则后面的属性会覆盖前面
+的属性。
+
+Object.assign() 复制的属性是有限制的，只复制源对象的自身属性（不复制继承属性），也不复制不可枚举的属性（ enumerable: false ）。
+
+```js
+var target = {a: 1, b: 1};
+var source1 = {b: 2, c: 2};
+var source2 = {c: 3, d: 3};
+
+Object.assign(target, source1, source2);
+target  //{a: 1, b: 2, c: 3}
+
+/**
+*   如果只有一个参数， Object.assign 会直接返回该参数。
+**/
+var obj = {a: 1};
+Object.assign(obj) == obj   //true  说明直接返回源引用
+
+/**
+*   如果该参数不是对象， 则会先转成对象，然后返回。
+**/
+typeof Object.assign(2) // “object"
+
+/**
+*   由于 undefined 和 null 无法转成对象，所以如果将它们作为参数， 就会报错。
+**/
+Object.assign(undefined)    //error
+Object.assign(null)         //error
+```
+
+#### 9.5.2 注意点
+
+Object.assign 方法实行的是浅复制，而不是深复制。
+```js
+var obj1 = {a: {b: 1}};
+var obj2 = Object.assign({}, obj1);
+obj1.a.b = 2;
+obj2.a.b    // 2    复制得到的是这个对象的引用
+```
+
+#### 9.5.3 常见用途
+
+1. 为对象添加属性、方法
+
+```js
+class Point {
+    constructor(x, y) {
+        Object.assign(this, {x, y});    //将 x 属性和 y 属性添加到了 Point 类的对象实例中
+    }
+}
+
+Object.assgin(SomeClass.prototype, {
+    someMethod(arg1, arg2) {
+        //...
+    },
+    anotherMethod() {
+        //...
+    }
+})
+```
+2. 克隆对象
+3. 合并多个对象
+
+```js
+const merge = (...sources) => Object.assign({}, ...sources);
+```
+
+4. 为属性指定默认值
+
+
+### 9.6 属性的可枚举性
+
+对象的每个属性都有一个描述对象（Descriptor），用来控制该属性的行为。Object.getOwnPropertyDescriptor方法可以获取该属性的描述对象。
+
+目前，有四个操作会忽略 enumerable 为 false 的属性。
+- for...in 循环：只遍历对象自身的和**继承**的可枚举的属性。
+- Object.keys()：返回**对象自身**的所有可枚举的属性的键名。
+- JSON.stringify()：只串行化对象自身的可枚举的属性。
+- Object.assign()： 忽略 enumerable 为 false 的属性，只拷贝对象自身的可枚举的属性。
+
+### 9.7 属性的遍历
+
+ES6 一共有 5 种方法可以遍历对象的属性。
+
+1. for...in
+
+for...in循环遍历对象自身的和**继承**的可枚举属性（不含 Symbol 属性）。
+
+2. Object.keys(obj)
+
+Object.keys返回一个数组，包括**对象自身**的（不含继承的）所有可枚举属性（不含 Symbol 属性）的键名。
+
+3. Object.getOwnPropertyNames(obj)
+
+返回一个数组，包含对象**自身**的所有属性（不含 Symbol 属性，但是**包括不可枚举属性**）的键名。
+
+4. Object.getOwnPropertySymbols(obj)
+
+返回一个数组，包含对象自身的所有 Symbol 属性的键名。
+
+5. Reflect.ownKeys(obj)
+
+返回一个数组，包含对象**自身**的**所有键名**，不管键名是 Symbol 或字符串，也不管是否可枚举。
+
+以上的 5 种方法遍历对象的键名，都遵守同样的属性遍历的次序规则。
+- 首先遍历所有数值键，按照数值升序排列。
+- 其次遍历所有字符串键，按照加入时间升序排列。
+- 最后遍历所有 Symbol 键，按照加入时间升序排列。
+```js
+Reflect.ownKeys({ [Symbol()]:0, b:0, 10:0, 2:0, a:0 })
+// ['2', '10', 'b', 'a', Symbol()]
+```
+
+### 9.8 __proto__ 属性、 Object.setPrototypeOf() 、 Object.getPrototypeOf()
+
+#### 9.8.1  __proto__ 属性
+
+__proto__ 用来读取或设置当前对象的 prototype 对象。
+
+标准明确规定， 只有浏览器必须部署这个属性， 其他运行环境不一定要部署，而且新的代码最好认为**这个属性是不存在**的。
+
+在实现上， __proto__ 调用的是 Object.prototype.__proto__
+
+```js
+// ES6 的写法
+var obj = {
+    method: function() {
+        //...
+    }
+}
+obj.__proto__ = someOtherObj;
+
+// ES5 的写法
+var obj = Object.create(someOtherObj);
+obj.method = function() {
+    //...
+}
+```
+
+#### 9.8.2 Object.setPrototypeOf()
+
+Object.setPrototypeOf 方法的作用与 __proto__ 相同，用来设置一个对象的 prototype 对象，返回参数对象本身。它是 ES6 **正式推荐的设置原型对象**的方法。
+
+```js
+let proto = {};
+let obj = {x: 10};
+
+Object.setPrototypeOf(obj, proto);  //设置为原型
+proto.y = 20;
+proto.z = 40;   //改变原型属性值
+
+obj.x //10
+obj.y //20
+obj.z //40      //读取 proto 对象的属性
+```
+
+#### 9.8.3 Object.getPrototypeOf()
+
+该方法与 setPrototypeOf 方法配套，用于读取一个对象的 prototype 对象。
+
+```js
+function Rectangle() {
+    //...
+}
+var rec = new Rectangle();
+Object.getPrototypeOf(rec) === Rectangle.prototype  //true
+```
+
+### 9.9 Object.keys() Object.values() Object.entries()
+
+#### 9.9.1 Object.keys()
+
+返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（ enumerable ）属性的*键名*。
+
+```js
+var obj = {foo: 'bar', baz: 42};
+Object.keys(obj);   //["foo", "baz"]
+```
+
+#### 9.9.2 Object.values()
+
+返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（ enumerable ）属性的*键值*。
+
+#### 9.9.3 Object.entries()
+
+返回一个数组，成员是参数对象自身的（不含继承的）所有可遍历（ enumerable ）属性的*键值对数组*。
+
+```js
+var obj = {foo: 'bar', baz: 42};
+Object.entries(obj);    //[["foo", "bar"], ["baz", 42]]
+```
+
+Object.entries 的基本用途是遍历对象的属性。的另一个用处是将对象转为真正的 Map 结构。
+```js
+var obj = {one: 1, two: 2};
+for(let [k, v] of Object.entries(obj)) {
+    console.log(k, v);
+}
+
+var map = new Map(Object.entries(obj));
+map.set(1, 2);
+map     //{"one" => 1, "two" => 2, 1 => 2}
+```
+
+### 9.10 对象的扩展运算符
+
+1. 解构赋值
+
+对象的解构赋值用于从一个对象取值，相当于将所有可遍历的、*但尚未被读取的属性*分配到指定的对象上面。所有的键和它们的值都会复制到新对象上面。
+
+如果等号右边是 undefined 或 null 就会报错， 因为它们无法转为对象。
+
+解构赋值也不会复制继承自原型对象的属性。
+
+```js
+let {x: test, y, ...z} = {x: 1, y: 2, a: 3, b: 4};
+test //1    x error
+y //2
+z //{a: 3, b: 4}
+```
+
+2. 扩展运算符
+
+扩展运算符（ ... ）用于取出参数对象的所有可遍历属性，并将其复制到当前对象之中。
+
+```js
+let z = {a: 3, b: 4};
+let n = {...z};
+n   //{a: 3, b: 4}
+//等同于
+let n = Object.assign({}, z);
+
+//合并对象
+let ab = {...a, ...b};
+//等同于
+let ab = Object.assign({}, a, b);
+```
+
+### 9.11 Object.getOwnPropertyDescriptors()
+
+### 9.12 Null 传导运算符
+
+简化判断一个对象是否存在。
+
+```js
+//比如，要读取 message.body.user.firstName ，安全的写法如下。
+cosnt firstName = (message
+    && message.body
+    && message.body.user
+    && message.body.user.firstName) || "default";
+
+//引入 Null 传到运算符--- ?.
+const firstName = message?.body?.user?.firstName;   //，只要其中一个返回 null 或 undefined ，就不再继续运算，而是返回undefined 。
+
+```
