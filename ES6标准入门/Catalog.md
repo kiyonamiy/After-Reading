@@ -126,3 +126,23 @@
     - [9.10 对象的扩展运算符](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#910-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%89%A9%E5%B1%95%E8%BF%90%E7%AE%97%E7%AC%A6)
     - [9.11 Object.getOwnPropertyDescriptors()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#911-objectgetownpropertydescriptors)
     - [9.12 Null 传导运算符](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#912-null-%E4%BC%A0%E5%AF%BC%E8%BF%90%E7%AE%97%E7%AC%A6)
+-  第十章 Symbol
+    - [10.1 概述](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#101-%E6%A6%82%E8%BF%B0)
+    - [10.2 作为属性名的 Symbol](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#102-%E4%BD%9C%E4%B8%BA%E5%B1%9E%E6%80%A7%E5%90%8D%E7%9A%84symbol)
+    - [10.3 实例：消除魔术字符串](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#103-%E5%AE%9E%E4%BE%8B%E6%B6%88%E9%99%A4%E9%AD%94%E6%9C%AF%E5%AD%97%E7%AC%A6%E4%B8%B2)
+    - [10.4 属性名的遍历](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#104-%E5%B1%9E%E6%80%A7%E5%90%8D%E7%9A%84%E9%81%8D%E5%8E%86)
+    - [10.5 Symbol.for() 、 Symbol.keyFor()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#105-symbolfor--symbolkeyfor)
+    - [10.6 实例：模块的 Singleton 模式](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#106-%E5%AE%9E%E4%BE%8B%E6%A8%A1%E5%9D%97%E7%9A%84-singleton-%E6%A8%A1%E5%BC%8F)
+    - [10.7 内置的 Symbol 值](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#107-%E5%86%85%E7%BD%AE%E7%9A%84-symbol-%E5%80%BC)
+        - 10.7.1 Symbol.hasInstance
+        - 10.7.2 Symbol.isConcatSpreadable
+        - 10.7.3 Symbol.species
+        - 10.7.4 Symbol.match
+        - 10.7.5 Symbol.replace
+        - 10.7.6 Symbol.search
+        - 10.7.7 Symbol.split
+        - 10.7.8 Symbol.iterator
+        - 10.7.9 Symbol.toPrimitive
+        - 10.7.10 Symbol.toStringTag
+        - 10.7.11 Symbol.unscopables
+    - [10.8 Symbol.prototype.description](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#108-symbolprototypedescription)
