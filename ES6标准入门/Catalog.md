@@ -146,3 +146,19 @@
         - 10.7.10 Symbol.toStringTag
         - 10.7.11 Symbol.unscopables
     - [10.8 Symbol.prototype.description](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#108-symbolprototypedescription)
+- 第十一章 Set 和 Map 数据解构
+    - [11.1 Set]()
+        - 11.1.1 基本用法
+        - 11.1.2 Set 实例的属性和方法
+        - 11.1.3 遍历操作
+    - [11.2 WeakSet]()
+    - [11.3 Map]()
+        - 11.3.1 含义和基本用法
+        - 11.3.2 实例的属性和操作方法
+        - 11.3.3 遍历方法
+        - 11.3.4 与其他数据结构的互相转换
+    - [11.4 WeakMap]()
+        - 11.4.1 含义
+        - 11.4.2 WeakMap 的语法
+        - 11.4.3 WeakMap 示例
+        - 11.4.4 WeakMap 的用途
