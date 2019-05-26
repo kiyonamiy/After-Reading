@@ -104,3 +104,25 @@
     - [8.8 数组实例的 includes()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#88-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-includes)
     - [8.9 数组实例的 flat() ， flatMap()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#89-%E6%95%B0%E7%BB%84%E5%AE%9E%E4%BE%8B%E7%9A%84-flat--flatmap)
     - [8.10 数组的空位](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#810-%E6%95%B0%E7%BB%84%E7%9A%84%E7%A9%BA%E4%BD%8D)
+- 第九章 对象的扩展
+    - [9.1 属性的简洁表达式](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#91-%E5%B1%9E%E6%80%A7%E7%9A%84%E7%AE%80%E6%B4%81%E8%A1%A8%E8%BE%BE%E5%BC%8F)
+    - [9.2 属性名表达式](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#92-%E5%B1%9E%E6%80%A7%E5%90%8D%E8%A1%A8%E8%BE%BE%E5%BC%8F)
+    - [9.3 方法的 name 属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#93-%E6%96%B9%E6%B3%95%E7%9A%84-name-%E5%B1%9E%E6%80%A7)
+    - [9.4 Object.is()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#94-objectis)
+    - [9.5 Object.assign()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#95-objectassign)
+        - 9.5.1 基本用法
+        - 9.5.2 注意点
+        - 9.5.3 常见用途
+    - [9.6 属性的可枚举性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#96-%E5%B1%9E%E6%80%A7%E7%9A%84%E5%8F%AF%E6%9E%9A%E4%B8%BE%E6%80%A7)
+    - [9.7 属性的遍历](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#97-%E5%B1%9E%E6%80%A7%E7%9A%84%E9%81%8D%E5%8E%86)
+    - [9.8 __proto__ 属性、 Object.setPrototypeOf() 、 Object.getPrototypeOf()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#98-proto-%E5%B1%9E%E6%80%A7-objectsetprototypeof--objectgetprototypeof)
+        - 9.8.1  __proto__ 属性
+        - 9.8.2 Object.setPrototypeOf()
+        - 9.8.3 Object.getPrototypeOf()
+    - [9.9 Object.keys() Object.values() Object.entries()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#99-objectkeys-objectvalues-objectentries)
+        - 9.9.1 Object.keys()
+        - 9.9.2 Object.values()
+        - 9.9.3 Object.entries()
+    - [9.10 对象的扩展运算符](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#910-%E5%AF%B9%E8%B1%A1%E7%9A%84%E6%89%A9%E5%B1%95%E8%BF%90%E7%AE%97%E7%AC%A6)
+    - [9.11 Object.getOwnPropertyDescriptors()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#911-objectgetownpropertydescriptors)
+    - [9.12 Null 传导运算符](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#912-null-%E4%BC%A0%E5%AF%BC%E8%BF%90%E7%AE%97%E7%AC%A6)
