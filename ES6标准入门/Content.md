@@ -2553,27 +2553,16 @@ Symbol.keyFor(s2) // undefined
 ### 10.6 实例：模块的 Singleton 模式
 
 ### 10.7 内置的 Symbol 值
-
 #### 10.7.1 Symbol.hasInstance
-
 #### 10.7.2 Symbol.isConcatSpreadable
-
 #### 10.7.3 Symbol.species
-
 #### 10.7.4 Symbol.match
-
 #### 10.7.5 Symbol.replace
-
 #### 10.7.6 Symbol.search
-
 #### 10.7.7 Symbol.split
-
 #### 10.7.8 Symbol.iterator
-
 #### 10.7.9 Symbol.toPrimitive
-
 #### 10.7.10 Symbol.toStringTag
-
 #### 10.7.11 Symbol.unscopables
 
 ### 10.8 Symbol.prototype.description
