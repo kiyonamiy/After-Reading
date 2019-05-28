@@ -181,8 +181,8 @@
     - [12.3 Proxy.revocable()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#123-proxyrevocable)
     - [12.4 this 问题](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#124-this-%E9%97%AE%E9%A2%98)
 - 第十三章 Reflect
-    - [13.1 概述]()
-    - ~~[13.2 静态方法]()~~
+    - [13.1 概述](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#131-%E6%A6%82%E8%BF%B0)
+    - ~~[13.2 静态方法](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#132-%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95)~~
         - 13.2.1 Reflect.get(target, name, receiver)
         - 13.2.2 Reflect.set(target, name, receiver)
         - 13.2.3 Reflect.has(obj, name)
@@ -196,3 +196,14 @@
         - 13.2.11 Reflect.isExtensible(target)
         - 13.2.12 Reflect.preventExtensions(target)
         - 13.2.13 Reflect.ownKeys(target)
+- 第十四章 Promise 对象
+    - [14.1 Promise 的含义]()
+    - [14.2 基本用法]()
+    - [14.3 Promise.prototype.then()]()
+    - [14.4 Promise.prototype.catch()]()
+    - [14.5 finally()]()
+    - [14.6 Promise.all()]()
+    - [14.7 Promise.race()]()
+    - [14.8 Promise.resolve()]()
+    - [14.9 Promise.reject()]()
+    - [14.10 Promise.try()]()
