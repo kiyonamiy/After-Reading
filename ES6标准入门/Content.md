@@ -3315,3 +3315,108 @@ console.log('next');
 * 
 **/
 ```
+
+## 第十五章 Iterator 和 for...of 循环
+
+### 15.1 Iterator 的概念
+
+JavaScript 原有的表示“集合”的数据结构
+- 数组（ Array ）
+- 对象（ Object ）
+- Map
+- Set
+
+用户还可以组合使用它们，定义自己的数据结构，比如数组的成员是Map，Map的成员是对象。这样就需要一种统一的接口机制（ iterator ），来处理所有不同的数据结构。
+
+Iterator 的作用
+- 为各种数据结构，提供一个统一的、简便的访问接口
+- 使得数据结构的成员能够按某种次序排列
+- ES6 创造了一种新的遍历命令for...of循环，Iterator 接口主要供for...of消费。
+
+```js
+/**
+* 模拟next方法返回值的例子
+**/
+
+//遍历器对象本质上，就是一个指针对象。
+//创建一个指针对象，指向当前数据结构的起始位置，不断调用指针对象的next方法，直到它指向数据结构的结束位置
+var it = makeIterator(['a', 'b']);
+
+//每一次调用next方法，都会返回数据结构的当前成员的信息。
+it.next() // { value: "a", done: false }    //done属性是一个布尔值，表示遍历是否结束。
+it.next() // { value: "b", done: false }
+it.next() // { value: undefined, done: true }
+
+function makeIterator(array) {
+  var nextIndex = 0;
+  return {
+    next: function() {
+      return nextIndex < array.length ?
+        {value: array[nextIndex++], done: false} :
+        {value: undefined, done: true};
+    }
+  };
+}
+```
+
+### 15.2 默认 Iterator 接口
+
+ES6 规定，默认的 Iterator 接口部署在数据结构的Symbol.iterator属性，或者说，一个数据结构只要具有Symbol.iterator属性，就可以认为是“可遍历的”（iterable）
+
+Symbol.iterator属性本身是一个函数，就是当前数据结构默认的遍历器生成函数。执行这个函数，就会返回一个遍历器。
+
+至于属性名Symbol.iterator，它是一个表达式，返回Symbol对象的iterator属性，这是一个预定义好的、类型为 Symbol 的特殊值，所以要放在方括号内。
+
+原生具备 Iterator 接口的数据结构如下
+- Array
+- Map
+- Set
+- String
+- TypedArray
+- 函数的 arguments 对象
+- NodeList 对象
+
+```js
+let obj = {
+  data: [1, 2, 3, 4],
+  [Symbol.iterator]() { //是一个函数
+    const self = this;
+    let index = 0;
+    return {    //返回一个只有 next() 方法的对象（指针对象---遍历器）
+      next() {
+        if(index < self.data.length) {  //判断这边是否到末尾
+          return  {
+            value: self.data[index ++],  //index ++, 自动将内部指针移到下一个实例
+            done: false
+          };
+        } else {
+          return {
+            value: undefined,
+            done: true
+          };
+        }
+      }
+    };
+  }
+};
+
+//拿到这个函数 [] ，并调用 () ，拿到一个只有 next 方法的 iterator 对象。
+const iter = obj[Symbol.iterator]();
+iter.next();    //{value: 1, done: true}
+```
+
+### 15.3 调用 Iterator 接口的场合
+
+### 15.4 字符串的 Iterator 接口
+
+### 15.5 Iterator 接口与 Generator 函数
+
+### 15.6 遍历器对象的 return() 、 throw()
+
+### 15.7 for...of 循环
+#### 15.7.1 数组
+#### 15.7.2 Set 和 Map 解构
+#### 15.7.3 计算生成的数据结构
+#### 15.7.4 类似数组的对象
+#### 15.7.5 对象
+#### 15.7.6 与其他遍历语言的比较
