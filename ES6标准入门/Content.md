@@ -3420,3 +3420,144 @@ iter.next();    //{value: 1, done: true}
 #### 15.7.4 类似数组的对象
 #### 15.7.5 对象
 #### 15.7.6 与其他遍历语言的比较
+
+## 第十六章 Generator 函数的语法
+
+### 16.1 简介
+
+#### 16.1.1 基本概念
+
+Generator 函数是 ES6 提供的一种异步编程解决方案，提供了一种可以暂停执行的函数，语法行为与传统函数完全不同。
+
+Generator 函数也是一个普通函数，可以理解是一个状态机，封装了多个内部状态。
+
+Generator 函数调用后，并不执行，返回的是指向内部状态的**指针对象**（遍历器对象）
+
+Generator 形式上特征：
+- function关键字与函数名之间有一个星号
+- 函数体内部使用yield表达式，定义不同的内部状态
+
+```js
+//即该函数有三个状态：hello，world 和 return 语句（结束执行）。
+//Generator 函数是分段执行的，yield表达式是暂停执行的标记，而next方法可以恢复执行
+function* helloWorldGenerator() {
+  yield 'hello';
+  yield 'world';
+  return 'ending';
+}
+
+//调用方法与普通函数一样
+//调用后，该函数并不执行，返回的是指向内部状态的 指针对象（遍历器对象）
+var hw = helloWorldGenerator();
+
+hw.next()
+// { value: 'hello', done: false }
+hw.next()
+// { value: 'world', done: false }
+hw.next()
+// { value: 'ending', done: true }
+hw.next()
+// { value: undefined, done: true }
+```
+
+#### 16.1.2 yield 表达式
+
+yield表达式就是暂停标志。
+
+惰性求值：只会在next方法将指针移到这一句时，才会求值。
+
+yield 表达式只能用在 Generator 函数里面，用在其他地方都会报错。
+
+yield 表达式如果用在另一个表达式之中，必须放在圆括号里面。
+
+yield表达式用作函数参数或放在赋值表达式的右边，可以不加括号。
+
+```js
+function* demo() {
+  // console.log('Hello' + yield); // SyntaxError
+  // console.log('Hello' + yield 123); // SyntaxError
+
+  console.log('Hello' + (yield)); // OK
+  console.log('Hello' + (yield 123) + 'World'); // OK
+}
+
+const it = demo();
+it.next();    //{value: undefined, done: false} 先执行 yield ，阻止了 console 打印
+it.next();    //Helloundfined {value: 123, done: false}
+it.next();    //HelloundefinedWorld {value: undefined, done: true}  最后执行到尾，没有 return ，所以 value 为 undefined
+it.next();    //{value: undefined, done: true}
+
+```
+```js
+function* demo() {
+  foo(yield 'a', yield 'b'); // OK
+  let input = yield; // OK
+}
+```
+
+#### 16.1.3 与 Iterator 接口的关系
+
+上一章说过，任意一个对象的 Symbol.iterator 方法，**等于该对象的遍历器生成函数**，调用该函数会返回该对象的一个遍历器对象。
+
+由于 Generator 函数**就是遍历器生成函数**，因此可以把 Generator 赋值给对象的 Symbol.iterator 属性，从而使得该对象具有 Iterator 接口。
+
+```js
+var myIterable = {};
+myIterable[Symbol.iterator] = function* () {
+  yield 1;
+  yield 2;
+  yield 3;
+};
+
+[...myIterable] // [1, 2, 3]
+
+
+//Generator 函数执行后，返回一个遍历器对象。该对象本身也具有Symbol.iterator属性，执行后返回自身。
+function* gen(){
+  // some code
+}
+var g = gen();
+g[Symbol.iterator]() === g
+// true
+```
+
+### 16.2 next 方法的参数
+
+yield 表达式本身没有返回值，或者说总是返回 undefined 。（var reset = yield i; 所以 reset 在一般情况下都为 undefined ）
+
+next 方法可以带一个参数，该参数就会被当作上一个 yield 表达式的返回值。由于next方法的参数表示上一个yield表达式的返回值，所以在第一次使用next方法时，传递参数是无效的。
+
+```js
+function* f() {
+  for(var i = 0; true; i++) {
+    var reset = yield i;    //如果next方法没有参数，每次运行到yield表达式，变量reset的值总是undefined
+    if(reset) { i = -1; }
+  }
+}
+
+var g = f();
+
+g.next() // { value: 0, done: false }
+g.next() // { value: 1, done: false }
+g.next(true) // { value: 0, done: false } //变量reset就被重置为这个参数（即true），因此i会等于-1，下一轮循环就会从-1开始递增。
+
+//这个功能有很重要的语法意义。可以在 Generator 函数运行的不同阶段，从外部向内部注入不同的值，从而调整函数行为。
+```
+
+### 16.3 for...of 循环
+
+### 16.4 Generator.prototype.throw()
+
+### 16.5 Generator.prototype.return()
+
+### 16.6 yield* 表达式
+
+### 16.7 作为对象属性的 Generator 函数
+
+### 16.8 Generator 函数的 this
+
+### 16.9 含义
+#### 16.9.1 Generator 与状态机
+#### 16.9.2 Generator 与协程
+
+## 第十七章 Generator 函数的异步应用
