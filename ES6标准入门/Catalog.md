@@ -222,17 +222,17 @@
         - 15.7.5 对象
         - 15.7.6 与其他遍历语言的比较
 - 第十六章 Generator 函数的语法
-    - [16.1 简介]()
+    - [16.1 简介](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#161-%E7%AE%80%E4%BB%8B)
         - 16.1.1 基本概念
         - 16.1.2 yield 表达式
-    - [16.2 next 方法的参数]()
-    - ~~[16.3 for...of 循环]()~~
-    - ~~[16.4 Generator.prototype.throw()]()~~
-    - ~~[16.5 Generator.prototype.return()]()~~
-    - ~~[16.6 yield* 表达式]()~~
-    - ~~[16.7 作为对象属性的 Generator 函数]()~~
-    - ~~[16.8 Generator 函数的 this]()~~
-    - ~~[16.9 含义]()~~
-    - ~~[16.9.1 Generator 与状态机]()~~
-    - ~~[16.9.2 Generator 与协程]()~~
+    - [16.2 next 方法的参数](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#162-next-%E6%96%B9%E6%B3%95%E7%9A%84%E5%8F%82%E6%95%B0)
+    - ~~[16.3 for...of 循环](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#163-forof-%E5%BE%AA%E7%8E%AF)~~
+    - ~~[16.4 Generator.prototype.throw()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#164-generatorprototypethrow)~~
+    - ~~[16.5 Generator.prototype.return()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#165-generatorprototypereturn)~~
+    - ~~[16.6 yield* 表达式](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#166-yield-%E8%A1%A8%E8%BE%BE%E5%BC%8F)~~
+    - ~~[16.7 作为对象属性的 Generator 函数](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#167-%E4%BD%9C%E4%B8%BA%E5%AF%B9%E8%B1%A1%E5%B1%9E%E6%80%A7%E7%9A%84-generator-%E5%87%BD%E6%95%B0)~~
+    - ~~[16.8 Generator 函数的 this](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#168-generator-%E5%87%BD%E6%95%B0%E7%9A%84-this)~~
+    - ~~[16.9 含义](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#169-%E5%90%AB%E4%B9%89)~~
+    - 16.9.1 Generator 与状态机
+    - 16.9.2 Generator 与协程
 - ~~第十七章 Generator 函数的异步应用~~
