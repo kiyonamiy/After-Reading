@@ -3561,3 +3561,315 @@ g.next(true) // { value: 0, done: false } //变量reset就被重置为这个参�
 #### 16.9.2 Generator 与协程
 
 ## 第十七章 Generator 函数的异步应用
+
+## 第十八章 async 函数
+
+### 18.1 含义
+
+async 函数是什么？一句话，它就是 Generator 函数的语法糖，使得异步操作变得更加方便。
+
+async 函数就是将 Generator 函数的星号（*）替换成 async ，将 yield 替换成 await ，仅此而已。
+
+async函数对 Generator 函数的改进，体现在以下四点
+- 内置执行器。与普通函数一模一样一行调用，输出最后结果。
+- 更好的语义。 async 和 await ，比起星号和 yield ，语义更清楚了。
+- 更广的适用性。co模块约定，yield命令后面只能是 Thunk 函数或 Promise 对象，而async函数的await命令后面，可以是 Promise 对象和原始类型的值。
+- 返回值是 Promise。这比 Generator 函数的返回值是 Iterator 对象方便多了。
+
+### 18.2 用法
+
+### 18.3 语法
+#### 18.3.1 返回 Promise 对象
+#### 18.3.2 Promise 对象的状态变化
+#### 18.3.3 await 命令
+#### 18.3.4 错误处理
+#### 18.3.5 使用注意点
+
+### 18.4 async 函数的实现原理
+
+### 18.5 其他异步处理方法的比较
+
+### 18.6 实例：按顺序完成异步操作
+
+### 18.7 异步遍历器
+#### 18.7.1 异步遍历的接口
+#### 18.7.2 for await...of
+#### 18.7.3 异步 Generator 函数
+#### 18.7.4 yield* 语句
+
+
+## 第十九章 Class 的基本语法
+
+### 19.1 简介
+
+#### 19.1.1 类的由来
+
+基本上，ES6 的class可以看作只是一个语法糖，它的绝大部分功能，ES5 都可以做到，新的class写法只是让对象原型的写法更加清晰、更像面向对象编程的语法而已。
+
+类的内部所有定义的方法，都是不可枚举的。
+
+类的所有方法都定义在类的prototype属性上面。
+
+```js
+//ES5
+function Point(x, y) {
+  this.x = x;
+  this.y = y;
+}
+Point.prototype.toString = function () {
+  return '(' + this.x + ', ' + this.y + ')';
+};
+
+var p = new Point(1, 2);
+
+//ES6
+class Point {
+  constructor(x, y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  toString() {
+    return '(' + this.x + ', ' + this.y + ')';
+  }
+}
+typeof Point // "function"
+Point === Point.prototype.constructor // true
+```
+
+#### 19.1.2 constructor 方法
+
+constructor 方法是类的默认方法，通过new命令生成对象实例时，自动调用该方法。
+
+一个类必须有 constructor 方法，如果没有显式定义，一个空的 constructor 方法会被默认添加。
+
+类必须使用new调用，否则会报错。这是它跟普通构造函数的一个主要区别，后者不用new也可以执行。
+
+```js
+class Point {
+}
+
+// 等同于
+//自动为它添加一个空的constructor方法
+class Point {
+  constructor() {}
+}
+```
+```js
+//constructor方法默认返回实例对象（即this），完全可以指定返回另外一个对象。
+class Foo {
+  constructor() {
+    return Object.create(null);
+  }
+}
+
+new Foo() instanceof Foo
+// false
+```
+#### 19.1.3 类的实例对象
+
+与 ES5 一样，实例的属性除非显式定义在其本身（即定义在this对象上（不共享，一人一份）），否则都是定义在原型上（即定义在class上（共享））。
+
+与 ES5 一样，类的所有实例共享一个原型对象。
+
+#### 19.1.4 取值函数（ getter ）和存值函数（ setter ）
+
+```js
+class MyClass {
+  constructor() {
+    // ...
+  }
+  get prop() {
+    return 'getter';
+  }
+  set prop(value) {
+    console.log('setter: '+value);
+  }
+}
+
+let inst = new MyClass();
+
+inst.prop = 123;
+// setter: 123
+
+inst.prop
+// 'getter'
+```
+
+#### 19.1.5 属性表达式
+
+```js
+let methodName = 'getArea';
+
+class Square {
+  constructor(length) {
+    // ...
+  }
+
+  [methodName]() {
+    // ...
+  }
+}
+```
+
+#### 19.1.6 Class 表达式
+```js
+const MyClass = class Me {
+  getClassName() {
+    return Me.name;
+  }
+};
+let inst = new MyClass();
+inst.getClassName() // Me
+Me.name // ReferenceError: Me is not defined  //这个类的名字是Me，但是Me只在 Class 的内部可用，指代当前类。
+
+
+//如果类的内部没用到的话，可以省略Me，也就是可以写成下面的形式。
+const MyClass = class { /* ... */ };
+
+```
+
+#### 19.1.7 注意点
+
+1. 默认就是严格模式
+
+2. 类不存在提升，定义在哪就是哪声明
+
+3. name 属性，总是返回紧跟在class关键字后面的类名。`Point.name // "Point"`
+
+4. 如果某个方法之前加上星号（*），就表示该方法是一个 Generator 函数。
+
+5. this 的指向
+
+类的方法内部如果含有this，它默认指向类的实例。但是，必须非常小心，一旦单独使用该方法，很可能报错。
+```js
+class Logger {
+  printName(name = 'there') {
+    this.print(`Hello ${name}`);
+  }
+
+  print(text) {
+    console.log(text);
+  }
+}
+
+const logger = new Logger();
+//如果将这个方法提取出来单独使用，
+const { printName } = logger;
+//this会指向该方法运行时所在的环境（由于 class 内部是严格模式，所以 this 实际指向的是undefined），从而导致找不到print方法而报错。
+printName(); // TypeError
+
+//一个比较简单的解决方法是，在构造方法中绑定this，这样就不会找不到print方法了。（自己推荐）
+class Logger {
+  constructor() {
+    this.printName = this.printName.bind(this);
+  }
+  // ...
+}
+
+//另一种解决方法是使用箭头函数。箭头函数内部的this总是指向定义时所在的对象。
+class Obj {
+  constructor() {
+    this.getThis = () => this;
+  }
+}
+const myObj = new Obj();
+myObj.getThis() === myObj // true
+
+//还有一种解决方法是使用Proxy，获取方法的时候，自动绑定this。
+```
+
+### 19.2 静态方法
+
+如果在一个方法前，加上static关键字，就表示该方法不能通过实例来调用，而是直接通过类来调用，这就称为“静态方法”。
+
+注意，如果静态方法包含this关键字，这个this指的是类，而不是实例。
+
+父类的静态方法，可以被子类继承。
+
+```js
+class Foo {
+  static bar() {
+    this.baz();
+  }
+  //静态方法可以与非静态方法重名
+  static baz() {
+    console.log('hello');
+  }
+  baz() {
+    console.log('world');
+  }
+}
+
+class Bar extends Foo {
+}
+
+//静态方法也是可以从super对象上调用的。
+class Sub extends Foo {
+  static bar() {
+    return super.bar() + ', too';
+  }
+}
+
+Foo.bar() // hello
+
+Bar.bar() // hello
+```
+
+### 19.3 实例属性的新写法
+
+实例属性除了定义在constructor()方法里面的this上面，也可以定义在类的最顶层。
+```js
+class foo {
+  //foo类有两个实例属性
+  bar = 'hello';
+  baz = 'world';
+
+  constructor() {
+    // ...
+  }
+}
+```
+
+### 19.4 静态属性
+```js
+// 老写法
+class Foo {
+  // ...
+}
+Foo.prop = 1;
+
+// 新写法
+class Foo {
+  static prop = 1;
+}
+```
+
+### 19.5 私有方法和私有属性
+
+目前，有一个**提案**（浏览器不支持），为class加了私有属性。方法是在属性名之前，使用#表示。
+
+私有属性和私有方法前面，也可以加上static关键字，表示这是一个静态的私有属性或私有方法。
+
+```js
+class Foo {
+  //私有属性
+  #a;
+  #b;
+  constructor(a, b) {
+    this.#a = a;
+    this.#b = b;
+  }
+  //私有方法
+  #sum() {
+    return #a + #b;
+  }
+  printSum() {
+    console.log(this.#sum());
+  }
+}
+let foo = new Foo(1, 2);
+foo.printSum();
+foo.#sum()
+foo.#a
+```
