@@ -2173,15 +2173,15 @@ Reflect.ownKeys({ [Symbol()]:0, b:0, 10:0, 2:0, a:0 })
 // ['2', '10', 'b', 'a', Symbol()]
 ```
 
-### 9.8 `__proto__` 属性、 Object.setPrototypeOf() 、 Object.getPrototypeOf()
+### 9.8__proto__属性、 Object.setPrototypeOf() 、 Object.getPrototypeOf()
 
-#### 9.8.1  `__proto__` 属性
+#### 9.8.1 __proto__属性
 
-`__proto__ `用来读取或设置当前对象的 prototype 对象。
+__proto__用来读取或设置当前对象的 prototype 对象。
 
 标准明确规定， 只有浏览器必须部署这个属性， 其他运行环境不一定要部署，而且新的代码最好认为**这个属性是不存在**的。
 
-在实现上， `__proto__` 调用的是 `Object.prototype.__proto__`
+在实现上，__proto__调用的是 `Object.prototype.__proto__`
 
 ```js
 // ES6 的写法
@@ -2201,7 +2201,7 @@ obj.method = function() {
 
 #### 9.8.2 Object.setPrototypeOf()
 
-Object.setPrototypeOf 方法的作用与 `__proto__` 相同，用来设置一个对象的 prototype 对象，返回参数对象本身。它是 ES6 **正式推荐的设置原型对象**的方法。
+Object.setPrototypeOf 方法的作用与__proto__相同，用来设置一个对象的 prototype 对象，返回参数对象本身。它是 ES6 **正式推荐的设置原型对象**的方法。
 
 ```js
 let proto = {};
@@ -3958,7 +3958,7 @@ b.m //undefined
 b.a //4
 ```
 
-### 20.4 类的 prototype 属性和 __proto__ 属性
+### 20.4 类的 prototype 属性和__proto__属性
 
 存在两条继承链
 - 子类的__proto__属性，表示构造函数的继承，总是指向父类

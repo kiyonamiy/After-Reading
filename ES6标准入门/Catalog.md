@@ -115,8 +115,8 @@
         - 9.5.3 常见用途
     - [9.6 属性的可枚举性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#96-%E5%B1%9E%E6%80%A7%E7%9A%84%E5%8F%AF%E6%9E%9A%E4%B8%BE%E6%80%A7)
     - [9.7 属性的遍历](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#97-%E5%B1%9E%E6%80%A7%E7%9A%84%E9%81%8D%E5%8E%86)
-    - [9.8 `__proto__` 属性、 Object.setPrototypeOf() 、 Object.getPrototypeOf()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#98-proto-%E5%B1%9E%E6%80%A7-objectsetprototypeof--objectgetprototypeof)
-        - 9.8.1  `__proto__` 属性
+    - [9.8 __proto__属性、 Object.setPrototypeOf() 、 Object.getPrototypeOf()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#98-proto-%E5%B1%9E%E6%80%A7-objectsetprototypeof--objectgetprototypeof)
+        - 9.8.1 __proto__属性
         - 9.8.2 Object.setPrototypeOf()
         - 9.8.3 Object.getPrototypeOf()
     - [9.9 Object.keys() Object.values() Object.entries()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#99-objectkeys-objectvalues-objectentries)
@@ -251,7 +251,7 @@
     - [19.4 静态属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#194-%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7)
     - [19.5 私有方法和私有属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#195-%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95%E5%92%8C%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7)
 - 第二十章 Class 的继承
-    - [20.1 简介]()
-    - [20.2 Object.getPrototypeOf()]()
-    - [20.3 super 关键字]()
-    - [20.4 类的 prototype 属性和 __proto__ 属性]()
+    - [20.1 简介](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#201-%E7%AE%80%E4%BB%8B)
+    - [20.2 Object.getPrototypeOf()](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#202-objectgetprototypeof)
+    - [20.3 super 关键字](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#203-super-%E5%85%B3%E9%94%AE%E5%AD%97)
+    - [20.4 类的 prototype 属性和__proto__属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#204-%E7%B1%BB%E7%9A%84-prototype-%E5%B1%9E%E6%80%A7%E5%92%8C-proto-%E5%B1%9E%E6%80%A7)
