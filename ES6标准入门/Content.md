@@ -571,7 +571,7 @@ for(let [key, value] of map) {
 const {SourceMapConsumer, SourceNode} = require("source-map");
 ```
 
-## 第四章 字符串的扩展（略）
+## 第四章 字符串的扩展
 
 ### 4.1 字符的 Unicode 表示法
 
@@ -3974,3 +3974,358 @@ B.__proto__ === A // true 类对应
 B.prototype.__proto__ === A.prototype // true 原型对应
 ```
 
+## 第二十一章 Module 的语法
+
+### 21.1 export 命令
+
+```js
+//推荐
+var firstName = 'Michael';
+var lastName = 'Jackson';
+var year = 1958;
+export {firstName, lastName, year};   //9.1 属性的简洁表达式
+
+//等价
+export var firstName = 'Michael';
+export var lastName = 'Jackson';
+export var year = 1958;
+```
+```js
+/**
+* export 输出的变量就是本来的名字，但是可以使用 as 关键字重命名。
+**/
+function v1() { ... }
+function v2() { ... }
+
+export {
+  v1 as streamV1,
+  v2 as streamV2,
+  v2 as streamLatestVersion   //重命名后，v2可以用不同的名字输出两次
+};
+```
+```js
+/**
+* export命令规定的是对外的接口，必须与模块内部的变量建立一一对应关系。
+**/
+// 报错
+export 1;
+
+// 报错
+var m = 1;
+export m;   //还是直接输出 1
+
+//上面两种写法都会报错，因为没有提供对外的接口。1只是一个值，不是接口。
+
+//正确写法
+// 写法一
+export var m = 1;
+
+// 写法二
+var m = 1;
+export {m};
+
+// 写法三
+var n = 1;
+export {n as m};
+```
+```js
+/**
+* function和class的输出，也必须遵守这样的写法。
+**/
+// 报错
+function f() {}
+export f;
+
+// 正确
+export function f() {};
+
+// 正确
+function f() {}
+export {f};
+```
+```js
+/**
+* export语句输出的接口，与其对应的值是动态绑定关系
+**/
+export var foo = 'bar';
+setTimeout(() => foo = 'baz', 500);   //代码输出变量foo，值为bar，500 毫秒之后变成baz
+```
+
+### 21.2 import 命令
+
+import后面的from指定模块文件的位置，可以是相对路径，也可以是绝对路径，.js后缀可以省略
+
+```js
+//大括号里面的变量名，必须与被导入模块（profile.js）对外接口的名称相同。
+//如果想为输入的变量重新取一个名字，import命令要使用as关键字，将输入的变量重命名。
+import {firstName, lastName as surname, year, a} from './profile.js';
+
+//不允许在加载模块的脚本里面，改写接口。
+a = {};
+//但是，如果a是一个对象，改写a的属性是允许的
+a.foo = 'hello';
+
+function setName(element) {
+  element.textContent = firstName + ' ' + lastName;
+}
+```
+```js
+/**
+* import语句会执行所加载的模块，因此可以有下面的写法。
+**/
+import 'lodash';  //仅仅执行lodash模块，但是不输入任何值。
+import 'lodash';  //如果多次重复执行同一句import语句，那么只会执行一次，而不会执行多次。
+```
+```js
+/**
+* import命令具有提升效果，会提升到整个模块的头部，首先执行。
+**/
+foo();
+
+import { foo } from 'my_module';
+
+/**
+* 由于import是静态执行，所以不能使用表达式和变量，这些只有在运行时才能得到结果的语法结构。
+**/
+// 报错
+import { 'f' + 'oo' } from 'my_module';
+
+// 报错
+let module = 'my_module';
+import { foo } from module;
+
+// 报错
+if (x === 1) {
+  import { foo } from 'module1';
+} else {
+  import { foo } from 'module2';
+}
+```
+
+### 21.3 模块的整体加载
+
+除了指定加载某个输出值，还可以使用整体加载。即用星号（*）指定一个对象，所有输出值都加载在这个对象上面。
+
+```js
+// circle.js
+
+export function area(radius) {
+  return Math.PI * radius * radius;
+}
+
+export function circumference(radius) {
+  return 2 * Math.PI * radius;
+}
+```
+```js
+// main.js
+/**
+* 逐一指定要加载的方法
+**/
+import {area, circumference} from './circle';
+
+console.log('圆面积：' + area(4));
+console.log('圆周长：' + circumference(14));
+```
+```js
+// main.js
+/**
+* 整体加载的写法
+**/
+import * as circle from './circle';
+
+console.log('圆面积：' + circle.area(4));
+console.log('圆周长：' + circle.circumference(14));
+```
+
+### 21.4 export default 命令
+
+前面例子看出，要使用  import 导入，就必须知道被导入模块对外接口的名称（对应）。
+
+为了给用户提供方便，让他们不用阅读文档就能加载模块，就要用到export default命令，为模块指定默认输出。外界 import 命令可以为该匿名函数指定任意名字。
+
+export default命令用于指定模块的默认输出。显然，一个模块只能有一个默认输出，因此export default命令只能使用一次。所以，import命令后面才不用加大括号，因为只可能唯一对应export default命令。
+
+```js
+/**
+* 比较 默认输出 和 正常输出
+**/
+//第一组，使用export default时，对应的import语句不需要使用大括号。
+export default function crc32() {   //输出
+  //...
+}
+import crc32 from './crc32';        //输入
+
+//第二组，不使用export default时，对应的import语句需要使用大括号。
+export function foo() {     //输出
+  //...
+}
+import {foo} from './foo';  //输入
+
+
+// 正确
+export default 1;    //含义是将 1 赋给变量default
+
+//正确
+var a = 1;
+export default a;
+
+// 报错
+export 1;
+
+// 报错
+export default var a = 1;
+
+/**
+* 本质 export default 就是输出一个叫做default的变量或方法，系统简化
+**/
+function add(x, y) {
+  return x + y;
+}
+export {add as default};
+// 等同于
+// export default add;
+
+import {default as foo} from 'modules';
+// 等同于
+// import foo from 'modules';
+```
+```js
+/**
+* 在一条import语句中，同时输入默认方法和其他接口
+**/
+export default function (obj) {
+  // ···
+}
+export function each(obj, iterator, context) {
+  // ···
+}
+export { each as forEach };   //暴露出forEach接口，默认指向each接口，即forEach和each指向同一个方法。
+
+//
+import _, { each, forEach } from 'lodash';
+```
+```js
+/**
+* export default也可以用来输出类。
+**/
+// MyClass.js
+export default class { ... }
+
+// main.js
+import MyClass from 'MyClass';
+let o = new MyClass();
+```
+
+### 21.5 export 与 import 的复合写法
+
+如果在一个模块之中，先输入后输出同一个模块，import语句可以与export语句写在一起。
+```js
+//foo和bar实际上并没有被导入当前模块，只是相当于对外转发了这两个接口，
+//导致当前模块不能直接使用foo和bar。
+export { foo, bar } from 'my_module';   //马上导出去
+// 可以简单理解为
+import { foo, bar } from 'my_module';
+export { foo, bar };
+
+//默认接口的写法如下
+export { default } from 'foo';
+
+//具名接口改为默认接口的写法如下
+export { es6 as default } from './someModule';
+// 等同于
+import { es6 } from './someModule';
+export default es6;
+
+//默认接口也可以改名为具名接口
+export { default as es6 } from './someModule';
+```
+
+### 21.6 模块的继承
+
+```js
+// circleplus.js
+export * from 'circle';   //表示再输出circle模块的所有属性和方法  //注意，export * 命令会忽略circle模块的default方法。
+
+//又输出了自定义的e变量和默认方法。
+export var e = 2.71828182846;
+export default function(x) {
+  return Math.exp(x);
+}
+
+// main.js
+import * as math from 'circleplus';
+import exp from 'circleplus';
+console.log(exp(math.e));
+```
+
+### 21.7 跨模块常量
+```js
+/**
+* 如果要使用的常量非常多，可以建一个专门的constants目录，将各种常量写在不同的文件里面，保存在该目录下。
+**/
+
+// constants/db.js
+export const db = {
+  url: 'http://my.couchdbserver.local:5984',
+  admin_username: 'admin',
+  admin_password: 'admin password'
+};
+
+// constants/user.js
+export const users = ['root', 'admin', 'staff', 'ceo', 'chief', 'moderator'];
+
+// constants/index.js  然后，将这些文件输出的常量，合并在index.js里面。
+export {db} from './db';
+export {users} from './users';
+
+// script.js
+import {db, users} from './constants/index';
+```
+
+### 21.8 import()
+
+```js
+const path = './' + fileName;
+const myModule = require(path);
+```
+上面的语句就是动态加载，require到底加载哪一个模块，只有运行时才知道。import命令做不到这一点（只能在模块的顶层，不能在代码块之中，无法在运行时加载模块）。
+
+因此，有一个提案，建议引入import()函数，完成动态加载。`import(specifier)`
+
+```js
+/**
+* import()返回一个 Promise 对象
+**/
+const main = document.querySelector('main');
+
+import(`./section-modules/${someVariable}.js`)
+  .then(module => {
+    module.loadPageInto(main);
+  })
+  .catch(err => {
+    main.textContent = err.message;
+  });
+```
+```js
+/**
+* import() 加载模块成功以后，这个模块会作为一个对象，当作then方法的参数。因此，可以使用对象解构赋值的语法，获取输出接口。
+**/
+import('./myModule.js')
+.then(({export1, export2}) => {
+  // ...·
+});
+
+/**
+* 模块有default输出接口，可以用参数直接获得
+**/
+import('./myModule.js')
+.then(myModule => {
+  console.log(myModule.default);
+});
+//上面的代码也可以使用具名输入的形式
+import('./myModule.js')
+.then(({default: theDefault}) => {
+  console.log(theDefault);
+});
+```
