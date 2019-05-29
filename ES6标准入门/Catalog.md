@@ -238,7 +238,7 @@
 - ~~第十七章 Generator 函数的异步应用~~
 - ~~第十八章 async 函数~~
 - 第十九章 Class 的基本语法
-    - [19.1 简介]()
+    - [19.1 简介](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#191-%E7%AE%80%E4%BB%8B)
         - 19.1.1 类的由来
         - 19.1.2 constructor 方法
         - 19.1.3 类的实例对象
@@ -246,7 +246,12 @@
         - 19.1.5 属性表达式
         - 19.1.6 Class 表达式
         - 19.1.7 注意点
-    - [19.2 静态方法]()
-    - [19.3 实例属性的新写法]()
-    - [19.4 静态属性]()
-    - [19.5 私有方法和私有属性]()
+    - [19.2 静态方法](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#192-%E9%9D%99%E6%80%81%E6%96%B9%E6%B3%95)
+    - [19.3 实例属性的新写法](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#193-%E5%AE%9E%E4%BE%8B%E5%B1%9E%E6%80%A7%E7%9A%84%E6%96%B0%E5%86%99%E6%B3%95)
+    - [19.4 静态属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#194-%E9%9D%99%E6%80%81%E5%B1%9E%E6%80%A7)
+    - [19.5 私有方法和私有属性](https://github.com/514723273/After-Reading/blob/master/ES6%E6%A0%87%E5%87%86%E5%85%A5%E9%97%A8/Content.md#195-%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95%E5%92%8C%E7%A7%81%E6%9C%89%E5%B1%9E%E6%80%A7)
+- 第二十章 Class 的继承
+    - [20.1 简介]()
+    - [20.2 Object.getPrototypeOf()]()
+    - [20.3 super 关键字]()
+    - [20.4 类的 prototype 属性和 __proto__ 属性]()

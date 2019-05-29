@@ -3873,3 +3873,104 @@ foo.printSum();
 foo.#sum()
 foo.#a
 ```
+
+## 第二十章 Class 的继承
+
+### 20.1 简介
+
+Class 可以通过extends关键字实现继承，这比 ES5 的通过修改原型链实现继承，要清晰和方便很多。
+
+```js
+class ColorPoint extends Point {
+  //如果子类没有定义constructor方法，会被默认添加，内部调用 super
+  constructor(x, y, color) {
+    //子类必须在constructor方法中调用super方法，否则新建实例时会报错。
+    //只有调用super之后，才可以使用this关键字，否则会报错。
+    super(x, y); // 调用父类的constructor(x, y)
+    this.color = color;
+  }
+
+  toString() {
+    return this.color + ' ' + super.toString(); // 调用父类的toString()
+  }
+}
+```
+
+### 20.2 Object.getPrototypeOf()
+
+Object.getPrototypeOf 方法可以用来从子类上获取父类。
+```js
+//可以使用这个方法判断，一个类是否继承了另一个类
+Object.getPrototypeOf(ColorPoint) === Point
+// true
+```
+
+### 20.3 super 关键字
+
+super这个关键字，既可以当作函数使用，也可以当作对象使用。（两种用法完全不同）
+
+ES6 规定，在子类普通方法中通过super调用父类的方法时，父类方法内部的this指向当前的子类实例。
+
+```js
+/**
+* 第一种情况，super作为函数调用时，代表父类的构造函数。
+**/
+//作为函数时，super()只能用在子类的构造函数之中，用在其他地方就会报错。
+class A {}
+
+class B extends A {
+  constructor() {
+    super();    //super() 在这里相当于 A.prototype.constructor.call(this)
+  }
+}
+```
+```js
+/**
+* 第二种情况，super作为对象时，在普通方法中，指向父类的原型对象；在静态方法中，指向父类（而不是父类的原型对象）。
+**/
+class A {
+  constructor() {
+    this.test = 2;
+  }
+  p() {
+    return 2;
+  }
+}
+A.prototype.x = 4;
+
+class B extends A {
+  constructor() {
+    super();
+    console.log(super.p()); // 2
+  }
+  get m() {
+    ////由于super指向父类的原型对象，所以定义在父类实例上的方法或属性，是无法通过super调用的。
+    return super.test;
+  }
+  get a() {
+    //属性x是定义在A.prototype上面的，所以super.x可以取到它的值。
+    return super.x;
+  }
+}
+
+let b = new B();
+b.m //undefined
+b.a //4
+```
+
+### 20.4 类的 prototype 属性和 __proto__ 属性
+
+存在两条继承链
+- 子类的__proto__属性，表示构造函数的继承，总是指向父类
+- 子类prototype属性的__proto__属性，表示方法的继承，总是指向父类的prototype属性
+```js
+class A {
+}
+
+class B extends A {
+}
+
+B.__proto__ === A // true 类对应
+B.prototype.__proto__ === A.prototype // true 原型对应
+```
+
