@@ -20,6 +20,12 @@
     - [4.3 将生命周期方法添加到类中](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#43-%E5%B0%86%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F%E6%96%B9%E6%B3%95%E6%B7%BB%E5%8A%A0%E5%88%B0%E7%B1%BB%E4%B8%AD)
     - [4.4 正确地使用状态](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#44-%E6%AD%A3%E7%A1%AE%E5%9C%B0%E4%BD%BF%E7%94%A8%E7%8A%B6%E6%80%81)
         - 4.4.1 不要直接更新状态
-        - 4.4.2 状态更新可能是异步地
+        - 4.4.2 状态更新可能是异步的
         - 4.4.3 状态更新合并
     - [4.5 数据自顶向下流动](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#45-%E6%95%B0%E6%8D%AE%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%B5%81%E5%8A%A8)
+- 第五章 事件处理
+- 第六章 条件渲染
+    - [6.1 if 语句和元素变量]()
+    - [6.2 与运算符 &&]()
+    - [6.3 三目运算符]()
+    - [6.4 阻止组件渲染]()

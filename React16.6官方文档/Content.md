@@ -438,7 +438,7 @@ this.state.comment = 'Hello'; // Wrong
 this.setState({comment: 'Hello'});  // Correct
 ```
 
-#### 4.4.2 状态更新可能是异步地
+#### 4.4.2 状态更新可能是异步的
 
 React 可以将多个 setState() 调用合并成一个调用来提高性能。
 
@@ -463,3 +463,190 @@ this.setState((prevState, props) => ({
 当你调用 setState() 时，React 将你提供的对象合并到当前状态。（简言之就是，更新的状态变量使用新值，没更新的状态使用原值，合并到当前状态）
 
 ### 4.5 数据自顶向下流动
+
+## 第五章 事件处理
+
+React 元素的事件处理和 DOM元素的很相似。但是有一点语法上的不同:
+- React事件绑定属性的命名采用驼峰式写法，而不是小写。
+- 如果采用 JSX 的语法你需要传入一个函数作为事件处理函数，而不是一个字符串(DOM元素的写法)
+- 不能使用返回 false 的方式阻止默认行为。必须明确的使用 preventDefault。
+
+```js
+/**
+* 一二不同举例：
+* onClick 驼峰
+* 传入函数
+**/
+//传统
+<button onclick="activateLasers()">
+  Activate Lasers
+</button>
+//React
+<button onClick={activateLasers}>
+  Activate Lasers
+</button>
+```
+
+```js
+/**
+* 三不同举例：
+* 
+**/
+//传统
+<a href="#" onclick="console.log('The link was clicked.'); return false">
+  Click me
+</a>
+//React
+function ActionLink() {
+
+  function handleClick(e) {
+    e.preventDefault();
+    console.log('The link was clicked.');
+  }
+
+  return (
+    <a href="#" onClick={handleClick}>
+      Click me
+    </a>
+  );
+
+}
+```
+
+ JSX 回调函数中的 this，类的方法默认是不会绑定 this 的。如果忘记 bind() ，当你调用这个函数的时候 this 的值会是 undefined。这并不是 React 的特殊行为；它是函数如何在 JavaScript 中运行的一部分。
+
+通过 bind 方式向监听函数传参，在类组件中定义的监听函数，事件对象 e 要排在所传递参数的后面。
+
+## 第六章 条件渲染
+
+在 React 中，你可以创建不同的组件来封装各种你需要的行为。然后还可以根据应用的状态变化只渲染其中的一部分。（创建不同的组件，根据不同的条件，显示不同的组件）
+```js
+function Greeting(props) {
+  const isLoggedIn = props.isLoggedIn;
+  if (isLoggedIn) {   //根据 isLoggedIn 的值渲染不同的问候语
+    return <UserGreeting />;
+  }
+  return <GuestGreeting />;
+}
+
+ReactDOM.render(
+  // Try changing to isLoggedIn={true}:
+  <Greeting isLoggedIn={false} />,
+  document.getElementById('root')
+);
+```
+
+### 6.1 if 语句和元素变量
+
+*可以使用变量来储存元素。*它可以帮助你有条件的渲染组件的一部分，而输出的其他部分不会更改。
+```js
+/**
+* 两个新组件分别代表注销和登录
+**/
+function LoginButton(props) {
+  return (
+    <button onClick={props.onClick}>
+      Login
+    </button>
+  );
+}
+
+function LogoutButton(props) {
+  return (
+    <button onClick={props.onClick}>
+      Logout
+    </button>
+  );
+}
+
+class LoginControl extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleLoginClick = this.handleLoginClick.bind(this);
+    this.handleLogoutClick = this.handleLogoutClick.bind(this);
+    this.state = {isLoggedIn: false};
+  }
+
+  handleLoginClick() {
+    this.setState({isLoggedIn: true});
+  }
+
+  handleLogoutClick() {
+    this.setState({isLoggedIn: false});
+  }
+
+  render() {
+    const isLoggedIn = this.state.isLoggedIn;
+
+    //元素变量
+    let button = null;
+    if (isLoggedIn) {
+      button = <LogoutButton onClick={this.handleLogoutClick} />;
+    } else {
+      button = <LoginButton onClick={this.handleLoginClick} />;
+    }
+
+    return (
+      <div>
+        <Greeting isLoggedIn={isLoggedIn} />
+        {button}
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <LoginControl />,
+  document.getElementById('root')
+);
+```
+
+### 6.2 与运算符 &&
+
+```js
+//之所以能这样做，是因为在 JavaScript 中，true && expression 总是返回 expression，而 false && expression 总是返回 false。
+function Mailbox(props) {
+  const unreadMessages = props.unreadMessages;
+  return (
+    <div>
+      <h1>Hello!</h1>
+      {unreadMessages.length > 0 &&
+        <h2>
+          You have {unreadMessages.length} unread messages.
+        </h2>
+      }
+    </div>
+  );
+}
+
+const messages = ['React', 'Re: React', 'Re:Re: React'];
+ReactDOM.render(
+  <Mailbox unreadMessages={messages} />,
+  document.getElementById('root')
+);
+```
+
+### 6.3 三目运算符
+
+条件渲染的另一种方法是使用 JavaScript 的条件运算符 condition ? true : false。
+
+```js
+render() {
+  const isLoggedIn = this.state.isLoggedIn;
+  return (
+    <div>
+      {isLoggedIn ? (
+        <LogoutButton onClick={this.handleLogoutClick} />
+      ) : (
+        <LoginButton onClick={this.handleLoginClick} />
+      )}
+    </div>
+  );
+}
+```
+
+### 6.4 阻止组件渲染
+
+在极少数情况下，你可能希望隐藏组件，即使它被其他组件渲染。让 render 方法返回 null 而不是它的渲染结果即可实现。
+
+组件的 render 方法返回 null 并不会影响该组件生命周期方法的回调。例如，componentWillUpdate 和 componentDidUpdate 依然可以被调用。
