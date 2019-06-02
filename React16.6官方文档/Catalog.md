@@ -14,3 +14,12 @@
     -[3.2 组件渲染](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#32-%E7%BB%84%E4%BB%B6%E6%B8%B2%E6%9F%93)
     -[3.3 组合组件](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#33-%E7%BB%84%E5%90%88%E7%BB%84%E4%BB%B6)
     -[3.4 Props 的只读性](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#34-props-%E7%9A%84%E5%8F%AA%E8%AF%BB%E6%80%A7)
+- 第四章 State & 生命周期
+    - [4.1 将函数转换为类]()
+    - [4.2 为一个类添加局部状态]()
+    - [4.3 将生命周期方法添加到类中]()
+    - [4.4 正确地使用状态]()
+        - 4.4.1 不要直接更新状态
+        - 4.4.2 状态更新可能是异步地
+        - 4.4.3 状态更新合并
+    - [4.5 数据自顶向下流动]()
