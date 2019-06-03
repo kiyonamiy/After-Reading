@@ -650,3 +650,130 @@ render() {
 在极少数情况下，你可能希望隐藏组件，即使它被其他组件渲染。让 render 方法返回 null 而不是它的渲染结果即可实现。
 
 组件的 render 方法返回 null 并不会影响该组件生命周期方法的回调。例如，componentWillUpdate 和 componentDidUpdate 依然可以被调用。
+
+## 第七章 列表 & Keys
+
+### 7.1 渲染多个组件
+
+可以通过使用 {} 在JSX内构建一个元素集合。
+
+```js
+const numbers = [1, 2, 3, 4,5];
+const listItems = numbers.map(item => 
+  <li>{number}</li>
+);
+//把整个 listItems 插入到 ul 元素中
+ReactDOM.render(
+  <ul>{listItems}</ul>,
+  document.getElementById('root')
+);
+```
+
+### 7.2 基础列表组件
+
+```js
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map(item => 
+    {/*如果没有这条语句，会报警告。当创建一个元素时，必须包括一个特殊的 key 属性。*/}
+    <li key={item.toString}>   
+      {item}
+    </li>
+  );
+  return (
+    <ul>
+      {listItems}
+    </ul>
+  );
+}
+
+const numbers = [1, 2, 3, 4, 5];
+ReactDOM.render(
+  <NumberList numbers={numbers} />,
+  document.getElementById('root')
+);
+```
+
+### 7.3 Keys
+
+Keys可以在DOM中的某些元素被增加或删除的时候，帮助React识别哪些元素发生了变化。因此你应当给数组中的每一个元素赋予一个确定的标识。
+
+一个元素的key最好是这个元素在列表中拥有的一个独一无二的字符串。通常，我们使用来自数据的id作为元素的key。
+
+当元素没有确定的id时，你可以使用他的序列号索引 index 作为 key 。
+
+如果列表可以重新排序，我们不建议使用索引来进行排序，因为这会导致渲染变得很慢。[深度解析 Key 的必要性](https://www.reactjscn.com/docs/reconciliation.html#%E9%80%92%E5%BD%92%E5%AD%90%E8%8A%82%E7%82%B9)
+
+### 7.4 用 Keys 提取组件
+
+元素的key只有在它和它的兄弟节点对比时才有意义。
+
+```js
+//错误的示范
+
+/**
+* 如果你提取出一个ListItem组件，你应该把key保存在数组中的这个<ListItem />元素上，而不是放在ListItem组件中的<li>元素上。（只放在有列表循环的最外层一项组件）
+**/
+
+function ListItem(props) {
+  const value = props.value;
+  return (
+    // 错啦！你不需要在这里指定key:
+    <li key={value.toString()}>
+      {value}
+    </li>
+  );
+}
+
+function NumberList(props) {
+  const numbers = props.numbers;
+  const listItems = numbers.map((number) =>
+    //错啦！元素的key应该在这里指定：
+    <ListItem value={number} />
+  );
+  return (
+    <ul>
+      {listItems}
+    </ul>
+  );
+}
+
+const numbers = [1, 2, 3, 4, 5];
+ReactDOM.render(
+  <NumberList numbers={numbers} />,
+  document.getElementById('root')
+);
+```
+```js
+//正确的示范
+
+function ListItem(props) {
+  const value = props.value;
+  // 对啦！这里不需要指定key:
+  return (
+    <li>
+      {value}
+    </li>
+  );
+}
+
+function NumberList(props) {
+  const numbers = props.numbers;
+  //也可以直接把 map 嵌到 底下的 {} 大括号中，不需要变量 listItems
+  const listItems = numbers.map((item, index) => 
+    // 又对啦！key应该在数组的上下文中被指定
+    <ListItem key={index} value={item} />
+  )
+  return (
+    <ul>
+      {listItems}
+    </ul>
+  );
+}
+
+const numbers = [1, 2, 3, 4, 5];
+ReactDOM.render(
+  <NumberList numbers={numbers} />,
+  document.getElementById('root')
+);
+```
