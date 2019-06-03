@@ -452,7 +452,7 @@ this.set({
 
 //Correct
 //要修复它，使用第二种形式的 setState() 来接受 一个函数 而不是一个对象。
-//该函数将接收 先前的状态，此次更新被应用时的props ：
+//该函数将接收 先前的状态，此次更新被应用时的 props ：
 this.setState((prevState, props) => ({
   counter: prevState.counter + props.increment
 }));
@@ -777,3 +777,143 @@ ReactDOM.render(
   document.getElementById('root')
 );
 ```
+
+## 第八章 表单
+
+HTML表单元素与React中的其他DOM元素有所不同，因为表单元素生来就保留一些内部状态。
+
+（比如 HTML input 输入框 可以直接输入，不需要额外的操作；而 React 需要编写函数，处理 onChange 事件，改变 input 的 value）
+
+大多数情况下，我们都会构造一个处理提交表单并可访问用户输入表单数据的函数。实现这一点的标准方法是使用一种称为“受控组件”的技术。
+
+```js
+<form>
+  <label>
+    Name:
+    <input type="text" name="name" />
+  </label>
+  <input type="submit" value="Submit" />
+</form>
+```
+
+### 8.1 受控组件
+
+在HTML当中，像<input>,<textarea>, 和 <select> 这类表单元素会维持自身状态，并根据用户输入进行更新。
+
+但在React中，可变的状态通常保存在组件的状态属性中，并且只能用 setState() 方法进行更新。
+
+总之，<input type="text">, <textarea>, 和 <select> 都十分类似 - 他们都通过传入一个value属性来实现对组件的控制。
+
+#### 8.1.1 input 标签 & textarea 标签
+
+在React中，<textarea> 会用value属性来代替（和 input 框同款使用）。这样的话，表单中的 <textarea> 非常类似于使用单行输入的表单。
+
+```js
+/**
+* 上个例子中在提交表单时输出name,我们可以写成“受控组件”的形式:
+**/
+
+class NameForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: ''
+    }
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  handleChange(e) {
+    const value = e.target.value;
+    this.setState((prevState, props) => ({
+        value: value
+      })
+    )
+  }
+
+  handleSubmit(e) {
+    alert('A name was submitted: ' + this.state.value);
+    //如果不添加这条语句，会继续执行和HTML的默认行为一样的行为：跳转到一个新页面
+    //在这里就是刷新了本页，清空了 input 框内内容
+    //添加后，不会跳转，不会刷新
+    e.preventDefault();
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Name:
+          <input type="text" value={this.state.value} onChange={this.handleChange}/>
+          <textarea value={this.state.value} onChange={this.handleChange} />
+        </label>
+        <input type="submit" value="Submit" />
+      </form>
+    )
+  }
+}
+```
+
+#### 8.1.2 select 标签
+
+```html
+/**
+* 在HTML当中，<select> 会创建一个下拉列表。例如这个 HTML 就创建了一个下拉列表的原型
+**/
+<select>
+  <option value="grapefruit">Grapefruit</option>
+  <option value="lime">Lime</option>
+  <option selected value="coconut">Coconut</option>   //Coconut选项最初由于 selected 属性是被选中的。
+  <option value="mango">Mango</option>
+</select>
+```
+
+在React中，并不使用之前的selected属性，而在根select标签上用value属性来表示选中项
+```js
+class FlavorForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      value: "mango"
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    const value = e.target.value;
+    this.setState((prevState, props) => ({
+      value: value
+    }));
+  }
+
+  handleSubmit(e) {
+    alert('Your favorite flavor is: ' + this.state.value);
+    e.preventDefault();
+  }
+
+  render() {
+    return (
+      //form 表单有 属性 onSubmit 而不是 button 上 绑定
+      <form onSubmit={this.handleSubmit}>
+        <label>
+          Pick your favorite La Croix flavor: 
+          {/* 这边通过 value 来控制 下拉框 哪个被选中 */}
+          <select value={this.state.value}  onChange={this.handleChange}>
+            <option value="lime">Lime</option>
+            <option value="Coconut">Coconut</option>
+            <option value="mango">Mango</option>
+          </select>
+        </label>
+        {/* 只有 type 为 submit 的时候 才能触发 提交 */}
+        <input type="submit" value="提交文本显示" />
+      </form>
+    );
+  }
+}
+
+```
+
+### 第九章 状态提升
+
+
