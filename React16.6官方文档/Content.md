@@ -798,15 +798,15 @@ HTML表单元素与React中的其他DOM元素有所不同，因为表单元素�
 
 ### 8.1 受控组件
 
-在HTML当中，像<input>,<textarea>, 和 <select> 这类表单元素会维持自身状态，并根据用户输入进行更新。
+在HTML当中，像`<input>`,`<textarea>`, 和 `<select>` 这类表单元素会维持自身状态，并根据用户输入进行更新。
 
 但在React中，可变的状态通常保存在组件的状态属性中，并且只能用 setState() 方法进行更新。
 
-总之，<input type="text">, <textarea>, 和 <select> 都十分类似 - 他们都通过传入一个value属性来实现对组件的控制。
+总之，`<input type="text">`, `<textarea>`, 和 `<select>` 都十分类似 - 他们都通过传入一个value属性来实现对组件的控制。
 
 #### 8.1.1 input 标签 & textarea 标签
 
-在React中，<textarea> 会用value属性来代替（和 input 框同款使用）。这样的话，表单中的 <textarea> 非常类似于使用单行输入的表单。
+在React中，`<textarea>` 会用value属性来代替（和 input 框同款使用）。这样的话，表单中的 `<textarea>` 非常类似于使用单行输入的表单。
 
 ```js
 /**
@@ -914,6 +914,348 @@ class FlavorForm extends React.Component {
 
 ```
 
-### 第九章 状态提升
+## 第九章 React 理念
 
+使用 React 创建一个可搜索的产品数据表格，展示我们的思考过程。
+
+### 9.1 第零步：从模拟页面开始（思考）
+
+想象我们已经有一个 JSON 接口和一个设计师给我们的原型图。
+
+![可搜索的产品数据表格原型图](https://raw.githubusercontent.com/514723273/.md-Pictures/master/20190603175652.png)
+
+```js
+[
+  {category: "Sporting Goods", price: "$49.99", stocked: true, name: "Football"},
+  {category: "Sporting Goods", price: "$9.99", stocked: true, name: "Baseball"},
+  {category: "Sporting Goods", price: "$29.99", stocked: false, name: "Basketball"},
+  {category: "Electronics", price: "$99.99", stocked: true, name: "iPod Touch"},
+  {category: "Electronics", price: "$399.99", stocked: false, name: "iPhone 5"},
+  {category: "Electronics", price: "$199.99", stocked: true, name: "Nexus 7"}
+];
+```
+
+### 9.2 第一步：把 UI 划分出组件层级（思考）
+
+第一件你要做的事情是用方框划分出每一个组件(和子组件)并给他们命名。
+
+![原型图划分层级](https://raw.githubusercontent.com/514723273/.md-Pictures/master/20190603180013.png)
+
+1. **FilterableProductTable(橙色)** 包含了整个例子
+2. **SearchBar(蓝色)** 接受所有用户输入
+3. **ProductTable(绿色)** 根据用户输入过滤并展示数据集合
+4. **ProductCategoryRow(绿松石色)** 展示每个分类的标题
+5. **ProductRow** 用行来展示每个产品
+
+现在我们已经确定了原型图中的组件，让我们把它们整理成层级结构。这很容易。原型图中的子组件在层级结构中应该作为子节点。
+
+- FilterableProductTable
+  - SearchBar
+  - ProductTable
+    - ProductCategoryRow
+    - ProductRow
+
+### 9.3 第二步：用 React 创建一个静态版本（代码）
+
+See the Pen [Thinking In React: Step 2](https://codepen.io/lacker/pen/vXpAgj/) on CodePen.
+
+现在有了组件层级，是时候去实现你的应用了。最简单的方式是先创建一个静态版本：传入数据模型，渲染 UI 但没有任何交互。
+
+需要创建能够复用其他组件的组件，并通过 props 来传递数据。props 是一种从父级向子级传递数据的方法。如果你熟悉 state 的概念， 在创建静态版本的时候不要使用 state。State 只在交互的时候使用，即随时间变化的数据。由于这是静态版本的应用，你不需要使用它。（这些组件只会有 render() 方法）
+
+你可以自顶向下或者自底向上构建应用。在较大的项目中，自底向上会更容易并且在你构建的时候有利于编写测试。
+
+### 9.4 第三步：定义 UI 状态的最小（但完整）表示（思考）
+
+React 使用 state，使你的 UI 交互，能够触发对底层数据模型的更改。
+
+让我们来看看每一条，找出哪一个是 state。每个数据只要考虑三个问题：
+- 它是通过 props 从父级传来的吗？如果是，他可能不是 state。
+- 它随着时间推移不变吗？如果是，它可能不是 state。
+- 你能够根据组件中任何其他的 state 或 props 把它计算出来吗？如果是，它不是 state。
+
+想想我们的实例应用中所有数据。我们有：
+- 原产品列表。（不是 state）（被作为 props 传入）
+- 用户输入的搜索文本（是 state）（随时间改变并且不能由其他任何值计算出来。）
+- 复选框的值（是 state）（随时间改变并且不能由其他任何值计算出来。）
+- 产品的筛选列表（不是 state）（它可以通过将原始产品列表与搜索文本和复选框的值组合计算出来。）
+
+最后，我们的 state 有：
+- 用户输入的搜索文本
+- 复选框的值
+
+### 9.5 第四步：确定你的 State 应该位于哪里（代码）
+
+See the Pen [Thinking In React: Step 4](https://codepen.io/lacker/pen/ORzEkG/) by Kevin Lacker (@lacker) on CodePen.
+
+（第二步完成后，页面只是一个静态的，输入框中输入，勾选框中勾选，没有任何改变）
+
+好的，现在我们确定了应用 state 的最小集合。接下来，我们需要确定哪个组件会改变，或拥有这个 state。
+
+记住：React 中的数据流是单向的，并在组件层次结构中向下传递。
+
+一开始我们可能不是很清楚哪个组件应该拥有哪个 state。在新手理解上这通常是最富有挑战性的部分，所以按照下面的步骤来辨别：
+
+对你应用的每一个 state：
+- 确定每一个需要这个 state 来渲染的组件。
+- 找到一个公共所有者组件(一个在层级上高于所有其他需要这个 state 的组件的组件)
+- 这个公共所有者组件或另一个层级更高的组件应该拥有这个 state。
+- 如果你没有找到可以拥有这个 state 的组件，创建一个仅用来保存状态的组件并把它加入比这个公共所有者组件层级更高的地方。
+
+让我们用这个策略分析我们的应用：
+- ProductTable 需要根据 state 过滤产品列表，SearchBar 需要展示搜索文本和复选框状态。
+- 公共所有者组件是 FilterableProductTable。
+- 筛选文本和复选框的值应该放在 FilterableProductTable。
+
+很酷，所以我们决定把 state 放在 FilterableProductTable。
+1. 首先，为 FilterableProductTable 的 constructor 添加一个实例属性 this.state = {filterText: '', inStockOnly: false} 来表示我们应用的初始状态。
+2. 接下来，把 filterText 和 inStockOnly 作为 prop 传入 ProductTable 和 SearchBar。
+3. 最后在 ProductTable 中使用这些 props 来筛选每行产品信息，在 SearchBar 中设置表单域的值。
+
+### 9.6 第五步：添加反向数据流（代码）
+
+See the Pen [Thinking In React: Step 5](https://codepen.io/rohan10/pen/qRqmjd) on CodePen.
+
+到目前为止，我们已经创建了一个可以正确渲染的应用程序，它的数据在层级中通过函数的 props 和 state 向下流动。现在是时候支持其他方式的数据流了：层级结构中最底层的表单组件需要去更新在 FilterableProductTable 中的 state 。
+
+（第四步完成后，在最近公共祖先 FilterableProductTable 上添加了 state ，使子组件 Product 、 SearchBar 可以根据 父组件传递的 props 改变自身显示（商品被筛选了、勾选框打勾），但此时数据只是从上向下，我们还不能控制输入框内的内容，也不能对勾选框进行勾选操作（要改变 父组件的 state））
+
+在当前版本的示例中，**如果你试图键入或选中复选框，你会发现 React 会忽略你的输入**。这是故意的，因为我们把 input 的 value 属性设置为一直等于从 FilterableProductTable 传入的 state。
+
+让我们想想我们想要做什么。我们想确保每当用户更改表单时，我们更新状态来反应用户输入。
+- 因为组件应该只更新自己的状态， FilterableProductTable 会将一个回调函数传递给 SearchBar ，每当应该更新状态时，它就会触发。我们可以使用输入上的 onChange 事件来调用它。
+- FilterableProductTable 传入的回调函数会调用 setState()，这时应用程序会被更新。
+
+### 9.7 总结代码
+
+```js
+/**
+* 0. data
+**/
+let PRODUCTS = [
+    {category: 'Sporting Goods', price: '$49.99', stocked: true, name: 'Football'},
+    {category: 'Sporting Goods', price: '$9.99', stocked: true, name: 'Baseball'},
+    {category: 'Sporting Goods', price: '$29.99', stocked: false, name: 'Basketball'},
+    {category: 'Electronics', price: '$99.99', stocked: true, name: 'iPod Touch'},
+    {category: 'Electronics', price: '$399.99', stocked: false, name: 'iPhone 5'},
+    {category: 'Electronics', price: '$199.99', stocked: true, name: 'Nexus 7'}
+];
+
+export default PRODUCTS;
+```
+```js
+/**
+* 1. FilterableProductTable
+**/
+import React, { Component } from 'react';
+import SearchBar from './SearchBar';
+import ProductTable from './ProductTable';
+
+class FilterableProductTable extends Component {
+    constructor(props) {
+        super(props);
+        /**
+         * 所有有关 filterText & inStockOnly 都是 9.5 第四步 的补充代码
+         */
+        this.state = {
+            filterText: '',
+            inStockOnly: false
+        }
+
+        this.handleFilterTextInput = this.handleFilterTextInput.bind(this);
+        this.handleInStockOnlyInput = this.handleInStockOnlyInput.bind(this);
+    }
+    render() {
+        let products = this.props.products;
+        let filterText = this.state.filterText;
+        let inStockOnly = this.state.inStockOnly;
+        return (
+            <div>
+                <SearchBar 
+                    filterText={filterText} 
+                    inStockOnly={inStockOnly}
+                    handleFilterTextInput={this.handleFilterTextInput}
+                    handleInStockOnlyInput={this.handleInStockOnlyInput}
+                />
+                <ProductTable 
+                    products={products} 
+                    filterText={filterText} 
+                    inStockOnly={inStockOnly}
+                />
+            </div>
+        )
+    }
+
+    /**
+     * 所有有关 handleFilterTextInput & handleInStockOnlyInput 都是 9.6 第五步 的补充代码
+     */
+    handleFilterTextInput(filterText) {
+        this.setState((prevState, props) => ({
+            filterText: filterText
+        }))
+    }
+
+    handleInStockOnlyInput(inStockOnly) {
+        this.setState((prevState, props) => ({
+            inStockOnly: inStockOnly
+        }))
+    }
+}
+
+export default FilterableProductTable;
+```
+```js
+/**
+* 2. SearchBar
+**/
+import React, { Component } from 'react';
+
+class SearchBar extends Component {
+    constructor(props) {
+        super(props);
+
+        this.handleFilterTextInputChange = this.handleFilterTextInputChange.bind(this);
+        this.handleInStockOnlyInputChange = this.handleInStockOnlyInputChange.bind(this);
+    }
+    render() {
+        /**
+         * 所有有关 filterText & inStockOnly 都是 9.5 第四步 的补充代码
+         */
+        let inStockOnly = this.props.inStockOnly;
+        let filterText = this.props.filterText;
+        return (
+            <form>
+                {/* 只添加了 value 就不能随着输入的变化而变化了（因为值被初始值锁定了） */}
+                <input type="text" placeholder="Search..." value={filterText} onChange={this.handleFilterTextInputChange} />
+                <p>
+                    {/* 注意是 checked 而不是 value */}
+                    <input type="checkbox" checked={inStockOnly} onChange={this.handleInStockOnlyInputChange} />
+                    {' '}
+                    Only show products in stock
+                </p>
+            </form>
+        );
+    }
+
+    /**
+     * 所有有关 handleFilterTextInput & handleInStockOnlyInput 都是 9.6 第五步 的补充代码
+     */
+    handleFilterTextInputChange(e) {
+        this.props.handleFilterTextInput(e.target.value);
+    }
+
+    handleInStockOnlyInputChange(e) {
+        //注意是 checked
+        this.props.handleInStockOnlyInput(e.target.checked);
+    }
+}
+
+export default SearchBar;
+```
+```js
+/**
+* 3. ProductTable
+**/
+import React, { Component } from 'react';
+import ProductCategoryRow from './ProductCategoryRow';
+import ProductRow from './ProductRow';
+
+class ProductTable extends Component {
+    render() {
+        let products = this.props.products;
+        let filterText = this.props.filterText;
+        let inStockOnly = this.props.inStockOnly;
+        let rows = [];
+        let lastCategory = null;
+        products.forEach(item => {
+            /**
+             * 所有有关 filterText & inStockOnly 都是 9.5 第四步 的补充代码
+             */
+            //空字符串被包含于任何字符串
+            if(!item.name.includes(filterText) || (inStockOnly && !item.stocked)) {
+                return;
+            }
+
+            if(item.category !== lastCategory) {
+                rows.push(<ProductCategoryRow key={item.category} category={item.category} />);
+                lastCategory = item.category;
+            }
+            rows.push(<ProductRow key={item.name} product={item}/>);
+        })
+        return (
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
+        )
+    }
+}
+
+export default ProductTable;
+```
+```js
+/**
+* 4. ProductCategoryRow
+**/
+import React, { Component } from 'react';
+
+class ProductCategoryRow extends Component {
+    render() {
+        return (
+            <tr>
+                <th colSpan="2">
+                    {this.props.category}
+                </th>
+            </tr>
+        );
+    }
+}
+
+export default ProductCategoryRow;
+```
+```js
+/**
+* 5. ProductRow
+**/
+import React, { Component } from 'react';
+
+class ProductRow extends Component {
+    render() {
+        const stocked = this.props.product.stocked;
+        let name = this.props.product.name;
+        const price = this.props.product.price;
+        //如果缺货，商品名标记为红色
+        if(!stocked) {
+            name = <span style={{color: 'red'}}>{name}</span>
+        }
+        return (
+            <tr>
+                <td>{name}</td>
+                <td>{price}</td>
+            </tr>
+        )
+    }
+}
+
+export default ProductRow;
+```
+```js
+/**
+* 6. index.js
+**/
+import React from 'react';
+import ReactDOM from 'react-dom';
+import FilterableProductTable from './FilterableProductTable';
+import productsData from './data';
+
+ReactDOM.render(<FilterableProductTable products={productsData}/>, document.getElementById('root'));
+
+```
 
