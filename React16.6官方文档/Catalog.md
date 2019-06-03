@@ -25,7 +25,24 @@
     - [4.5 数据自顶向下流动](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#45-%E6%95%B0%E6%8D%AE%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%B5%81%E5%8A%A8)
 - 第五章 事件处理
 - 第六章 条件渲染
-    - [6.1 if 语句和元素变量]()
-    - [6.2 与运算符 &&]()
-    - [6.3 三目运算符]()
-    - [6.4 阻止组件渲染]()
+    - [6.1 if 语句和元素变量](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#61-if-%E8%AF%AD%E5%8F%A5%E5%92%8C%E5%85%83%E7%B4%A0%E5%8F%98%E9%87%8F)
+    - [6.2 与运算符 &&](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#62-%E4%B8%8E%E8%BF%90%E7%AE%97%E7%AC%A6-)
+    - [6.3 三目运算符](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#63-%E4%B8%89%E7%9B%AE%E8%BF%90%E7%AE%97%E7%AC%A6)
+    - [6.4 阻止组件渲染](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#64-%E9%98%BB%E6%AD%A2%E7%BB%84%E4%BB%B6%E6%B8%B2%E6%9F%93)
+- 第七章 列表 & Keys
+    - [7.1 渲染多个组件](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#71-%E6%B8%B2%E6%9F%93%E5%A4%9A%E4%B8%AA%E7%BB%84%E4%BB%B6)
+    - [7.2 基础列表组件](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#72-%E5%9F%BA%E7%A1%80%E5%88%97%E8%A1%A8%E7%BB%84%E4%BB%B6)
+    - [7.3 Keys](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#73-keys)
+    - [7.4 用 Keys 提取组件](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#74-%E7%94%A8-keys-%E6%8F%90%E5%8F%96%E7%BB%84%E4%BB%B6)
+- 第八章 表单
+    - [8.1 受控组件](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#81-%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6)
+        - 8.1.1 input 标签 & textarea 标签
+        - 8.1.2 select 标签
+- 第九章 React 理念
+    - [9.1 第零步：从模拟页面开始（思考）](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#91-%E7%AC%AC%E9%9B%B6%E6%AD%A5%E4%BB%8E%E6%A8%A1%E6%8B%9F%E9%A1%B5%E9%9D%A2%E5%BC%80%E5%A7%8B%E6%80%9D%E8%80%83)
+    - [9.2 第一步：把 UI 划分出组件层级（思考）](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#92-%E7%AC%AC%E4%B8%80%E6%AD%A5%E6%8A%8A-ui-%E5%88%92%E5%88%86%E5%87%BA%E7%BB%84%E4%BB%B6%E5%B1%82%E7%BA%A7%E6%80%9D%E8%80%83)
+    - [9.3 第二步：用 React 创建一个静态版本（代码）](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#93-%E7%AC%AC%E4%BA%8C%E6%AD%A5%E7%94%A8-react-%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E9%9D%99%E6%80%81%E7%89%88%E6%9C%AC%E4%BB%A3%E7%A0%81)
+    - [9.4 第三步：定义 UI 状态的最小（但完整）表示（思考）](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#94-%E7%AC%AC%E4%B8%89%E6%AD%A5%E5%AE%9A%E4%B9%89-ui-%E7%8A%B6%E6%80%81%E7%9A%84%E6%9C%80%E5%B0%8F%E4%BD%86%E5%AE%8C%E6%95%B4%E8%A1%A8%E7%A4%BA%E6%80%9D%E8%80%83)
+    - [9.5 第四步：确定你的 State 应该位于哪里（代码）](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#95-%E7%AC%AC%E5%9B%9B%E6%AD%A5%E7%A1%AE%E5%AE%9A%E4%BD%A0%E7%9A%84-state-%E5%BA%94%E8%AF%A5%E4%BD%8D%E4%BA%8E%E5%93%AA%E9%87%8C%E4%BB%A3%E7%A0%81)
+    - [9.6 第五步：添加反向数据流（代码）](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#96-%E7%AC%AC%E4%BA%94%E6%AD%A5%E6%B7%BB%E5%8A%A0%E5%8F%8D%E5%90%91%E6%95%B0%E6%8D%AE%E6%B5%81%E4%BB%A3%E7%A0%81)
+    - [9.7 总结代码](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#97-%E6%80%BB%E7%BB%93%E4%BB%A3%E7%A0%81)
