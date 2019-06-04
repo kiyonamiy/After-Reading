@@ -47,5 +47,5 @@
     - [9.6 第五步：添加反向数据流（代码）](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#96-%E7%AC%AC%E4%BA%94%E6%AD%A5%E6%B7%BB%E5%8A%A0%E5%8F%8D%E5%90%91%E6%95%B0%E6%8D%AE%E6%B5%81%E4%BB%A3%E7%A0%81)
     - [9.7 总结代码](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#97-%E6%80%BB%E7%BB%93%E4%BB%A3%E7%A0%81)
 - 第十章 使用 PropTypes 进行类型检查
-    - [10.1 PropTypes]()
-    - [10.2 默认 Prop 值]()
+    - [10.1 PropTypes](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#101-proptypes)
+    - [10.2 默认 Prop 值](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#102-%E9%BB%98%E8%AE%A4-prop-%E5%80%BC)
