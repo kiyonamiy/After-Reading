@@ -23,6 +23,12 @@
         - 4.4.2 状态更新可能是异步的
         - 4.4.3 状态更新合并
     - [4.5 数据自顶向下流动](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#45-%E6%95%B0%E6%8D%AE%E8%87%AA%E9%A1%B6%E5%90%91%E4%B8%8B%E6%B5%81%E5%8A%A8)
+    - [4.6 props state 与 render 函数的关系]()
+    - [4.7 React 完整的生命周期]()
+        - 4.7.1 Initialization 初始化
+        - 4.7.2 Mounting 挂载
+        - 4.7.3 Updation 组件更新
+        - 4.7.4 Unmount 卸载
 - 第五章 事件处理
 - 第六章 条件渲染
     - [6.1 if 语句和元素变量](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#61-if-%E8%AF%AD%E5%8F%A5%E5%92%8C%E5%85%83%E7%B4%A0%E5%8F%98%E9%87%8F)
@@ -49,3 +55,21 @@
 - 第十章 使用 PropTypes 进行类型检查
     - [10.1 PropTypes](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#101-proptypes)
     - [10.2 默认 Prop 值](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#102-%E9%BB%98%E8%AE%A4-prop-%E5%80%BC)
+- 第十一章 虚拟DOM
+  - [11.1 三种方式的演变与比较]()
+    - 11.1.1 方式一
+    - 11.1.2 方式二
+    - 11.1.3 方式三
+  - [11.2 深入了解虚拟 DOM]()
+  - [11.3 虚拟 DOM 的优点]()
+  - [11.4 虚拟 DOM 中的 Diff 算法]()
+    - 11.4.1 Diff 的时机
+    - 11.4.2 Diff 同级比较思想
+    - 11.4.3 Key 值的重要性
+- 第十二章 Refs and the DOM
+  - [12.1 何时使用 Refs]()
+  - [12.2 Refs 的使用]()
+    - 12.2.1 为 DOM 元素添加 ref
+    - 12.2.2 为 class 组件添加 Ref
+    - 12.2.3 Refs 与函数组件
+  - [12.3 回调 Refs]()
