@@ -46,3 +46,6 @@
     - [9.5 第四步：确定你的 State 应该位于哪里（代码）](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#95-%E7%AC%AC%E5%9B%9B%E6%AD%A5%E7%A1%AE%E5%AE%9A%E4%BD%A0%E7%9A%84-state-%E5%BA%94%E8%AF%A5%E4%BD%8D%E4%BA%8E%E5%93%AA%E9%87%8C%E4%BB%A3%E7%A0%81)
     - [9.6 第五步：添加反向数据流（代码）](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#96-%E7%AC%AC%E4%BA%94%E6%AD%A5%E6%B7%BB%E5%8A%A0%E5%8F%8D%E5%90%91%E6%95%B0%E6%8D%AE%E6%B5%81%E4%BB%A3%E7%A0%81)
     - [9.7 总结代码](https://github.com/514723273/After-Reading/blob/master/React16.6%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3/Content.md#97-%E6%80%BB%E7%BB%93%E4%BB%A3%E7%A0%81)
+- 第十章 使用 PropTypes 进行类型检查
+    - [10.1 PropTypes]()
+    - [10.2 默认 Prop 值]()
