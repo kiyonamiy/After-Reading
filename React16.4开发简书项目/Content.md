@@ -107,9 +107,9 @@ componentDidMount() {
 
 ## 第三章 虚拟 DOM
 
-### 11.1 三种方式的演变与比较
+### 3.1 三种方式的演变与比较
 
-#### 11.1.1 方式一
+#### 3.1.1 方式一
 
 1. State 数据
 2. JSX 模板
@@ -125,7 +125,7 @@ componentDidMount() {
 
 第二次的DOM替换第一次的DOM，非常耗性能
 
-#### 11.1.2 方式二
+#### 3.1.2 方式二
 
 1. State 数据
 2. JSX 模板
@@ -140,7 +140,7 @@ componentDidMount() {
 
 节省了DOM替换的性能，但是损耗了DOM对比的性能，虽然性能有所提升，但是不大。
 
-#### 11.1.3 方式三
+#### 3.1.3 方式三
 
 1. State 数据
 2. JSX 模板
@@ -168,7 +168,7 @@ componentDidMount() {
 节省了真实DOM的创建，节省了真实DOM的对比，取而代之，是创建了JS对象，对比的也是JS对象。
 （**JS比较JS对象不怎么消耗性能，但是操作真实的DOM十分消耗性能**）
 
-### 11.2 深入了解虚拟 DOM
+### 3.2 深入了解虚拟 DOM
 
 例如
 ```js
@@ -191,18 +191,18 @@ return React.createElement('div', {}, React.createElement('span', {}, item))
 ```
 再深入可得，JSX -> *createElement* -> JS 对象（虚拟 DOM）-> 真实的 DOM
 
-### 11.3 虚拟 DOM 的优点
+### 3.3 虚拟 DOM 的优点
 
 1. 性能提升了， DOM 的比对变为 JS 对象的比对。
 2. 它使得跨端应用得以实现。React Native。
 
 （在浏览器中渲染真实的DOM没有问题，但是IOS、Android是不存在DOM这个概念的，无法被使用！但是转化为虚拟DOM，一个JS对象，可以在各平台被识别，在浏览器渲染真实的DOM，在移动平台渲染各种原生组件。）
 
-### 11.4 虚拟 DOM 中的 Diff 算法
+### 3.4 虚拟 DOM 中的 Diff 算法
 
 如何比较两个虚拟DOM的内容就涉及到Diff算法。
 
-#### 11.4.1 Diff 的时机
+#### 3.4.1 Diff 的时机
 
 ![](https://raw.githubusercontent.com/514723273/.md-Pictures/master/20190605143116.png)
 
@@ -210,13 +210,13 @@ return React.createElement('div', {}, React.createElement('span', {}, item))
 
 setState 是异步的，为了提升性能。比如连续调用三次 setState ，比对三次，更新三次，这样比较浪费性能，所以在极短的时间，**被合并为一次 setState**，一次比对虚拟DOM一次更新真实的DOM，省去额外两次。
 
-#### 11.4.2 Diff 同级比较思想
+#### 3.4.2 Diff 同级比较思想
 
 ![](https://raw.githubusercontent.com/514723273/.md-Pictures/master/20190604155508.png)
 
 同级比对，如果在节点比较就发现不同的话，下面就不会继续比较了，直接全部重新生成替换所有子节点。（虽然这样看上去很浪费性能，但是算法简单，提升效率。）
 
-#### 11.4.3 Key 值的重要性
+#### 3.4.3 Key 值的重要性
 
 ![](https://raw.githubusercontent.com/514723273/.md-Pictures/master/20190604160604.png)
 
