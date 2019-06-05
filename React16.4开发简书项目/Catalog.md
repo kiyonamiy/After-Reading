@@ -14,13 +14,13 @@
         - 2.2.1 阻止无意义的渲染
         - 2.2.2 Ajax 数据请求位置
 - 第三章 虚拟 DOM
-  - [3.1 三种方式的演变与比较]()
+  - [3.1 三种方式的演变与比较](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#31-%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%E7%9A%84%E6%BC%94%E5%8F%98%E4%B8%8E%E6%AF%94%E8%BE%83)
     - 3.1.1 方式一
     - 3.1.2 方式二
     - 3.1.3 方式三
-  - [3.2 深入了解虚拟 DOM]()
-  - [3.3 虚拟 DOM 的优点]()
-  - [3.4 虚拟 DOM 中的 Diff 算法]()
+  - [3.2 深入了解虚拟 DOM](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#32-%E6%B7%B1%E5%85%A5%E4%BA%86%E8%A7%A3%E8%99%9A%E6%8B%9F-dom)
+  - [3.3 虚拟 DOM 的优点](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#33-%E8%99%9A%E6%8B%9F-dom-%E7%9A%84%E4%BC%98%E7%82%B9)
+  - [3.4 虚拟 DOM 中的 Diff 算法](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#34-%E8%99%9A%E6%8B%9F-dom-%E4%B8%AD%E7%9A%84-diff-%E7%AE%97%E6%B3%95)
     - 3.4.1 Diff 的时机
     - 3.4.2 Diff 同级比较思想
     - 3.4.3 Key 值的重要性
