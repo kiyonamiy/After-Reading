@@ -30,6 +30,7 @@ npm start
 1. 安装 [react-transition-group](https://github.com/reactjs/react-transition-group) `npm install react-transition-group --save`（动画）
 2. 安装 [axios](https://github.com/axios/axios)  `npm install axios`（Ajax 请求）
 3. 安装 [Ant Design of React](https://ant.design/index-cn) `npm install antd --save`
+4. 安装 [Redux](https://redux.js.org/) `npm install --save redux`
 
 
 ## 第二章 React 生命周期函数
