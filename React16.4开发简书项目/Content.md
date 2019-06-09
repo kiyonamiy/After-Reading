@@ -265,7 +265,7 @@ setState 是异步的，为了提升性能。比如连续调用三次 setState �
 
 ### 4.1 Redux 概念简述
 
-![](https://raw.githubusercontent.com/514723273/.md-Pictures/master/20190608145440.png)
+![](https://raw.githubusercontent.com/514723273/.md-Pictures/master/20190609202153.png)
 
 Redux就是把组件数据放进一个公共区域进行存储。
 
