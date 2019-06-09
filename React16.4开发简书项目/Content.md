@@ -303,7 +303,7 @@ Redux就是把组件数据放进一个公共区域进行存储。
 
 #### 4.2.5 this.setState(store.getState())
 
-一般是注册 store 监听时，组件传入的函数。（`store.subscribe(this.setState(store.getState()))`）
+一般是注册 store 监听时，组件传入的函数。`store.subscribe(() => {this.setState(store.getState())});`
 
 将组件的 state 指针重新指向 store 内的新的 state 。（因为每次 store 内 state 变化是新拷贝一份旧的 state ，在拷贝后的做修改并返回）
 
