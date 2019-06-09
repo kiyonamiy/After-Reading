@@ -4,7 +4,7 @@
     - [1.1 基本步骤](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#11-%E5%9F%BA%E6%9C%AC%E6%AD%A5%E9%AA%A4)
     - [1.2 工具推荐](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#12-%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90)
     - [1.3 常用模块](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#13-%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97)
-    - [1.4 个别工具使用说明]()
+    - [1.4 个别工具使用说明](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#14-%E4%B8%AA%E5%88%AB%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
         - 1.4.1 Mock.js
 - 第二章 React 生命周期函数
     - [2.1 完整生命周期](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#21-%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F)
@@ -27,13 +27,13 @@
     - 3.4.2 Diff 同级比较思想
     - 3.4.3 Key 值的重要性
 - 第四章 Redux 入门
-    - [4.1 Redux 概念简述]()
-    - [4.2 store 自己的理解]()
+    - [4.1 Redux 概念简述](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#41-redux-%E6%A6%82%E5%BF%B5%E7%AE%80%E8%BF%B0)
+    - [4.2 store 自己的理解](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#42-store-%E8%87%AA%E5%B7%B1%E7%9A%84%E7%90%86%E8%A7%A3)
         - 4.2.1 新建 reducer 函数
         - 4.2.2 store = createStore(reducer)
         - 4.2.3 新建 action 对象
         - 4.2.4 store.dispatch(action)
         - 4.2.5 store.subscribe(func)
         - 4.2.5 this.setState(store.getState())
-    - [4.3 UI 组件和容器组件]()
+    - [4.3 UI 组件和容器组件](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#43-ui-%E7%BB%84%E4%BB%B6%E5%92%8C%E5%AE%B9%E5%99%A8%E7%BB%84%E4%BB%B6)
 
