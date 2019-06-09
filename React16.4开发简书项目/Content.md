@@ -31,7 +31,33 @@ npm start
 2. 安装 [axios](https://github.com/axios/axios)  `npm install axios`（Ajax 请求）
 3. 安装 [Ant Design of React](https://ant.design/index-cn) `npm install antd --save`
 4. 安装 [Redux](https://redux.js.org/) `npm install --save redux`
+5. 安装 [Mock.js](https://github.com/nuysoft/Mock) `npm install mockjs` （Mock 数据测试）
+5. 安装 [Redux Thunk](https://github.com/reduxjs/redux-thunk) `npm install redux-thunk`
 
+
+### 1.4 个别工具使用说明
+
+#### 1.4.1 Mock.js
+
+```js
+// mock/index.js
+import Mock from 'mockjs';
+
+import getListData from './get/api_get_list';
+import getTestData from './get/api_get_test';
+
+export default Mock.mock('/api/get/list', 'get', getListData)
+.mock('/api/get/test', 'get', getTestData);
+
+// mock/get/api_get_test
+export default {
+    name: 'Kiyonami',
+    age: 20
+}
+
+//最后在 src 下的 index.js 引入即可！（一处引用就可以！）
+import './mock';
+```
 
 ## 第二章 React 生命周期函数
 
@@ -235,12 +261,56 @@ setState 是异步的，为了提升性能。比如连续调用三次 setState �
 
 所以要使用稳定的值作为 Key 值，例如 唯一 id 。
 
-## 第五章 Redux 入门
+## 第四章 Redux 入门
 
-### 5.1 Redux 概念简述
+### 4.1 Redux 概念简述
 
 ![](https://raw.githubusercontent.com/514723273/.md-Pictures/master/20190608145440.png)
 
 Redux就是把组件数据放进一个公共区域进行存储。
 
 组件改变数据就不需要传递了，改变store里面的数据，其他组件就会感知到数据的改变，再去取就能取到新数据。所以无论层次多深，流程都是统一的。
+
+### 4.2 store 自己的理解
+
+![store](https://raw.githubusercontent.com/514723273/.md-Pictures/master/store.png)
+
+按步骤分析：
+
+#### 4.2.1 新建 reducer 函数
+
+参数为 (state, action)
+
+#### 4.2.2 store = createStore(reducer)
+
+ **将 reducer 置于内部，并且会马上执行一次 reducer**，此时会在内部存储一份 state 。
+ 
+ 此时执行 reducer 传入的参数分别为`state = defaultState, action = {type: "@@INIT"}`（此时是没有传入 action ，这个 action 为内部传入；defaultState 为默认值）
+
+ （所以在组件的 constructor 中，第一次 this.state = store.getState() ，是将组件内的 state 指针指向 store 内部的 state）
+
+#### 4.2.3 新建 action 对象
+
+需要有 type 属性
+
+#### 4.2.4 store.dispatch(action)
+
+日常执行 reducer 函数，传递的参数为 store 内部的 state 和 此时作为参数的 action 。更新内部的 state 。
+
+#### 4.2.5 store.subscribe(func)
+
+注册 store 监听，当内部的 state 发生改变时，调用 func 。
+
+#### 4.2.5 this.setState(store.getState())
+
+一般是注册 store 监听时，组件传入的函数。（`store.subscribe(this.setState(store.getState()))`）
+
+将组件的 state 指针重新指向 store 内的新的 state 。（因为每次 store 内 state 变化是新拷贝一份旧的 state ，在拷贝后的做修改并返回）
+
+设置 store 内的 state 为组件的最新 state 。
+
+### 4.3 UI 组件和容器组件
+
+可以拆分为 UI 组件和容器组件：
+- *UI 组件*负责组件渲染，内部一般只有一个 render 函数，使用无状态组件（函数组件）（性能高）来表示。
+- *容器组件*负责数据交互，引用对应的容器组件将其渲染，将 UI 组件需要的内容通过属性传递（ UI 组件通过 props 接收）（引入 store ，通过 dispatch 传递参数，在 reducer 中逻辑处理。）
