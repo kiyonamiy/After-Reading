@@ -11,14 +11,6 @@
 5. `cd todolist`
 6. `npm start` 开启React初始项目
 
-[中途出现的问题及解决方案](https://github.com/facebook/create-react-app/issues/6985)
-```
-create-react-app my-app
-cd my-app
-npm install react-scripts@2.1.8     //降级为 react scripts@2.1.8 解决了这个问题，而不需要处理环境变量
-npm start
-```
-
 ### 1.2 工具推荐
 
 1. React Chrome 插件[React Developer Tools](https://chrome.google.com/webstore/detail/react-developer-tools/fmkadmapgofadopljbjfkapdkoienihi?utm_source=chrome-ntp-icon)（开发环境下查看组件变化）
@@ -33,11 +25,13 @@ npm start
 4. 安装 [Redux](https://redux.js.org/) `npm install --save redux`
 5. 安装 [Mock.js](https://github.com/nuysoft/Mock) `npm install mockjs` （Mock 数据测试）
 5. 安装 [Redux Thunk](https://github.com/reduxjs/redux-thunk) `npm install redux-thunk`
+6. 安装 [Redux Saga](https://github.com/redux-saga/redux-saga) `npm install --save redux-saga`
+7. 安装 [React Redux](https://github.com/reduxjs/react-redux) `npm install --save react-redux`
 
 
 ### 1.4 个别工具使用说明
 
-#### 1.4.1 Mock.js
+#### 1.4.1 Mock.js 基础使用
 
 ```js
 // mock/index.js
@@ -58,6 +52,28 @@ export default {
 //最后在 src 下的 index.js 引入即可！（一处引用就可以！）
 import './mock';
 ```
+
+#### 1.4.2 Redux Thunk 配置
+
+参照 [Exercise-Project/todos/src/store/index.js](https://github.com/514723273/Exercise-Project/blob/master/todos/src/store/index.js) 和 [Redux DevTools Extension](https://github.com/zalmoxisus/redux-devtools-extension)
+
+### 1.5 问题
+
+#### 1.5.1 npm start 启动报错
+
+[中途出现的问题及解决方案](https://github.com/facebook/create-react-app/issues/6985)
+```
+create-react-app my-app
+cd my-app
+npm install react-scripts@2.1.8     //降级为 react scripts@2.1.8 解决了这个问题，而不需要处理环境变量
+npm start
+```
+
+#### 1.5.2 create-react-app 慢
+
+虽然平常使用cnpm来代替npm,但也只是使用新的指令而已，所以需要整体换源。
+
+`npm config set registry https://registry.npm.taobao.org`
 
 ## 第二章 React 生命周期函数
 
@@ -307,10 +323,74 @@ Redux就是把组件数据放进一个公共区域进行存储。
 
 将组件的 state 指针重新指向 store 内的新的 state 。（因为每次 store 内 state 变化是新拷贝一份旧的 state ，在拷贝后的做修改并返回）
 
-设置 store 内的 state 为组件的最新 state 。
-
 ### 4.3 UI 组件和容器组件
 
 可以拆分为 UI 组件和容器组件：
 - *UI 组件*负责组件渲染，内部一般只有一个 render 函数，使用无状态组件（函数组件）（性能高）来表示。
 - *容器组件*负责数据交互，引用对应的容器组件将其渲染，将 UI 组件需要的内容通过属性传递（ UI 组件通过 props 接收）（引入 store ，通过 dispatch 传递参数，在 reducer 中逻辑处理。）
+
+
+
+### 5.1 Redux Thunk 中间件
+
+如果遇到异步请求或者非常复杂的逻辑，我们希望把它移到其他地方进行统一处理，否则会使一个组件看起来过于臃肿。
+
+action 中返回的可以不是一个对象了，可以是一个函数。
+
+具体使用可以参考 [Exercise-Project/todos](Exercise-Project/todos/src/store/actionCreators.js)
+
+### 5.2 什么是中间件
+
+![Redux Data Flow](https://raw.githubusercontent.com/514723273/.md-Pictures/master/20190610074946.png)
+
+中间是指 action 和 store 的中间。中间件是对 dispatch 做了一次升级，可以对传入的参数进行判断，例如是对象直接传入 store ，是函数先执行，再传入。
+```js
+// actionCreators.js
+/**
+ * redux thunk
+ */
+//使用 redux-thunk 后， action 可以是函数
+export const getInitList = () => {
+    //返回函数 （虽然可以再简写 不用 return 用小括号
+    //虽然没有 store ，但是这个函数会接收到 dispatch 方法
+    return (dispatch) => {
+        axios.get('/api/get/list').then((res) => {
+            const action = getInitListAction(res.data);   //返回的函数继续执行，还是会创建 action 传入 store
+            dispatch(action);
+        });
+    }
+}
+```
+
+### 5.3 Redux Saga 中间件
+
+Redux Saga 和 Redux Thunk 用途一致，但流程不同：
+- redux saga 和 redux thunk 的不同是，thunk 是通过传入的 action 是函数还是对象自动分配；
+- 而 saga 不仅可以将 action 传入 reducer 也可以传入 saga。，我们先创建一个新的 action 对象，传入到 saga 中，再执行 InitList 的 action 。
+
+```js
+// saga.js
+import { takeEvery, put } from 'redux-saga/effects';
+import { GET_INIT_LIST } from './actionTypes';
+import { getInitListAction } from './actionCreators';
+import axios from 'axios';
+
+function* getInitList() {
+    try {
+        const res = yield axios.get('/api/get/list');
+        const action = getInitListAction(res.data); //此时又使用 初始化list的action
+        yield put(action);
+    } catch(e) {
+        console.log('/api/get/list 网络请求失败');
+    }
+
+}
+
+// 必须是 generator 函数
+// 不仅可以在 reducer 接收到 action ，saga 也可以
+function* saga() {
+    yield takeEvery(GET_INIT_LIST, getInitList);
+}
+
+export default saga;
+```

@@ -5,7 +5,11 @@
     - [1.2 工具推荐](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#12-%E5%B7%A5%E5%85%B7%E6%8E%A8%E8%8D%90)
     - [1.3 常用模块](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#13-%E5%B8%B8%E7%94%A8%E6%A8%A1%E5%9D%97)
     - [1.4 个别工具使用说明](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#14-%E4%B8%AA%E5%88%AB%E5%B7%A5%E5%85%B7%E4%BD%BF%E7%94%A8%E8%AF%B4%E6%98%8E)
-        - 1.4.1 Mock.js
+        - 1.4.1 Mock.js 基础使用
+        - 1.4.2 Redux Thunk 配置
+    - [1.5 问题]()
+        - 1.5.1 npm start 启动报错
+        - 1.5.2 create-react-app 慢
 - 第二章 React 生命周期函数
     - [2.1 完整生命周期](https://github.com/514723273/After-Reading/blob/master/React16.4%E5%BC%80%E5%8F%91%E7%AE%80%E4%B9%A6%E9%A1%B9%E7%9B%AE/Content.md#21-%E5%AE%8C%E6%95%B4%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F)
         - 2.1.1 Initialization 初始化
