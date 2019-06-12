@@ -27,7 +27,7 @@
 5. 安装 [Redux Thunk](https://github.com/reduxjs/redux-thunk) `npm install redux-thunk`
 6. 安装 [Redux Saga](https://github.com/redux-saga/redux-saga) `npm install --save redux-saga`
 7. 安装 [React Redux](https://github.com/reduxjs/react-redux) `npm install --save react-redux`
-
+8. 安装 [styled-components](https://github.com/styled-components/styled-components) `npm install styled-components`（使 CSS 模块化）
 
 ### 1.4 个别工具使用说明
 
@@ -394,3 +394,39 @@ function* saga() {
 
 export default saga;
 ```
+
+## 第六章 简书 Header 组件开发
+
+### styled-components 管理 css 文件
+
+CSS 是一处引用，全局生效（`import 'index.css'`）。然而我们并不希望如此，会产生耦合，使不同文件的样式相互影响。
+
+使用 styled-components 。使 css 模块化，单个组件引入一个样式使用，不会被其他文件的样式影响。
+
+```js
+//style.js
+
+//视频中的injectGlobal被弃用了，换成createGlobalStyle
+import { createGlobalStyle } from 'styled-components';
+
+export const GlobalStyle = createGlobalStyle`
+  body{
+    margin: 0;
+    background:green;
+  }
+`
+```
+```js
+//然后在组件中引用自己需要的样式，比如在App组件中
+import React, { Fragment } from 'react';
+import { GlobalStyle } from './style'
+function App() {
+  return (
+    <Fragment>
+      <GlobalStyle />
+    </Fragment>
+  );
+}
+export default App;
+```
+
