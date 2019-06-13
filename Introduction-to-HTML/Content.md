@@ -116,7 +116,7 @@ Anchor tags (`<a>`) are used to link to internal pages, external pages or conten
 
 ```html
 <nav>
-    <a href="./index.html">Brown Bear</a>
+    <a href="./index.html" target="_blank">Brown Bear</a>
     <a href="./aboutme.html">About Me</a>
 </nav>
 ```
