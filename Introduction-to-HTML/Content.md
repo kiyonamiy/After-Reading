@@ -144,7 +144,7 @@ The `<table>` element creates a table.
 
 The `<tr>` element adds rows to a table.
 
-### 3.3 `<td>` and '<th>'
+### 3.3 `<td>` and `<th>`
 
 To add data to a row, you can use the `<td>` element.
 
