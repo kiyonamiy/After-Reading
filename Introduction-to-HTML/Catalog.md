@@ -1,0 +1,45 @@
+# [Introduction to HTML](https://www.codecademy.com/learn/learn-html)
+
+- 1 Elements and Structure
+    - [1.1 `<h1>` to `<h6>`]()
+    - [1.2 `<p>`, `<span>` and `<div>`]()
+    - [1.3 `<em>` and `<strong>`]()
+    - [1.4 `<br>`]()
+    - [1.5 `<ul>`, `<ol>` and `<li>`]()
+    - [1.6 `<img>` and `<video>`]()
+      - 1.6.1 Image Alts
+      - 1.6.2 `<video>`
+    - [1.7 review]()
+- 2 HTML Document Standards
+    - [2.1 `<!DOCTYPE html>`]()
+    - [2.2 `<html>`]()
+    - [2.3 `<head>` and `<title>`]()
+    - [2.4 `<a>`]()
+    - [2.5 `<!-- comment -->`]()
+- 3 Tables
+    - [3.1 `<table>`]()
+    - [3.2 `<tr>`]()
+    - [3.3 `<td>` and '<th>']()
+    - [3.4 `colspan` and `rowspan`]()
+    - [3.6 `<thead>`, `<tbody>` and `<tfoot>`]()
+    - [3.7 review]()
+- 4 Forms
+    - [4.1 `<form>`]()
+    - [4.2 `input`]()
+      - 4.2.1 `<input type="text">`
+      - 4.2.2 `<input type="password">`
+      - 4.2.3 `<input type="number">`
+      - 4.2.4 `<input type="range">`
+      - 4.2.5 `<input type="checkbox">`
+      - 4.2.6 `<input type="radio"/>`
+      - 4.2.7 Setting type to "list"
+      - 4.2.8 `<input type="submit">`
+    - [4.3 `<select>`]()
+    - [4.4 `<datalist>`]()
+    - [4.5 reviews]()
+- 5 Form Validation
+    - [5.1 `required` attribute]()
+    - [5.2 `min` and `max` attribute]()
+    - [5.3 `minlength` and `maxlength` attribute]()
+    - [5.4 `pattern` attribute]()
+    - [5.5 review]()

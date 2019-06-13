@@ -1,39 +1,37 @@
-# [Web Development](https://www.codecademy.com/learn/paths/web-development)
+# [Introduction to HTML](https://www.codecademy.com/learn/learn-html)
 
-## 1 Learn HTML
-
-### 1.1 Introduction to HTML
+## 1 Elements and Structure
 
 **HTML** stands for **H**yper**T**ext **M**arkup **L**anguage and is used to create the structure and content of a webpage.
 
-#### 1.1.1 `<h1>` to `<h6>`
+### 1.1 `<h1>` to `<h6>`
 
 Headings and sub-headings, `<h1>` to `<h6>` tags, are used to enlarge text.
 
-#### 1.1.2 `<p>`, `<span>` and `<div>`
+### 1.2 `<p>`, `<span>` and `<div>`
 
 `<p>`, `<span>` and `<div>` tags specify text or blocks.
 
-#### 1.1.3 `<em>` and `<strong>`
+### 1.3 `<em>` and `<strong>`
 
 The `<em>` and `<strong>` tags are used to emphasize text.
 
 - The `<em>` tag will generally render as *italic* emphasis. (emphasizes text)
 - The `<strong>` tag will generally render as **bold** emphasis. (highlights important text)
 
-#### 1.1.4 `<br>`
+### 1.4 `<br>`
 
 Line breaks are created with the `<br>` tag.
 
 The line break element is unique because it is *only* composed of a starting tag. 
 
-#### 1.1.5 `<ul>`, `<ol>` and `<li>`
+### 1.5 `<ul>`, `<ol>` and `<li>`
 
 Ordered lists (`<ol>`) are numbered and unordered lists (`<ul>`) are bulleted.
 
-#### 1.1.6 `<img>` and `<video>`
+### 1.6 `<img>` and `<video>`
 
-##### 1.1.6.1 Image Alts
+#### 1.6.1 Image Alts
 
 ```html
 <img src="#" alt="A field of yellow sunflowers" />
@@ -45,7 +43,7 @@ The `alt` attribute also serves the following purposes:
 - Visually impaired users often browse the web with the aid of screen reading software. When you include the alt attribute, the screen reading software can read the image’s description out loud to the visually impaired user.
 - The alt attribute also plays a role in Search Engine Optimization (SEO), because search engines cannot “see” the images on websites as they crawl the internet. Having descriptive alt attributes can improve the ranking of your site.
 
-##### 1.1.6.2 `<video>`
+#### 1.6.2 `<video>`
 
 - After the src attribute, the width and height attributes are used to set the size of the video displayed in the browser. 
 - The **controls** attribute instructs the browser to include basic video controls: pause, play and skip.(Otherwise the video cannot be played, showing the first frame that is still)
@@ -57,7 +55,7 @@ Video not supported
 </video>
 ```
 
-#### 1.1.7 review
+### 1.7 review
 
 ```html
 <body>
@@ -96,23 +94,23 @@ Video not supported
 </body>
 ```
 
-### 1.2 HTML Document Standards
+## 2 HTML Document Standards
 
-#### 1.2.1 `<!DOCTYPE html>`
+### 2.1 `<!DOCTYPE html>`
 
 The `<!DOCTYPE html>` declaration should always be the first line of code in your HTML files. This lets the browser know what version of HTML to expect.
 
-#### 1.2.2 `<html>`
+### 2.2 `<html>`
 
 The `<html>` element will contain all of your HTML code.
 
-#### 1.2.3 `<head>` and `<title>`
+### 2.3 `<head>` and `<title>`
 
 Information about the web page, like the title, belongs within the `<head>` of the page.
 
 You can add a title to your web page by using the `<title>` element, inside of the head.A webpage’s title appears in a browser’s tab.
 
-#### 1.2.4 `<a>`
+### 2.4 `<a>`
 
 Anchor tags (`<a>`) are used to link to internal pages, external pages or content on the same page.
 
@@ -132,37 +130,37 @@ You can create sections on a webpage and jump to them using `<a>` tags and addin
     <li><a href="#media">Media</a></li>
 </ul>
 ```
-#### 1.2.5 `<!-- comment -->`
+### 2.5 `<!-- comment -->`
 
 Comments are written in HTML using the following syntax: `<!-- comment -->`.
 
-### 1.3 Tables
+## 3 Tables
 
-#### 1.3.1 `<table>`
+### 3.1 `<table>`
 
 The `<table>` element creates a table.
 
-#### 1.3.2 `<tr>`
+### 3.2 `<tr>`
 
 The `<tr>` element adds rows to a table.
 
-#### 1.3.3 `<td>` and '<th>'
+### 3.3 `<td>` and '<th>'
 
 To add data to a row, you can use the `<td>` element.
 
 able headings clarify the meaning of data. Headings are added with the `<th>` element.
 
-#### 1.3.4 `colspan` and `rowspan`
+### 3.4 `colspan` and `rowspan`
 
 Table data can span columns using the colspan attribute.
 
 Table data can span rows using the rowspan attribute.
 
-#### 1.3.6 `<thead>`, `<tbody>` and `<tfoot>`
+### 3.6 `<thead>`, `<tbody>` and `<tfoot>`
 
 Tables can be split into three main sections: a head, a body, and a footer.
 
-#### 1.3.7 review
+### 3.7 review
 
 ```html
   <table>
@@ -187,9 +185,9 @@ Tables can be split into three main sections: a head, a body, and a footer.
   </table>
 ```
 
-### 1.4 Forms
+## 4 Forms
 
-#### 1.4.1 `<form>`
+### 4.1 `<form>`
 
 The purpose of a `<form>` is to allow users to input information and send it.
 
@@ -202,23 +200,31 @@ Two attributes:
 </form>
 ```
 
-#### 1.4.2 `input`
+### 4.2 `input`
+
+four basic attributes:
+- type
+- name
+- value
+- id
+
+**form return name=value**
 
 To add fields for users to input information we use the `input` element and *set the type* attribute to a field of our choosing:
 
-##### 1.4.2.1 `<input type="text"/>`
+#### 4.2.1 `<input type="text">`
 
 Setting type to "text" creates a single row field for text input.
 
-##### 1.4.2.2 `<input type="password"/>`
+#### 4.2.2 `<input type="password">`
 
 Setting type to "password" creates a single row field that censors text input.
 
-##### 1.4.2.3 `<input type="number"/>`
+#### 4.2.3 `<input type="number">`
 
 Setting type to "number" creates a single row field for number input.
 
-##### 1.4.2.4 `<input type="range"/>`
+#### 4.2.4 `<input type="range">`
 
 Setting type to "range" creates a slider to select from a range of numbers.
 
@@ -226,7 +232,7 @@ Setting type to "range" creates a slider to select from a range of numbers.
 <input type="range" name="doneness" id="doneness" value="3" min="1" max="5">
 ```
 
-##### 1.4.2.5 `<input type="checkbox"/>`
+#### 4.2.5 `<input type="checkbox">`
 
 Setting type to "checkbox" creates a single checkbox which can be paired with other checkboxes.
 
@@ -243,7 +249,7 @@ Setting type to "checkbox" creates a single checkbox which can be paired with ot
 </section>
 ```
 
-##### 1.4.2.6 `<input type="radio"/>`
+#### 4.2.6 `<input type="radio">`
 
 Setting type to "radio" creates a radio button that can be paired with other radio buttons.
 
@@ -258,15 +264,15 @@ Setting type to "radio" creates a radio button that can be paired with other rad
 </section>
 ```
 
-##### 1.4.2.7 `<input type="list"/>`
+#### 4.2.7 Setting type to "list"
 
 Setting type to "list" will pair the `<input>` with a `<datalist>` element.
 
-##### 1.4.2.8 `<input type="submit"/>`
+#### 4.2.8 `<input type="submit">`
 
 Setting type to "submit" creates a submit button.
 
-#### 1.4.3 `<select>`
+### 4.3 `<select>`
 
 A `<select>` element is populated with `<option>` elements and renders a dropdown list selection.
 
@@ -281,7 +287,7 @@ A `<select>` element is populated with `<option>` elements and renders a dropdow
 </section>
 ```
 
-#### 1.4.4 `<datalist>`
+### 4.4 `<datalist>`
 
 A `<datalist>` element is populated with `<option>` elements and works with an `<input>` to search through choices.
 
@@ -298,7 +304,7 @@ A `<datalist>` element is populated with `<option>` elements and works with an `
 </section>
 ```
 
-#### 1.4.5 reviews
+### 4.5 reviews
 
 ```html
 <html lang="en" dir="ltr">
@@ -393,29 +399,73 @@ A `<datalist>` element is populated with `<option>` elements and works with an `
 </html>
 ```
 
-## 2 Styling a Website
+## 5 Form Validation
 
-## 3 Getting Started with JavaScript
+### 5.1 `required` attribute
 
-## 4 Getting More Advanced with Design
+Adding the `required` attribute to an input related element will validate that the input field has information in it.
 
-## 5 JavaScript: Array, Loops, and Objects
+```html
+<input id="allergies" name="allergies" type="text" required>
+```
 
-## 6 Building Interactive JavaScript Websites
+### 5.2 `min` and `max` attribute
 
-## 7 Introduction to jQuery
+Assigning a value to the `min` attribute of a number input element will validate an acceptable minimum value.
 
-## 8 Intermediate JavaScript
+```html
+<label for="guests">Enter # of guests:</label>
+<input id="guests" name="guests" type="number" min="1" max="4">     <!-- type="number" -->
+```
 
-## 9 Learn the Command Line
 
-## 10 Learn Git 
+### 5.3 `minlength` and `maxlength` attribute
 
-## 11 Building Front-end Applications with React
+Assigning a value to the `minlength` attribute of a text input element will validate an acceptable minimum number of characters.
 
-## 12 JavaScript Back-End Development
+```html
+<label for="pw">Password:</label>
+<input id="pw" name="pw" type="password" minlength="8" maxlength="15" required>
+```
 
-## 13 SQL and Databases for Web Development
+### 5.4 `pattern` attribute
 
-## 14 Test-Driven Development with JavaScript
+Assigning a regex to `pattern` matches the input to the provided regex.
+
+```html
+<label for="payment">Credit Card Number (no spaces):</label>
+<input id="payment" name="payment" type="text" required pattern="[0-9]{14,16}">
+```
+
+### 5.5 review
+
+```html
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Sign Up Page</title>
+    <link rel="stylesheet" href="style.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet">
+  </head>
+  <body>
+    <section class="overlay">
+			<h1>Sign Up</h1>
+      <p>Create an account:</p>
+      <form action="submission.html" method="GET">
+        <label for="username">Username:</label>
+        <br>
+				<input id="username" name="username" type="text" required minlength="3" maxlength="15">
+        <br>
+        <label for="pw">Password:</label>
+        <br>
+        <!--Add the pattern attribute to the input below-->
+				<input id="pw" name="pw" type="password" required minlength="8" maxlength="15">
+        <br>
+        <input type="submit" value="Submit">
+      </form>
+    </section>
+  </body>
+</html>
+```
 
