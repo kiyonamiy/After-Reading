@@ -996,7 +996,7 @@ div {
 
 最后，还有重要的一点， 一个框的 outline 是一个看起来像是边界但又不属于框模型的东西。它的行为和边界差不多，但是并不改变框的尺寸（更准确的说，轮廓被勾画于在框边界之外，外边距区域之内）
 
-#### 1.6.3 CSS 框类型
+#### 1.6.3 CSS 盒类型
 
 我们可以通过display属性来设定元素的框类型。display属性有很多的属性值。
 
@@ -1005,8 +1005,120 @@ div {
 - 行内框（ inline box）与块框是相反的，它随着文档的文字流动（例如：它将会和周围的文字和其他行内元素出现在同一行，而且它的内容会像一段中的文字一样随着文字部分的流动而打乱），对行内盒设置宽高无效，设置padding, margin 和 border都会更新周围文字的位置，但是对于周围的的块框（ block box）不会有影响。
 - 行内块状框（inline-block box） 像是上述两种的集合：它不会重新另起一行但会像行内框（ inline box）一样随着周围文字而流动，而且他能够设置宽高，并且像块框一样保持了其块特性的完整性，它不会在段落行中断开。（在下面的示例中，行内块状框会放在第二行文本上，因为第一行没有足够的空间，并且不会突破两行。然而，如果没有足够的空间，行内框会在多条线上断裂，而它会失去一个框的形状。）
 
-## 第二章 样式化文本
+## 第二章 CSS 排版概述
 
-## 第三章 样式化区块
+### 2.1 介绍 CSS 布局
 
-## 第四章 CSS 排版概述
+CSS页面布局技术允许我们拾取网页中的元素，并且控制它们相对正常布局流、周边元素、父容器或者主视口/窗口的位置。在这个模块中将涉及更多关于页面布局技术的细节：
+- 浮动
+- 定位
+- CSS 表格
+- 弹性盒子
+- 网格
+
+#### 2.1.1 正常布局流
+
+正常布局流是指在不对页面进行任何布局控制时，浏览器默认的HTML布局方式。
+
+布局技术会覆盖默认的布局行为：
+- **position 属性** — 正常布局流中，默认为 static。
+- **浮动** —— 应用 float 值，诸如 left 能够让块级元素互相并排成一行，而不是一个堆叠在另一个上面。
+- **display 属性** —— 标准值 block, inline or inline-block 会改变元素在正常布局流中的行为方式。
+
+#### 2.1.2 浮动
+
+浮动技术允许元素浮动到另外一个元素的左侧或右侧，而不是默认的一个堆叠另一个。float 的主要**用途**是布置出多个列并且浮动文字以环绕图片。
+
+float 属性有四个可能的值：
+- left — 将元素浮动到左侧。
+- right — 将元素浮动到右侧。
+- none — 默认值, 不浮动。
+- inherit — 继承父元素的浮动属性。
+
+#### 2.1.3 定位技术
+
+定位技术(position)允许我们将一个元素从它在页面的原始位置准确地移动到另外一个位置。
+
+有四种主要的定位类型需要我们了解：
+- **静态定位**(Static positioning) 是每个元素默认的属性——它表示“将元素放在文档布局流的默认位置——没有什么特殊的地方”。
+- **相对定位**(Relative positioning) 允许我们相对元素在正常的文档流中的位置移动它——包括将两个元素叠放在页面上。这对于微调和精准设计(design pinpointing)非常有用。
+- **绝对定位**(Absolute positioning) 将元素完全从页面的正常布局流中移出，类似将它单独放在一个图层中. 
+- **固定定位**(Fixed positioning) 与绝对定位非常类似，除了它是将一个元素相对浏览器视口固定，而不是相对另外一个元素。 在创建类似页面滚动总是处于页面上方的导航菜单时非常有用。
+
+##### 2.1.3.1 静态定位（默认）
+
+```html
+<h1>Positioning</h1>
+
+<p>I am a basic block level element.</p>
+<p class="positioned">I am a basic block level element.</p>
+<p>I am a basic block level element.</p>
+```
+
+```css
+body {
+  width: 500px;
+  margin: 0 auto;
+}
+
+p {
+  background: aqua;
+  border: 3px solid blue;
+  padding: 10px;
+  margin: 10px;
+}
+
+span {
+  background: red;
+  border: 1px solid black;
+}
+```
+
+![static_position](https://raw.githubusercontent.com/514723273/.md-Pictures/master/static_position.png)
+
+
+##### 2.1.3.2 相对定位
+
+```css
+.positioned {
+  position: relative;
+  background: yellow;
+  top: 30px;
+  left: 30px;
+}
+```
+
+这里我们给中间段落一个position relative值——**这属性本身不做任何事情**，所以我们还添加了top和left属性。
+
+**相对于本身静态位置**（所以称之为相对定位，相对自身）做出了右下偏移。距离原位置上方空30px，左方空30px。
+
+![relative_position](https://raw.githubusercontent.com/514723273/.md-Pictures/master/relative_position.png)
+
+##### 2.1.3.3 绝对定位
+
+绝对定位用于将元素移动到web页面的任何位置，以创建复杂的布局。有趣的是，它经常被用于与相对定位和浮动的协同工作。
+
+```css
+.positioned {
+  position: absolute;
+  background: yellow;
+  top: 30px;
+  left: 30px;
+}
+```
+
+![absolute_position](https://raw.githubusercontent.com/514723273/.md-Pictures/master/absolute_position.png)
+
+这和之前截然不同！定位元素现在已经与页面布局的其余部分完全分离，并位于页面的顶部。其他两段现在靠在一起，好像之前那个中间段落不存在一样。（相对定位还是空出了原来的位置！）
+
+它们指定元素应该从**页面边界的顶部和左边的距离**(确切地说，是 `<html>`元素的距离)
+
+### 2.2 正常布局流
+
+默认的，一个块级元素的内容宽度是其父元素的100%，其高度与其内容高度一致。
+
+行内元素的height width与内容一致。你无法设置行内元素的height width --- 它们就那样置于块级元素的内容里。  如果你想控制行内元素的尺寸，你需要为元素设置display: block; （或者，display: inline-block; inline-block 混合了inline 和 block的特性。)
+
+块级元素另起一行；行内元素不会另起一行。
+
+如果两个相邻的元素都设置了margin 并且两个margin有重叠，那么*更大的设置会被保留*，小的则会消失 --- 这被称为外边距叠加，我们之前见到过。
