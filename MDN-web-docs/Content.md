@@ -1076,7 +1076,6 @@ span {
 
 ![static_position](https://raw.githubusercontent.com/514723273/.md-Pictures/master/static_position.png)
 
-
 ##### 2.1.3.2 相对定位
 
 ```css
