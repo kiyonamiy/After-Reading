@@ -369,7 +369,7 @@ Redux就是把组件数据放进一个公共区域进行存储。
 - *UI 组件*负责组件渲染，内部一般只有一个 render 函数，使用无状态组件（函数组件）（性能高）来表示。
 - *容器组件*负责数据交互，引用对应的容器组件将其渲染，将 UI 组件需要的内容通过属性传递（ UI 组件通过 props 接收）（引入 store ，通过 dispatch 传递参数，在 reducer 中逻辑处理。）
 
-
+## 第五章 Redux Thunk and Redux Saga
 
 ### 5.1 Redux Thunk 中间件
 
