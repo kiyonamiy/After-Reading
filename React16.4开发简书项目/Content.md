@@ -28,7 +28,12 @@
 6. 安装 [Redux Saga](https://github.com/redux-saga/redux-saga) `npm install --save redux-saga`
 7. 安装 [React Redux](https://github.com/reduxjs/react-redux) `npm install --save react-redux`
 8. 安装 [styled-components](https://github.com/styled-components/styled-components) `npm install styled-components`（使 CSS 模块化）
-9. 安装 [immutable](https://github.com/immutable-js/immutable-js) `npm install immutable`（封装 state ，确保不改变）
+9. 安装 [immutable](https://github.com/immutable-js/immutable-js) `npm install immutable`（封装 各分支的 state，确保不改变）
+10. 安装 [redux-immutable](https://github.com/gajus/redux-immutable) `npm install redux-immutable`（分装整个 state，使其 immutable）
+11. 安装 [react-router](https://github.com/ReactTraining/react-router) `npm install react-router-dom`（路由）
+12. 安装 [react-loadable](https://github.com/jamiebuilds/react-loadable) `npm install react-loadable` （分摊加载所需的JS内容）
+
+
 ### 1.4 个别工具使用说明
 
 #### 1.4.1 Mock.js 基础使用
@@ -806,7 +811,56 @@ const mapStateToProps = state => ({
 });
 ```
 
-### 6.7 Header 整体
+### 6.7 热门搜索小组件开发
+
+#### 6.7.1 样式布局
+
+涉及到 5 个小单件，各个单件的布局样式参考：[Exercise-Project/jianshu/src/common/header/style.js](https://github.com/514723273/Exercise-Project/blob/master/jianshu/src/common/header/style.js)
+- SearchInfo
+    - SearchInfoTitle
+        - SearchInfoSwitch
+    - SearchInfoList
+      - SearchInfoItem
+
+```js
+//在 input 框聚焦的时候，才显示
+const getSearchInfo = show => {
+    if(show) {
+        return (
+            <SearchInfo>
+                <SearchInfoTitle>
+                    热门搜索
+                    <SearchInfoSwitch>换一批</SearchInfoSwitch>
+                </SearchInfoTitle>
+                <SearchInfoList>
+                    <SearchInfoItem>教育</SearchInfoItem>
+                    <SearchInfoItem>教育</SearchInfoItem>
+                    <SearchInfoItem>教育</SearchInfoItem>
+                    <SearchInfoItem>教育</SearchInfoItem>
+                    <SearchInfoItem>教育</SearchInfoItem>
+                    <SearchInfoItem>教育</SearchInfoItem>
+                </SearchInfoList>
+            </SearchInfo>
+        );
+    } else {
+        return null;
+    }
+}
+```
+
+#### 6.7.2 axios 获取数据填充 SearchInfoList
+
+注意
+- redux-thunk 中间件的使用
+- state 中的 list 也为 immutable ，所以 set 的时候要注意使用 fromJS 转换普通的 list
+- 可以在 public 目录下创建 api 进行本地 mock 测试
+- json 格式注意：属性值双引号包裹（对象无引号），最后一个属性不能多逗号
+
+#### 6.7.3 实现对所有 SearchInfoItem（热点标签） 进行分页
+
+引入 page 和 totalPage ，获得所有数据后，每次只取固定数量的内容，点击换一批后，换到下一页内容；到末页，若是再次点击，则回到首页。
+
+### 6.8 Header 整体
 
 ![jianshu_header](https://raw.githubusercontent.com/514723273/.md-Pictures/master/jianshu_header.png)
 
@@ -831,3 +885,77 @@ import * as constants from './constants';
 export { reducer, actionCreators, constants };
 ```
 
+## 第七章 简书首页开发
+
+### 7.1 初识 react-router-dom
+
+BrowserRouter 代表一个路由，Route 代表一个个的路由规则。
+
+exact 属性：准确匹配。
+
+使用 Link 做单页应用的跳转（而不是 a 链接）
+
+```js
+import { BrowserRouter, Route, Link } from 'react-router-dom';
+
+//...
+<BrowserRouter>
+    <Route path='/' exact component={()=><div>home</div>}></Route>
+    <Route path='/detail/:id' exact render={()=><div>detail</div>}></Route>     {/*/:id 需要传递额外的参数 /detail/1 */}
+</BrowserRouter>
+
+//...
+<Link to="/">
+    <Logo />
+</Link>
+```
+
+#### 7.1.2 页面路由参数的动态传递
+
+当 Route 的 path='/detail/:id' ，页面需要从首页跳转到详情页，传递 id 时，详情页组件可以通过 `this.props.match.params.id` 取到该 id 。
+
+### 7.2 PureComponent
+
+本应该使用生命周期函数 shouldComponentDidMount 来避免组件无意义的渲染，但是 React 内部新定义了 PureComponent 来自动执行。使用时，最好使用 immutable 来管理 state ，避免坑。
+
+```js
+class List extends PureComoponet {
+    //...
+}
+```
+
+### 7.3 异步组件及 withRouter 路由方法的使用
+
+若是不适用此组件，所有 JS 脚本都会在首页第一次加载的时候全部完成（点击 Network->JS 查看）。若是 JS 脚本文件很大，那首页加载很慢，而且其他脚本对于首页无用。
+
+举例，按需加载详情页面。
+
+在 retail 文件夹下新建 loadable.js ，添加如下内容
+
+```js
+import React from 'react';
+import Loadable from 'react-loadable';
+
+const LoadableComponent = Loadable({
+  loader: () => import('./'),       //指明异步加载的组件：当前目录下的 index 组件
+  loading() {                       //目标组件加载时，显示的过度组件
+      return <div>正在加载</div>
+  }
+});
+
+export default () => <LoadableComponent />  //返回无状态组件
+```
+
+在 App.js 中，不再引入 ./pages/detail/index ，而是引入 ./pages/detail/loaadable ，其他基本无需改变。
+
+`<Route path="/detail/:id" exact component={Detail}>{Detail}</Route>`
+
+之前引入的是 Detail 本身，现在外边多了一层，所以无法直接获取 Route 里的内容， this.props.match.params.id 的值无法直接获取，解决办法：
+
+```js
+import { withRouter } from 'react-router-dom';
+
+//...
+
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(Detail));    //使用 withRouter 函数即可
+```
