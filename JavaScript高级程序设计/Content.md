@@ -2225,3 +2225,339 @@ var application = function() {
     return app;
 }();
 ```
+
+## 第8章　BOM （粗略）
+
+### 8.1　window对象
+
+BOM 表示浏览器的一个实例。在浏览器中，window 对象有双重角色，它既是通过JavaScript访问浏览器窗口的一个接口，又是ECMAScript规定的Global 对象。
+
+#### 8.1.1　全局作用域
+
+尝试访问未声明的变量会抛出错误，但是通过查询window 对象，可以知道某个可能未声明的变量是否存在。例如：
+```js
+//这里会抛出错误，因为oldValue未定义
+var newValue = oldValue;
+
+//这里不会抛出错误，因为这是一次属性查询
+//newValue的值是undefined
+var newValue = window.oldValue;     // 查询对象
+```
+
+#### 8.1.2　窗口关系及框架
+
+如果页面中包含框架`frame`，则每个框架都拥**有自己的window 对象**，并且保存在frames 集合中。
+
+在frames 集合中，可以通过数值索引（从0开始，从左至右，从上到下）或者框架名称来访问相应的window 对象。每个window 对象都有一个name 属性，其中包含框架的名称。
+
+```html
+<html>
+    <head>
+        <title>Frameset Example</title>
+    </head>
+    <frameset rows="160,*">
+        <frame src="frame.htm" name="topFrame">
+        <frameset cols="50%,50%">
+            <frame src="anotherframe.htm" name="leftFrame">
+            <frame src="yetanotherframe.htm" name="rightFrame">
+        </frameset>
+    </frameset>
+</html>
+
+<!-- 
+    以上代码创建了一个框架集，其中一个框架居上，两个框架居下。
+    对这个例子而言，可以通过window.frames[0] 或者window.frames["topFrame"] 来引用上方的框架。
+    不过，恐怕你最好使用 top 而非 window 来引用这些框架（例如，通过top.frames[0] ）。
+-->
+```
+
+![BOM_frame](https://raw.githubusercontent.com/514723273/.md-Pictures/master/BOM_frame.png)
+
+#### 8.1.3　窗口位置
+
+用来确定和修改window 对象位置的属性和方法有很多。
+
+IE、Safari、Opera和Chrome都提供了screenLeft 和screenTop 属性，分别用于表示窗口相对于屏幕左边和上边的位置。
+
+Firefox则在screenX 和screenY 属性中提供相同的窗口位置信息，
+
+Safari和Chrome也同时支持这两个属性。
+
+Opera虽然也支持screenX 和screenY 属性，但与screenLeft 和screenTop 属性并不对应，因此建议大家不要在Opera中使用它们。
+
+```js
+var leftPos = (typeof window.screenLeft == "number") ?
+                  window.screenLeft : window.screenX;
+var topPos = (typeof window.screenTop == "number") ?
+                  window.screenTop : window.screenY;
+```
+
+#### 8.1.4　窗口大小
+
+跨浏览器确定一个窗口的大小不是一件简单的事。
+
+IE9+、Firefox、Safari、Opera和Chrome均为此提供了4个属性：innerWidth 、innerHeight 、outerWidth 和outerHeight 。
+
+#### 8.1.5　导航和打开窗口
+
+使用window.open() 方法既可以导航到一个特定的URL，也可以打开一个新的浏览器窗口。
+
+这个方法可以接收4个参数：要加载的URL、窗口目标、一个特性字符串以及一个表示新页面是否取代浏览器历史记录中当前加载页面的布尔值。*(通常只须传递第一个参数，最后一个参数只在不打开新窗口的情况下使用。)*
+
+1. 弹出窗口
+
+如果给window.open() 传递的第二个参数并不是一个已经存在的窗口或框架，那么该方法就会根据在第三个参数位置上传入的字符串创建一个新窗口或新标签页。如果没有传入第三个参数，那么就会打开一个带有全部默认设置（工具栏、地址栏和状态栏等）的新浏览器窗口（或者打开一个新标签页——根据浏览器设置）。在不打开新窗口的情况下，会忽略第三个参数。
+
+2. 安全限制
+
+曾经有一段时间，广告商在网上使用弹出窗口达到了肆无忌惮的程度。他们经常把弹出窗口打扮成系统对话框的模样，引诱用户去点击其中的广告。由于看起来像是系统对话框，一般用户很难分辨是真是假。为了解决这个问题，有些浏览器开始在弹出窗口配置方面增加限制。
+
+3. 弹出窗口屏蔽程序
+
+在弹出窗口被屏蔽时，就应该考虑两种可能性：
+- 如果是浏览器内置的屏蔽程序阻止的弹出窗口，那么window.open() 很可能会返回 null
+- 如果是浏览器扩展或其他程序阻止的弹出窗口，那么window.open() 通常会抛出一个错误。
+
+```js
+var blocked = false;
+
+try {
+    var wroxWin = window.open("http://www.wrox.com", "_blank");
+    if (wroxWin == null){
+        blocked = true;
+    }
+} catch (ex) {
+    blocked = true;
+}
+
+if (blocked) {
+    alert("The popup was blocked!");
+}
+```
+
+#### 8.1.6 间歇调用和超时调用
+
+- 超时调用：`setTimeout()`
+- 间歇调用：`setInterval()`
+
+JavaScript是一个单线程序的解释器，因此一定时间内只能执行一段代码。
+
+为了控制要执行的代码，就有一个JavaScript任务队列。这些任务会按照将它们添加到队列的顺序执行。
+
+setTimeout() 的第二个参数告诉JavaScript再过多长时间把当前任务添加到队列中。
+
+如果队列是空的，那么添加的代码会立即执行；**如果队列不是空的，那么它就要等前面的代码执行完了以后再执行。**（所以一般不准时执行
+
+
+```js
+// 设置超时调用
+// 调用setTimeout() 之后，该方法会返回一个数值ID，表示超时调用。这个超时调用ID是计划执行代码的唯一标识符，可以通过它来取消超时调用。
+var timeoutId = setTimeout(function() {
+    alert("Hello world!");
+}, 1000);
+
+// 注意：把它取消
+// 只要是在指定的 *时间尚未过去之前调用* clearTimeout() ，就可以完全取消超时调用。前面的代码在设置超时调用之后马上又调用了clearTimeout() ，结果就跟什么也没有发生一样。
+clearTimeout(timeoutId);
+```
+
+```js
+var num = 0;
+var max = 10;
+var intervalId = null;      // id
+
+function incrementNumber() {
+    num++;
+
+    //如果执行次数达到了max设定的值，则取消后续尚未执行的调用
+    if (num == max) {
+        clearInterval(intervalId);
+        alert("Done");
+    }
+}
+
+// 调用setInterval() 方法同样也会返回一个间歇调用ID，该ID可用于在将来某个时刻取消间歇调用。
+intervalId = setInterval(incrementNumber, 500);
+
+```
+
+间歇调用完全可以用超时调用替换，使用超时调用来模拟间歇调用的是一种最佳模式。（最好不要使用间歇调用。）
+```js
+
+var num = 0;
+var max = 10;
+
+function incrementNumber() {
+    num++;
+
+    //如果执行次数未达到max设定的值，则设置另一次超时调用
+    if (num < max) {
+        setTimeout(incrementNumber, 500);
+    } else {
+        alert("Done");
+    }
+}
+setTimeout(incrementNumber, 500);
+```
+
+#### 8.1.7　系统对话框 
+
+浏览器通过 alert() 、confirm() 和prompt() 方法可以调用系统对话框向用户显示消息。
+
+系统对话框与在浏览器中显示的网页没有关系，也不包含HTML。它们的外观由操作系统及（或）浏览器设置决定，而不是由CSS决定。
+
+此外，通过这几个方法打开的对话框都是同步和模态的。也就是说，显示这些对话框的时候代码会停止执行，而关掉这些对话框后代码又会恢复执行。
+
+- alert() 向用户显示一个系统对话框，其中包含指定的文本和一个OK（“确定”）按钮。
+- confirm() 从向用户显示消息的方面来看，这种“确认”对话框很像是一个“警告”对话框。但二者的主要区别在于“确认”对话框除了显示OK按钮外，还会显示一个Cancel（“取消”）按钮
+- prompt() 方法生成的，这是一个“提示”框，用于提示用户输入一些文本。提示框中除了显示OK和Cancel按钮之外，还会显示一个文本输入域，以供用户在其中输入内容。prompt() 方法接受两个参数：要显示给用户的文本提示和文本输入域的默认值（可以是一个空字符串）。
+
+还有两个可以通过JavaScript打开的对话框，即“查找”和“打印”。这两个对话框都是异步显示的，能够将控制权立即交还给脚本。
+
+这两个对话框与用户通过浏览器菜单的“查找”和“打印”命令打开的对话框相同。
+```js
+//显示“打印”对话框
+window.print();
+
+//显示“查找”对话框
+window.find();
+```
+
+### 8.2　location对象
+
+location 是最有用的BOM对象之一，它提供了*与当前窗口中加载的文档有关的信息*，还提供了一些导航功能。
+
+事实上，location 对象是很特别的一个对象，因为它既是window 对象的属性，也是document 对象的属性；换句话说，window.location 和document.location 引用的是**同一个对象。**
+
+location 对象的用处不只表现在它保存着当前文档的信息，还表现在它将URL解析为**独立的片段**，让开发人员可以通过不同的属性访问这些片段。
+
+下表列出了location 对象的所有属性:
+
+|属　性　名|例　　子|说　　明|
+| --- | --- | --- |
+|hash| "#contents" |返回URL中的hash （#号后跟零或多个字符），如果URL中不包含散列，则返回空字符串|
+|host|"www.wrox.com:80" |返回服务器名称和端口号（如果有）|
+|hostname|"www.wrox.com" |返回不带端口号的服务器名称|
+|href |"http:/www.wrox.com" |返回当前加载页面的完整URL。而location 对象的toString() 方法也返回这个值|
+|pathname |"/WileyCDA/" |返回URL中的目录和（或）文件名|
+|port |"8080" |返回URL中指定的端口号。如果URL中不包含端口号，则这个属性返回空字符串|
+|protocol |"http:" |返回页面使用的协议。通常是http: 或https: |
+|search |"?q=javascript" |返回URL的查询字符串。这个字符串以问号开头|
+
+#### 8.2.1　查询字符串参数
+
+写了一个函数解析了例如`?q=javascript&num=10`这样的字符串，把它变成对象，方便使用。
+
+```js
+function getQueryStringArgs(){
+    //取得查询字符串并去掉开头的问号
+    var qs = (location.search.length > 0 ? location.search.substring(1) : ""),
+
+    //保存数据的对象
+    args = {},
+
+    //取得每一项
+    items = qs.length ? qs.split("&") : [],
+    item = null,
+        name = null,
+        value = null,
+
+        //在for循环中使用
+        i = 0,
+        len = items.length;
+
+    //逐个将每一项添加到args对象中
+    for (i=0; i < len; i++){
+        item = items[i].split("=");
+        name = decodeURIComponent(item[0]);
+        value = decodeURIComponent(item[1]);
+
+        if (name.length) {
+            args[name] = value;
+        }
+    }
+
+    return args;
+}
+```
+
+#### 8.2.2　位置操作
+
+使用 location 对象可以通过很多方式来改变浏览器的位置。
+
+```js
+// 这样，就可以立即打开新URL并在浏览器的历史记录中生成一条记录。
+location.assign("http://www.wrox.com");
+// 如果是将location.href 或window.location 设置为一个URL值，也会以该值调用assign() 方法。
+// 例如，下列两行代码与显式调用assign() 方法的效果完全一样。
+window.location = "http://www.wrox.com";
+location.href = "http://www.wrox.com";      // 最常用
+```
+
+另外，修改location 对象的其他属性也可以改变当前加载的页面。下面的例子展示了通过将hash 、search 、hostname 、pathname 和port 属性设置为新值来改变URL。
+（就是把表格里的属性都改变）
+```js
+//假设初始URL为http://www.wrox.com/WileyCDA/
+
+//将URL修改为"http://www.wrox.com/WileyCDA/#section1"
+location.hash = "#section1";
+
+//将URL修改为"http://www.wrox.com/WileyCDA/?q=javascript"
+location.search = "?q=javascript";
+
+//将URL修改为"http://www.yahoo.com/WileyCDA/"
+location.hostname = "www.yahoo.com";
+
+//将URL修改为"http://www.yahoo.com/mydir/"
+location.pathname = "mydir";
+
+//将URL修改为"http://www.yahoo.com:8080/WileyCDA/"
+location.port = 8080;
+
+// 每次修改location 的属性（hash 除外），页面都会以新URL重新加载。
+```
+
+当通过上述任何一种方式修改URL之后，浏览器的历史记录中就会生成一条新记录，因此用户通过单击“后退”按钮都会导航到前一个页面。要禁用这种行为，可以使用replace() 方法（*不会生成记录）（这个方法只接受一个参数，即要导航到的URL*）。
+
+```js
+location.replace("http://www.wrox.com/");
+```
+
+与位置有关的最后一个方法是reload() ，作用是重新加载当前显示的页面。如果调用reload() 时不传递任何参数，页面就会以最有效的方式重新加载。
+
+```js
+location.reload();        //重新加载（有可能从缓存中加载）
+location.reload(true);    //重新加载（从服务器重新加载）
+// 后面代码可能不执行。为此，最好将reload() 放在代码的最后一行。
+```
+
+### 8.3　navigator 对象
+
+#### 8.3.1 检测插件
+
+检测浏览器中是否安装了特定的插件是一种最常见的检测例程。对于非IE浏览器，可以使用 **plugins 数组**来达到这个目的。该数组中的每一项都包含下列属性。
+
+- name ：插件的名字。
+- description ：插件的描述。
+- filename ：插件的文件名。
+- length ：插件所处理的MIME类型数量。
+
+```js
+//检测插件（在IE中无效）
+function hasPlugin(name){
+    name = name.toLowerCase();
+    for (var i=0; i < navigator.plugins.length; i++){
+        if (navigator. plugins [i].name.toLowerCase().indexOf(name) > -1){
+            return true;
+        }
+    }
+
+    return false;
+}
+
+//检测Flash
+alert(hasPlugin("Flash"));
+
+//检测QuickTime
+alert(hasPlugin("QuickTime"));
+```
