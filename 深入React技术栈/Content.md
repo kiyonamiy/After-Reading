@@ -626,4 +626,4 @@ react-addons-perf 是官方提供的插件。通过 Perf.start() 和 Perf.stop()
 
 ## 2.9　组件化实例：优化 Tabs 组件
 
-### 第 3 章　解读 React 源码
+# 第 3 章　解读 React 源码
