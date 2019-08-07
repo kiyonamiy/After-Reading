@@ -903,3 +903,74 @@ Set-Cookie 字段的属性
 ## 6.8　其他首部字段
 
 HTTP 首部字段是可以自行扩展的。所以在 Web 服务器和浏览器的应用上，会出现各种非标准的首部字段。
+
+# 第 7 章　确保 Web 安全的 HTTPS
+
+## 7.1　HTTP 的缺点
+
+HTTP 主要有这些不足，例举如下:
+- 通信使用明文（不加密），内容可能会被窃听 
+- 不验证通信方的身份，因此有可能遭遇伪装 
+- 无法证明报文的完整性，所以有可能已遭篡改
+
+### 7.1.1　通信使用明文可能会被窃听
+
+- TCP/IP 是可能被窃听的网络
+- 加密处理防止被窃听
+- 通信的加密
+
+    一种方式就是将通信加密。HTTP 协议中没有加密机制，但可以通过和 SSL（Secure Socket Layer，安全套接层）或 TLS（Transport Layer Security，安全层传输协议）的组合使用，加密 HTTP 的通信内容。用 SSL 建立安全通信线路之后，就可以在这条线路上进行 HTTP 通信了。与 SSL 组合使用的 HTTP 被称为 HTTPS（HTTP Secure，超文本传输安全协议）或 HTTP over SSL。
+- 内容的加密
+
+    还有一种将参与通信的内容本身加密的方式。由于 HTTP 协议中没有加密机制，那么就对 HTTP 协议传输的内容本身加密。即把 HTTP 报文里所含的内容进行加密处理。（还是可能被恶意篡改）
+
+### 7.1.2　不验证通信方的身份就可能遭遇伪装
+
+### 7.1.3　无法证明报文完整性，可能已遭篡改
+
+## 7.2　HTTP+ 加密 + 认证 + 完整性保护 = HTTPS
+
+### 7.2.1　HTTP 加上加密处理和认证以及完整性保护后即是 HTTPS
+
+### 7.2.2　HTTPS 是身披 SSL 外壳的 HTTP
+
+HTTPS 并非是应用层的一种新协议。只是 HTTP 通信接口部分用 SSL（Secure Socket Layer）和 TLS（Transport Layer Security）协议代替而已。
+
+![HTTPS](https://raw.githubusercontent.com/514723273/.md-Pictures/master/HTTPS.png)
+
+### 7.2.3　相互交换密钥的公开密钥加密技术
+
+- 共享密钥加密的困境
+- 使用两把密钥的公开密钥加密
+
+    ![公开密钥加密私有密钥解密](https://raw.githubusercontent.com/514723273/.md-Pictures/master/公开密钥加密私有密钥解密.png)
+- HTTPS 采用混合加密机制
+
+    ![混合加密机制](https://raw.githubusercontent.com/514723273/.md-Pictures/master/混合加密机制.png)
+
+### 7.2.4　证明公开密钥正确性的证书
+
+遗憾的是，公开密钥加密方式还是存在一些问题的。那就是无法证明公开密钥本身就是货真价实的公开密钥。比如，正准备和某台服务器建立公开密钥加密方式下的通信时，如何证明收到的公开密钥就是原本预想的那台服务器发行的公开密钥。或许在公开密钥传输途中，真正的公开密钥已经被攻击者替换掉了。
+
+为了解决上述问题，可以使用由数字证书认证机构（CA，Certificate Authority）和其相关机关颁发的公开密钥证书。
+
+![证明公开密钥正确性的证书](https://raw.githubusercontent.com/514723273/.md-Pictures/master/证明公开密钥正确性的证书.png)
+
+### 7.2.5　HTTPS 的安全通信机制
+
+![HTTPS通信](https://raw.githubusercontent.com/514723273/.md-Pictures/master/HTTPS通信.png)
+
+1. 步骤 1 ： 客户端通过发送 Client Hello 报文开始 SSL 通信。报文中包含客户端支持的 SSL 的指定版本、加密组件（Cipher Suite）列表（所使用的加密算法及密钥长度等）。
+2. 步骤 2 ： 服务器可进行 SSL 通信时，会以 Server Hello 报文作为应答。和客户端一样，在报文中包含 SSL 版本以及加密组件。服务器的加密组件内容是从接收到的客户端加密组件内筛选出来的。
+3. 步骤 3 ： 之后服务器发送 Certificate 报文。报文中包含公开密钥证书。
+4. 步骤 4 ： 最后服务器发送 Server Hello Done 报文通知客户端，最初阶段的 SSL 握手协商部分结束。
+5. 步骤 5 ： SSL 第一次握手结束之后，客户端以 Client Key Exchange 报文作为回应。报文中包含通信加密中使用的一种被称为 Pre-master secret 的随机密码串。该报文已用步骤 3 中的公开密钥进行加密。
+6. 步骤 6 ： 接着客户端继续发送 Change Cipher Spec 报文。该报文会提示服务器，在此报文之后的通信会采用 Pre-master secret 密钥加密。
+7. 步骤 7 ： 客户端发送 Finished 报文。该报文包含连接至今全部报文的整体校验值。这次握手协商是否能够成功，要以服务器是否能够正确解密该报文作为判定标准。
+8. 步骤 8 ： 服务器同样发送 Change Cipher Spec 报文。
+9. 步骤 9 ： 服务器同样发送 Finished 报文。
+10. 步骤 10 ： 服务器和客户端的 Finished 报文交换完毕之后，SSL 连接就算建立完成。当然，通信会受到 SSL 的保护。从此处开始进行应用层协议的通信，即发送 HTTP 请求。
+11. 步骤 11 ： 应用层协议通信，即发送 HTTP 响应。
+12. 步骤 12 ： 最后由客户端断开连接。断开连接时，发送 close_notify 报文。上图做了一些省略，这步之后再发送 TCP FIN 报文来关闭与 TCP 的通信。
+
+![HTTPS通信流程图解](https://raw.githubusercontent.com/514723273/.md-Pictures/master/HTTPS通信流程图解.png)
