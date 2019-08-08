@@ -974,3 +974,211 @@ HTTPS 并非是应用层的一种新协议。只是 HTTP 通信接口部分用 S
 12. 步骤 12 ： 最后由客户端断开连接。断开连接时，发送 close_notify 报文。上图做了一些省略，这步之后再发送 TCP FIN 报文来关闭与 TCP 的通信。
 
 ![HTTPS通信流程图解](https://raw.githubusercontent.com/514723273/.md-Pictures/master/HTTPS通信流程图解.png)
+
+HTTPS 比 HTTP 要慢 2 到 100 倍
+
+SSL 的慢分两种。一种是指通信慢。另一种是指由于大量消耗 CPU 及内存等资源，导致处理速度变慢。
+
+和使用 HTTP 相比，网络负载可能会变慢 2 到 100 倍。除去和 TCP 连接、发送 HTTP 请求 • 响应以外，还必须进行 SSL 通信，因此整体上处理通信量不可避免会增加。
+
+# 第 8 章　确认访问用户身份的认证
+
+## 8.1　何为认证
+
+**HTTP 使用的认证方式**
+- BASIC 认证（基本认证） 
+- DIGEST 认证（摘要认证） 
+- SSL 客户端认证 
+- FormBase 认证（基于表单认证）
+
+## 8.2　BASIC 认证
+
+BASIC 认证（基本认证）是从 HTTP/1.0 就定义的认证方式。即便是现在仍有一部分的网站会使用这种认证方式。是 Web 服务器与通信客户端之间进行的认证方式。
+
+![BASIC认证的认证步骤](https://raw.githubusercontent.com/514723273/.md-Pictures/master/BASIC认证的认证步骤.png)
+
+- 步骤 1 ： 当请求的资源需要 BASIC 认证时，服务器会随状态码 401 Authorization Required，返回带 WWW-Authenticate 首部字段的响应。该字段内包含认证的方式（BASIC） 及 Request-URI 安全域字符串（realm）。
+- 步骤 2 ： 接收到状态码 401 的客户端为了通过 BASIC 认证，需要将用户 ID 及密码发送给服务器。发送的字符串内容是由用户 ID 和密码构成，两者中间以冒号（:）连接后，再经过 Base64 编码处理。
+- 步骤 3 ： 接收到包含首部字段 Authorization 请求的服务器，会对认证信息的正确性进行验证。如验证通过，则返回一条包含 Request-URI 资源的响应。
+
+
+BASIC 认证缺点：
+- BASIC 认证虽然采用 Base64 编码方式，但这不是加密处理。不需要任何附加信息即可对其解码。换言之，由于明文解码后就是用户 ID 和密码，在 HTTP 等非加密通信的线路上进行 BASIC 认证的过程中，如果被人窃听，被盗的可能性极高。
+- 另外，除此之外想再进行一次 BASIC 认证时，一般的浏览器却无法实现认证注销操作，这也是问题之一。
+- BASIC 认证使用上不够便捷灵活，且达不到多数 Web 网站期望的安全性等级，因此它并不常用。
+
+## 8.3　DIGEST 认证
+
+![DIGEST认证概要](https://raw.githubusercontent.com/514723273/.md-Pictures/master/DIGEST认证概要.png)
+
+## 8.4　SSL 客户端认证
+
+SSL 客户端认证是借由 HTTPS 的客户端证书完成认证的方式。凭借客户端证书（在 HTTPS 一章已讲解）认证，服务器可确认访问是否来自已登录的客户端。
+
+### 8.4.1　SSL 客户端认证的认证步骤
+
+为达到 SSL 客户端认证的目的，需要事先将客户端证书分发给客户端，且客户端必须安装此证书。
+
+- 步骤 1 ： 接收到需要认证资源的请求，服务器会发送 Certificate Request 报文，要求客户端提供客户端证书。
+- 步骤 2 ： 用户选择将发送的客户端证书后，客户端会把客户端证书信息以 Client Certificate 报文方式发送给服务器。
+- 步骤 3 ： 服务器验证客户端证书验证通过后方可领取证书内客户端的公开密钥，然后开始 HTTPS 加密通信。
+
+### 8.4.2　SSL 客户端认证采用双因素认证
+
+### 8.4.3　SSL 客户端认证必要的费用
+
+## 8.5　基于表单认证
+
+### 8.5.1　认证多半为基于表单认证
+
+由于使用上的便利性及安全性问题，HTTP 协议标准提供的 BASIC 认证和 DIGEST 认证几乎不怎么使用。另外，SSL 客户端认证虽然具有高度的安全等级，但因为导入及维持费用等问题，还尚未普及。
+
+### 8.5.2　Session 管理及 Cookie 应用
+
+![Session管理及Cookie状态管理](https://raw.githubusercontent.com/514723273/.md-Pictures/master/Session管理及Cookie状态管理.png)
+
+# 第 9 章　基于 HTTP 的功能追加协议
+
+## 9.1　基于 HTTP 的协议
+
+而这些网站所追求的功能可通过 Web 应用和脚本程序实现。即使这些功能已经满足需求，在性能上却未必最优，这是因为 HTTP 协议上的限制以及自身性能有限。
+
+HTTP 功能上的不足可通过创建一套全新的协议来弥补。可是目前基于 HTTP 的 Web 浏览器的使用环境已遍布全球，因此无法完全抛弃 HTTP。有一些新协议的规则是基于 HTTP 的，并在此基础上添加了新的功能。
+
+## 9.2　消除 HTTP 瓶颈的 SPDY
+
+Google 在 2010 年发布了 SPDY（取自 SPeeDY，发音同 speedy），其开发目标旨在解决 HTTP 的性能瓶颈，缩短 Web 页面的加载时间（50%）。
+
+### 9.2.1　HTTP 的瓶颈
+
+![以前的HTTP通信](https://raw.githubusercontent.com/514723273/.md-Pictures/master/以前的HTTP通信.png)
+
+- 一条连接上只可发送一个请求。 
+- 请求只能从客户端开始。客户端不可以接收除响应以外的指令。
+- 请求 / 响应首部未经压缩就发送。首部信息越多延迟越大。 
+- 发送冗长的首部。每次互相发送相同的首部造成的浪费较多。 
+- 可任意选择数据压缩格式。非强制压缩发送。
+
+**Ajax 的解决方法**
+
+Ajax（Asynchronous JavaScript and XML， 异 步 JavaScript 与 XML 技术）是一种有效利用 JavaScript 和 DOM（Document Object Model，文档对象模型）的操作，以达到局部 Web 页面替换加载的异步通信手段。和以前的同步通信相比，由于它**只更新一部分页面**，响应中传输的数据量会因此而减少，这一优点显而易见。
+
+而利用 Ajax 实时地从服务器获取内容，有可能会导致大量请求产生。另外，Ajax 仍未解决 HTTP 协议本身存在的问题。
+
+![Ajax通信](https://raw.githubusercontent.com/514723273/.md-Pictures/master/Ajax通信.png)
+
+**Comet 的解决方法**
+
+一旦服务器端有内容更新了，Comet 不会让请求等待，而是直接给客户端返回响应。这是一种通过延迟应答，模拟实现服务器端向客户端推送（Server Push）的功能。
+
+通常，服务器端接收到请求，在处理完毕后就会立即返回响应，但为了实现推送功能，Comet 会先将响应置于挂起状态，当服务器端有内容更新时，再返回该响应。因此，服务器端一旦有更新，就可以立即反馈给客户端。
+内容上虽然可以做到实时更新，但为了保留响应，一次连接的持续时间也变长了。期间，为了维持连接会消耗更多的资源。另外，Comet 也仍未解决 HTTP 协议本身存在的问题。
+
+![Comet通信](https://raw.githubusercontent.com/514723273/.md-Pictures/master/Comet通信.png)
+
+
+### 9.2.2　SPDY 的设计与功能
+
+SPDY 没有完全改写 HTTP 协议，而是在 TCP/IP 的应用层与运输层之间**通过新加会话层的形式运作**。同时，考虑到安全性问题，SPDY 规定通信中使用 SSL。
+
+SPDY 以会话层的形式加入，控制对数据的流动，但还是采用 HTTP 建立通信连接。因此，可照常使用 HTTP 的 GET 和 POST 等方 法、Cookie 以及 HTTP 报文等。
+
+![SPDY的设计](https://raw.githubusercontent.com/514723273/.md-Pictures/master/SPDY的设计.png)
+
+- 多路复用流
+
+    通过单一的 TCP 连接，可以无限制处理多个 HTTP 请求。所有请求的处理都在一条 TCP 连接上完成，因此 TCP 的处理效率得到提高。
+
+- 赋予请求优先级
+
+    SPDY 不仅可以无限制地并发处理请求，还可以给请求逐个分配优先级顺序。这样主要是为了在发送多个请求时，解决因带宽低而导致响应变慢的问题。
+
+- 压缩 HTTP 首部
+
+    压缩 HTTP 请求和响应的首部。这样一来，通信产生的数据包数量和发送的字节数就更少了。
+
+- 推送功能
+
+    支持服务器主动向客户端推送数据的功能。这样，服务器可直接发送数据，而不必等待客户端的请求。
+
+### 9.2.3　SPDY 消除 Web 瓶颈了吗
+
+因为 SPDY 基本上只是将单个域名（ IP 地址）的通信多路复用，所以当一个 Web 网站上使用多个域名下的资源，改善效果就会受到限制。
+
+SPDY 的确是一种可有效消除 HTTP 瓶颈的技术，但很多 Web 网站存在的问题并非仅仅是由 HTTP 瓶颈所导致。对 Web 本身的速度提升，还应该从其他可细致钻研的地方入手，比如改善 Web 内容的编写方式等。
+
+## 9.3　使用浏览器进行全双工通信的 WebSocket
+
+利用 Ajax 和 Comet 技术进行通信可以提升 Web 的浏览速度。但问题在于通信若使用 HTTP 协议，就无法彻底解决瓶颈问题。WebSocket 网络技术正是为解决这些问题而实现的一套**新协议及 API**。
+
+### 9.3.1　WebSocket 的设计与功能
+
+### 9.3.2　WebSocket 协议
+
+由于是建立在 HTTP 基础上的协议，因此连接的发起方仍是客户端，而一旦确立 WebSocket 通信连接，不论服务器还是客户端，任意一方都可直接向对方发送报文。
+
+列举一下 WebSocket 协议的主要特点:
+- 推送功能
+- 减少通信量：只要建立起 WebSocket 连接，就希望一直保持连接状态。和 HTTP 相比，不但每次连接时的总开销减少，而且由于 WebSocket 的首部信息很小，通信量也相应减少了。
+
+为了实现 WebSocket 通信，在 HTTP 连接建立之后，需要完成一次“握手”（Handshaking）的步骤：
+- 握手·请求
+    ```
+    GET /chat HTTP/1.1
+    Host: server.example.com
+    **Upgrade: websocket**      // 为了实现 WebSocket 通信，需要用到 HTTP 的 Upgrade 首部字段，告知服务器通信协议发生改变，以达到握手的目的。
+
+
+    Connection: Upgrade
+    Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==
+    Origin: http://example.com
+    Sec-WebSocket-Protocol: chat, superchat     // 字段内记录使用的子协议。
+    Sec-WebSocket-Version: 13
+    ```
+
+- 握手·响应
+    ```
+    HTTP/1.1 101 Switching Protocols        // 对于之前的请求，返回状态码 101 Switching Protocols 的响应。
+
+
+    Upgrade: websocket
+    Connection: Upgrade
+    Sec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=      // Sec-WebSocket-Accept 的字段值是由握手请求中的 Sec-WebSocket-Key 的字段值生成的。
+    Sec-WebSocket-Protocol: chat
+    ```
+
+成功握手确立 WebSocket 连接之后，通信时不再使用 HTTP 的数据帧，而采用 WebSocket 独立的数据帧。
+
+![WebSocket通信](https://raw.githubusercontent.com/514723273/.md-Pictures/master/WebSocket通信.png)
+
+**WebSocket API**
+
+JavaScript 可调用“The WebSocket API”（http://www.w3.org/TR/websockets/ ，由 W3C 标准制定）内提供的 WebSocket 程序接口，以实现 WebSocket 协议下全双工通信。
+以下为调用 WebSocket API，每 50ms 发送一次数据的实例。
+```js
+var socket = new WebSocket('ws://game.example.com:12010/updates');
+socket.onopen = function () {
+  setInterval(function() {
+    if (socket.bufferedAmount == 0)
+      socket.send(getUpdateData());
+  }, 50);
+}; 
+```
+
+## 9.4　期盼已久的 HTTP/2.0
+
+HTTP/2.0 的特点 : HTTP/2.0 的目标是改善用户在使用 Web 时的速度体验。由于基本上都会先通过 HTTP/1.1 与 TCP 连接，现在我们以下面的这些协议为基础，探讨一下它们的实现方法。
+- SPDY 
+- HTTP Speed ＋ Mobility 
+- Network-Friendly HTTP Upgrade
+
+## 9.5　Web 服务器管理文件的 WebDAV
+
+WebDAV（Web-based Distributed Authoring and Versioning，基于万维网的分布式创作和版本控制）是一个可对 Web 服务器上的内容直接进行文件复制、编辑等操作的分布式文件系统。
+
+
+## 9.6 为何 HTTP 协议受众如此广泛
+
+这有着诸多原因，其中与企业或组织的防火墙设定有着莫大的关系。防火墙的基本功能就是禁止非指定的协议和端口号的数据包通过。因此如果使用新协议或端口号则必须修改防火墙设置。
+
+互联网上，使用率最高的当属 Web。不管是否具备访问 FTP 和 SSH 的权限，一般公司都会开放对 Web 的访问。Web 是基于 HTTP 协议运作的，因此在构建 Web 服务器或访问 Web 站点时，需事先设置防火墙 HTTP（80/tcp）和 HTTPS（443/tcp）的权限。

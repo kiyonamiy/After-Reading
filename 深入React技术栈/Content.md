@@ -627,3 +627,42 @@ react-addons-perf 是官方提供的插件。通过 Perf.start() 和 Perf.stop()
 ## 2.9　组件化实例：优化 Tabs 组件
 
 # 第 3 章　解读 React 源码
+
+## 3.1　初探 React 源码
+
+![React源码目录](https://raw.githubusercontent.com/514723273/.md-Pictures/master/React源码目录.png)
+
+- addons ：包含一系列的工具方法插件，如 PureRenderMixin 、CSSTransitionGroup 、Fragment 、LinkedStateMixin 等。
+- isomorphic ：包含一系列同构方法。
+- shared ：包含一些公用或常用方法，如 Transaction 、CallbackQueue 等。
+- test ：包含一些测试方法等。
+- core/tests ：包含一些边界错误的测试用例。
+- renderers ：是 React 代码的核心部分，它包含了大部分功能实现，此处对其进行单独分析。
+- renderers 分为 dom 和 shared 目录。
+  - dom ：包含 client、server 和 shared。
+    - client ：包含 DOM 操作方法（如 findDOMNode 、setInnerHTML 、setTextContent 等）以及事件方法，结构如图 3-2 所示。这里的事件方法主要是一些非底层的实用性事件方法，如事件监听（ReactEventListener ）、常用事件方法（TapEventPlugin 、EnterLeaveEventPlugin ）以及一些合成事件（SyntheticEvents 等）。
+    - server ：主要包含服务端渲染的实现和方法（如 ReactServerRendering 、ReactServerRenderingTransaction 等）。
+  - shared ：包含 event 和 reconciler。
+    - event ：包含一些更为底层的事件方法，如事件插件中心（EventPluginHub ）、事件注册（EventPluginRegistry ）、事件传播（EventPropagators ）以及一些事件通用方法。
+    - **reconciler** ：称为协调器，它是最为核心的部分，包含 React 中自定义组件的实现（ReactCompositeComponent）、组件生命周期机制、setState 机制（ReactUpdates、ReactUpdateQueue）、DOM diff 算法（ReactMultiChild）等重要的特性方法。
+
+![React下renderers源码目录](https://raw.githubusercontent.com/514723273/.md-Pictures/master/React下renderers源码目录.png)
+
+基于 React 进行开发时，所有的 DOM 树都是通过 Virtual DOM 构造的。React 在 Virtual DOM 上实现了 DOM diff 算法，当数据更新时，会通过 diff 寻找到需要变更的 DOM 节点，并只对变化的部分进行实际的浏览器的 DOM 更新，而不是重新渲染整个 DOM 树。
+
+React 也能够实现 Virtual DOM 的批处理更新，当操作 Virtual DOM 时，不会马上生成真实的 DOM，而是会将一个事件循环（event loop）内的两次数据更新进行合并，这样就使得 React 能够在事件循环的结束之前完全不用操作真实的 DOM。
+
+## 3.2　Virtual DOM 模型
+
+Virtual DOM 中的节点称为 ReactNode，它分为3种类型 ReactElement、ReactFragment 和 ReactText。其中，ReactElement 又分为 ReactComponentElement 和 ReactDOMElement。
+
+### 3.2.1　创建 React 元素
+
+通过 JSX 创建的虚拟元素最终会被编译成调用 React 的 createElement 方法。那么 createElement 方法到底做了什么？createElement 只是做了简单的参数修正，返回一个 ReactElement 实例对象。`return ReactElement(type, key, ref, self, source, ReactCurrentOwner.current, props);`
+
+### 3.2.2　初始化组件入口
+
+当使用 React 创建组件时，首先会调用 instantiateReactComponent ，这是初始化组件的入口函数，它通过判断 node 类型来区分不同组件的入口。
+- 当 node 为空时，说明 node 不存在，则初始化空组件 ReactEmptyComponent.create(instantiateReactComponent) 。
+- 当 node 类型为对象时，即是 DOM 标签组件或自定义组件，那么如果 element 类型为字符串时，则初始化 DOM 标签组件 ReactNativeComponent.createInternalComponent(element) ，否则初始化自定义组件 ReactCompositeComponentWrapper() 。
+- 当 node 类型为字符串或数字时，则初始化文本组件 ReactNativeComponent.createInstanceForText(node) 。
