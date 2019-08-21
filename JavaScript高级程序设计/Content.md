@@ -2547,7 +2547,7 @@ location.reload(true);    //重新加载（从服务器重新加载）
 function hasPlugin(name){
     name = name.toLowerCase();
     for (var i=0; i < navigator.plugins.length; i++){
-        if (navigator. plugins [i].name.toLowerCase().indexOf(name) > -1){
+        if (navigator.plugins[i].name.toLowerCase().indexOf(name) > -1){
             return true;
         }
     }
@@ -2561,3 +2561,216 @@ alert(hasPlugin("Flash"));
 //检测QuickTime
 alert(hasPlugin("QuickTime"));
 ```
+
+#### 8.3.2 注册处理程序
+
+Firefox 2 为 navigator 对象新增了registerContentHandler() 和registerProtocolHandler() 方法。
+
+这两个方法可以让一个站点指明它可以处理特定类型的信息。
+
+### 8.4 screen对象
+
+用处不大，screen 对象基本上只用来表明**客户端的能力**，其中包括浏览器窗口外部的**显示器的信息**，如像素宽度和高度等。
+
+### 8.5 history 对象
+
+history 对象保存着用户上网的历史记录，从窗口被打开的那一刻算起。
+
+```js
+// 后退一页
+history.go(-1);
+
+// 前进一页
+history.go(1);
+
+// 前进两页
+history.go(2);
+
+```
+```js
+
+// 此时浏览器会跳转到历史记录中包含该字符串的第一个位置——可能后退，也可能前进，具体要看哪个位置最近。
+
+// 跳转到最近的wrox.com页面
+history.go("wrox.com");
+
+// 跳转到最近的nczonline.net页面
+history.go("nczonline.net");
+```
+
+```js
+//后退一页
+history.back();
+
+//前进一页
+history.forward();
+```
+
+```js
+if (history.length == 0){
+    //这应该是用户打开窗口后的第一个页面
+}
+```
+
+## 第9章　客户端检测
+
+### 9.1　能力检测
+
+存在该方法，才使用该方法。
+
+#### 9.1.1 更可靠的能力检测
+
+#### 9.1.2　能力检测，不是浏览器检测
+
+### 9.2 怪癖检测
+
+### 9.3 用户代理检测
+
+（迫不得己的使用方式）用户代理检测通过检测**用户代理字符串**来确定实际使用的浏览器。
+
+#### 9.3.1 用户代理字符串的历史
+
+#### 9.3.2　用户代理字符串检测技术
+
+## 第十章 DOM
+
+DOM（文档对象模型）是针对HTML和XML文档的一个API（应用程序编程接口）。
+
+DOM描绘了一个层次化的节点树，允许开发人员添加、移除和修改页面的某一部分。
+
+### 10.1　节点层次
+
+DOM可以将任何HTML或XML文档描绘成一个**由多层节点构成的结构**。
+
+节点分为几种不同的类型，每种类型分别表示文档中不同的信息及（或）标记。
+
+每个节点都拥有**各自的特点、数据和方法**，另外也与其他节点存在某种关系。
+
+
+`<html>`元素，称之为**文档元素**。每个文档只能有一个文档元素（最外层）。
+
+每一段标记都可以通过树中的一个节点来表示（总共有12种节点类型，这些类型都继承自一个基类型。）：
+1. HTML元素通过元素节点表示
+2. 特性（attribute）通过特性节点表示
+3. 文档类型通过文档类型节点表示
+4. 注释则通过注释节点表示
+
+
+#### 10.1.1 Node 类型
+
+JavaScript中的所有节点类型都**继承**自 Node 类型，因此所有节点类型都共享着相同的基本属性和方法。
+
+每个节点都有一个nodeType 属性，用于表明节点的类型：
+1. Node.ELEMENT_NODE
+2. Node.ATTRIBUTE_NODE
+3. Node.TEXT_NODE
+4. Node.CDATA_SECTION_NODE
+5. Node.ENTITY_REFERENCE_NODE
+6. Node.ENTITY_NODE
+7. Node.PROCESSING_INSTRUCTION_NODE
+8. Node.COMMENT_NODE
+9. Node.DOCUMENT_NODE
+10. Node.DOCUMENT_TYPE_NODE
+11. Node.DOCUMENT_FRAGMENT_NODE
+12. Node.NOTATION_NODE
+
+```js
+if (someNode.nodeType == Node.ELEMENT_NODE) {   //在IE中无效
+    alert("Node is an element.");
+}
+
+if (someNode.nodeType == 1) {    //适用于所有浏览器
+    alert("Node is an element.");
+}
+```
+
+1. nodeName 和 nodeValue 属性
+
+对于元素节点，nodeName 中保存的始终都是元素的标签名，而 nodeValue 的值则始终为 null 。
+
+2. 节点关系
+
+每个节点都有一个childNodes 属性，其中保存着一个NodeList 对象。（它并不是Array 的实例）
+
+NodeList 对象的独特之处在于，它实际上是基于DOM结构**动态**执行查询的结果。
+
+```js
+// 访问保存在NodeList 中的节点——可以通过方括号，也可以使用item() 方法。
+var firstChild = someNode.childNodes[0];
+var secondChild = someNode.childNodes.item(1);
+
+var count = someNode.childNodes.length;
+
+// 使用Array.prototype.slice() 方法可以将其转换为数组。
+var arrayOfNodes = Array.prototype.slice.call(someNode.childNodes, 0);
+```
+
+父节点的firstChild 和lastChild 属性分别指向其childNodes 列表中的第一个和最后一个节点。
+
+![XXX](https://raw.githubusercontent.com/514723273/.md-Pictures/master/js红宝书-节点关系.png)
+
+
+父节点的firstChild 和lastChild 属性分别指向其childNodes 列表中的第一个和最后一个节点。
+
+3. 操作节点
+
+最后增 appendChild() ：用于向childNodes 列表的末尾添加一个节点。
+```js
+// appendChild() ，用于向 childNodes 列表的末尾添加一个节点。
+var returnedNode = someNode.appendChild(newNode);
+// 添加节点后，childNodes 的新增节点、父节点及以前的最后一个子节点的关系指针都会相应地得到更新。
+alert(returnedNode == newNode);     // true
+alert(somNode.last == newNode);     // true
+```
+```js
+// 如果传入到appendChild() 中的节点已经是文档的一部分了，那结果就是将该节点从原来的位置转移到新位置。
+//someNode 有多个子节点
+var returnedNode = someNode.appendChild(someNode.firstChild);
+alert(returnedNode == someNode.firstChild);      // false
+alert(returnedNode == someNode.lastChild);       // true
+```
+
+特定位置增 insertBefore() ：把节点放在childNodes 列表中某个特定的位置上。（这个方法接受两个参数：要插入的节点和作为参照的节点。
+```js
+//插入后成为最后一个子节点
+returnedNode = someNode.insertBefore(newNode, null);
+alert(newNode == someNode.lastChild);   //true
+
+//插入后成为第一个子节点
+var returnedNode = someNode.insertBefore(newNode, someNode.firstChild);
+alert(returnedNode == newNode);         //true
+alert(newNode == someNode.firstChild);  //true
+
+//插入到最后一个子节点前面
+returnedNode = someNode.insertBefore(newNode, someNode.lastChild);
+alert(newNode == someNode.childNodes[someNode.childNodes.length-2]); //true
+```
+
+替换 replaceChild() ：接受的两个参数是：要插入的节点和要替换的节点。要替换的节点将由这个方法返回并从文档树中被移除，同时由要插入的节点占据其位置。
+```js
+//替换第一个子节点
+var returnedNode = someNode.replaceChild(newNode, someNode.firstChild);
+//替换最后一个子节点
+returnedNode = someNode.replaceChild(newNode, someNode.lastChild);
+```
+删除 removeChild()
+```js
+//移除第一个子节点
+var formerFirstChild = someNode.removeChild(someNode.firstChild);       // 被移除的节点将成为方法的返回值
+
+//移除最后一个子节点
+var formerLastChild = someNode.removeChild(someNode.lastChild);
+```
+
+4. 其他方法
+
+cloneNode() ：深拷贝和浅拷贝。
+```js
+var deepList = myList.cloneNode(true);  // true 深拷贝
+alert(deepList.childNodes.length);      //3（IE < 9）或7（其他浏览器）
+
+var shallowList = myList.cloneNode(false);      // 浅拷贝，只拷贝元素节点本身，不拷贝子元素
+alert(shallowList.childNodes.length);   //0
+```
+
+normalize() ：处理文档树中的文本节点。
