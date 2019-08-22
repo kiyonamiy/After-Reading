@@ -2774,3 +2774,376 @@ alert(shallowList.childNodes.length);   //0
 ```
 
 normalize() ：处理文档树中的文本节点。
+
+#### 10.1.2 Document 类型
+
+Document 节点具有下列特征：
+- nodeType 的值为9；
+- nodeName 的值为"#document" ；
+- nodeValue 的值为null ；
+- parentNode 的值为null ；
+- ownerDocument 的值为null ；
+- 其子节点可能是一个DocumentType （最多一个）、Element （最多一个）、ProcessingInstruction 或Comment 。
+
+1. 文档的子节点
+
+```js
+//1. 取得对<html>的引用
+var html = document.documentElement;
+alert(html === document.childNodes[0]);     //true
+alert(html === document.firstChild);        //true
+
+//2. 取得对<body>的引用
+var body = document.body;
+
+//3. 取得对<!DOCTYPE>的引用
+var doctype = document.doctype;     
+```
+
+2. 文档信息
+
+```js
+//1. 取得文档标题
+var originalTitle = document.title;
+
+//2. 设置文档标题
+document.title = "New page title";      // 修改当前页面的标题并反映在浏览器的标题栏中。修改title 属性的值不会改变<title> 元素。
+```
+
+3. 查找元素
+
+```js
+// 1. 取得<div>元素的引用
+var div = document.getElementById("myDiv");
+
+// 2. 取得页面中所有的 <img> 元素，并返回一个HTMLCollection 。(为一个“动态”集合，该对象与NodeList 非常类似。) <img src="myimage.gif" name="myImage">
+var images = document.getElementByTagName("img");
+alert(images.length);          //输出图像的数量
+alert(images[0].src);          //输出第一个图像元素的src特性
+alert(images.item(0).src);     //输出第一个图像元素的src特性
+var myImage = images.namedItem("myImage");  // 使用这个方法可以通过元素的 name 特性取得集合中的项
+var myImage = images["myImage"];            // 功能同上     // 在后台，对数值索引就会调用item() ，而对字符串索引就会调用namedItem() 。
+var allElements = document.getElementsByTagName("*");       // 取得文档中的所有元素 // 第一项是<html> 元素，第二项是<head> 元素，按顺序出现
+
+// 3. 返回带有给定 name 特性的所有元素。 <input type="radio" value="green" name="color" id="colorGreen">
+var radios = document.getElementsByName("color");
+```
+
+4. 特殊集合
+
+- `document.anchors` ，包含文档中所有带name 特性的<a> 元素；
+- `document.forms` ，包含文档中所有的<form> 元素，与document.getElementsByTagName("form") 得到的结果相同；
+- `document.images` ，包含文档中所有的<img> 元素，与document.getElementsByTagName("img") 得到的结果相同；
+- `document.links` ，包含文档中所有带href 特性的<a> 元素。
+
+5. DOM一致性检测
+
+`document.implementation` 检测浏览器实现了DOM的哪些部分
+
+```js
+// 传递参数：要检测的DOM功能的名称及版本号。如果浏览器支持给定名称和版本的功能，则该方法返回true
+var hasXmlDom = document.implementation.hasFeature("XML", "1.0");
+```
+
+6. 文档写入
+
+将输出流写入到网页中的能力。这个能力体现在下列4个方法中：write() 、writeln() 、open() 和close()
+
+```html
+<html>
+<head>
+    <title>document.write() Example</title>
+</head>
+<body>
+    <p>The current date and time is:
+    <script type="text/javascript">
+        document.write("<strong>" + (new Date()).toString() + "</strong>");
+    </script>
+    </p>
+</body>
+</html>
+
+```
+
+### 10.1.3 Element 类型
+
+Element 节点具有以下特征：
+- nodeType 的值为1；
+- nodeName 的值为元素的标签名；
+- nodeValue 的值为null ；
+- parentNode 可能是Document 或Element ；
+- 其子节点可能是Element 、Text 、Comment 、ProcessingInstruction 、CDATASection 或EntityReference 。
+
+
+1. HTML元素
+
+- id ，元素在文档中的唯一标识符。
+- title ，有关元素的附加说明信息，一般通过工具提示条显示出来。
+- lang ，元素内容的语言代码，很少使用。
+- dir ，语言的方向，值为"ltr" （left-to-right，从左至右）或"rtl" （right-to-left，从右至左），也很少使用。
+- className ，与元素的class 特性对应，即为元素指定的CSS类。没有将这个属性命名为class ，是因为class 是ECMAScript的保留字。
+
+
+```js
+// <div id="myDiv" class="bd" title="Body text" lang="en" dir="ltr"></div>
+var div = document.getElementById("myDiv");
+alert(div.id);             //"myDiv""
+alert(div.className);      //"bd"
+alert(div.title);          //"Body text"
+alert(div.lang);           //"en"
+alert(div.dir);            //"ltr"
+
+div.id = "someOtherId";
+div.className = "ft";
+div.title = "Some other text";
+div.lang = "fr";
+div.dir ="rtl";
+```
+
+2. 取得特性
+
+操作特性的DOM方法主要有三个，分别是getAttribute() 、setAttribute() 和removeAttribute() 
+
+```js
+var div = document.getElementById("myDiv");
+alert(div.getAttribute("id"));         //"myDiv"
+alert(div.getAttribute("class"));      //"bd"           // 传入"class" 而不是"className" 
+alert(div.getAttribute("title"));      //"Body text"
+alert(div.getAttribute("lang"));       //"en"
+alert(div.getAttribute("dir"));        //"ltr"
+```
+
+由于存在差别(onclick style)，在通过JavaScript以编程方式操作DOM时，开发人员**经常不使用**getAttribute() ，而是只**使用对象的属性**。只有在取得自定义特性值的情况下，才会使用getAttribute() 方法。
+
+3. 设置特性
+
+```js
+div.setAttribute("id", "someOtherId");
+div.setAttribute("class", "ft");
+div.setAttribute("title", "Some other text");
+div.setAttribute("lang","fr");
+div.setAttribute("dir", "rtl");
+```
+
+4. attributes 属性
+
+Element 类型是使用attributes 属性的**唯一一个** DOM 节点类型。
+
+attributes 属性中包含一个NamedNodeMap ，与NodeList 类似，也是一个“动态”的集合，拥有如下方法：
+- getNamedItem_(name)_ ：返回nodeName 属性等于 name 的节点；
+- removeNamedItem_(name)_ ：从列表中移除nodeName 属性等于 name 的节点；
+- setNamedItem_(node)_ ：向列表中添加节点，以节点的nodeName 属性为索引；
+- item_(pos)_ ：返回位于数字 pos 位置处的节点。
+
+```js
+var id = element.attributes.getNamedItem("id").nodeValue;
+var id = element.attributes["id"].nodeValue;        // 简写
+element.attributes["id"].nodeValue = "someOtherId";     // 设置特性的新值
+var oldAttr = element.attributes.removeNamedItem("id");     // 返回表示被删除特性的 Attr 节点
+element.attributes.setNamedItem(newAttr);           // 添加一个新特性，为此需要为它传入一个特性节点
+```
+
+5. 创建元素
+
+```js
+var div = document.createElement("div");        // 创建一个<div> 元素。     // 在使用createElement() 方法创建新元素的同时，也为新元素设置了ownerDocuemnt 属性。
+div.id = "myNewDiv";
+div.className = "box";
+// 把新元素添加到文档树
+document.body.appendChild(div);
+```
+
+6. 元素的子节点
+
+素的childNodes 属性中包含了它的所有子节点，这些子节点有可能是元素、文本节点、注释或处理指令。
+
+
+体验浏览器差别（可能现在不存在了）：
+```html
+<ul id="myList">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+</ul>
+```
+
+如果是IE来解析这些代码，那么<ul> 元素会有3个子节点，分别是3个<li> 元素。
+
+但如果是在其他浏览器中，<ul> 元素都会有7个元素，包括3个<li> 元素和4个文本节点（表示<li> 元素之间的空白符）。
+
+#### 10.1.4 Text 类型
+
+Text 节点具有以下特征：
+- nodeType 的值为3；
+- nodeName 的值为"#text" ；
+- nodeValue 的值为节点所包含的文本；
+- parentNode 是一个Element ；
+- 不支持（没有）子节点。
+
+使用下列方法可以操作节点中的文本。
+- appendData(text ) ：将 text 添加到节点的末尾。
+- deleteData(offset , count ) ：从 offset 指定的位置开始删除 count 个字符。
+- insertData(offset, text ) ：在 offset 指定的位置插入 text 。
+- replaceData(offset, count, text ) ：用 text 替换从 offset 指定的位置开始到 offset + count 为止处的文本。
+- splitText(offset ) ：从 offset 指定的位置将当前文本节点分成两个文本节点。
+- substringData(offset, count ) ：提取从 offset 指定的位置开始到 offset+count 为止处的字符串。
+
+```js
+// <div>Hello World!</div>
+var textNode = div.firstChild;     //或者div.childNodes[0]
+div.firstChild.nodeValue = "Some other message";
+
+//输出结果是"Some &lt;strong&gt;other&lt;/strong&gt; message"   // 此时的字符串会经过HTML（或XML，取决于文档类型）编码。
+div.firstChild.nodeValue = "Some <strong>other</strong> message";
+```
+
+1. 创建文本节点
+
+```js
+var element = document.createElement("div");
+element.className = "message";
+
+var textNode = document.createTextNode("Hello world!");     // document.createTextNode() 
+element.appendChild(textNode);
+
+document.body.appendChild(element);
+```
+
+2. 规范化文本节点
+
+```js
+var element = document.createElement("div");
+element.className = "message";
+
+var textNode = document.createTextNode("Hello world!");
+element.appendChild(textNode);
+
+var anotherTextNode = document.createTextNode("Yippee!");
+element.appendChild(anotherTextNode);
+
+document.body.appendChild(element);
+
+alert(element.childNodes.length);    // 2
+
+// 将相邻文本节点合并
+element.normalize();                
+
+alert(element.childNodes.length);    // 1
+
+alert(element.firstChild.nodeValue);    // "Hello world!Yippee!"
+```
+
+3. 分割文本节点
+
+```js
+var element = document.createElement("div");
+element.className = "message";
+
+var textNode = document.createTextNode("Hello world!");
+element.appendChild(textNode);
+
+document.body.appendChild(element);
+
+// splitText() 这个方法会将一个文本节点分成两个文本节点，即按照指定的位置分割nodeValue 值。
+var newNode = element.firstChild.splitText(5);      
+
+alert(element.firstChild.nodeValue);    // "Hello"
+
+alert(newNode.nodeValue);               //" world!"
+
+alert(element.childNodes.length);       // 2
+```
+
+#### 10.1.5　Comment类型
+
+Comment 节点具有下列特征：
+- nodeType 的值为8；
+- nodeName 的值为"#comment" ；
+- nodeValue 的值是注释的内容；
+- parentNode 可能是Document 或Element ；
+- 不支持（没有）子节点。
+
+```js
+// <div id="myDiv"><!--A comment --></div>
+var div = document.getElementById("myDiv");
+var comment = div.firstChild;
+aler(comment.data);     // "A comment"
+```
+
+```js
+var comment = document.createComment("A comment ");
+```
+
+#### 10.1.6　CDATASection类型
+
+CDATASection 类型继承自Text 类型，CDATA区域只会出现在XML文档中，CDATASection 节点具有下列特征：
+
+#### 10.1.7　DocumentType类型
+
+DocumentType 类型在Web浏览器中并不常用，**仅有**Firefox、Safari和Opera支持它。
+
+#### 10.1.8　DocumentFragment类型
+
+假设我们想为这个<ul> 元素添加3个列表项
+
+低效做法：逐个地添加列表项，将会导致浏览器反复渲染（呈现）新信息。
+
+高效做法：使用一个文档片段来保存创建的列表项，然后再一次性将它们添加到文档中。
+
+```js
+var fragment = document.createDocumentFragment();
+var ul = document.getElementById("myList");
+var li = null;
+
+for (var i=0; i < 3; i++){
+    li = document.createElement("li");
+    li.appendChild(document.createTextNode("Item " + (i+1)));
+    fragment.appendChild(li);
+}
+
+ul.appendChild(fragment);       // 此时，文档片段的所有子节点都被删除并转移到了<ul> 元素中。
+```
+
+#### 10.1.9 Attr 类型
+
+```js
+// 使用document.createAttribute() 并传入特性的名称可以创建新的特性节点。
+var attr = document.createAttribute("align");
+attr.value = "left";
+
+element.setAttributeNode(attr);
+
+alert(element.attributes["align"].value);       //"left"
+alert(element.getAttributeNode("align").value); //"left"
+alert(element.getAttribute("align"));           //"left"
+```
+
+### 10.2 DOM操作技术
+
+#### 10.2.1　动态脚本
+
+```js
+var script = document.createElement("script");
+script.type = "text/javascript";
+script.src = "client.js";
+document.body.appendChild(script);
+```
+
+#### 10.2.2　动态样式
+
+```js
+var link = document.createElement("link");
+link.rel = "stylesheet";
+link.type = "text/css";
+link.href = "style.css";
+var head = document.getElementsByTagName("head")[0];
+
+head.appendChild(link);     // 必须将<link> 元素添加到<head> 而不是<body> 元素，才能保证在所有浏览器中的行为一致。
+```
+
+#### 10.2.3 操作表格
+
+
+## 第11章 DOM 扩展
+
+### 11.1　选择符API
