@@ -3147,3 +3147,303 @@ head.appendChild(link);     // 必须将<link> 元素添加到<head> 而不是<b
 ## 第11章 DOM 扩展
 
 ### 11.1　选择符API
+
+#### 11.1.1　querySelector() 方法
+
+```js
+//取得body元素
+var body = document.querySelector("body");
+
+//取得ID为"myDiv"的元素
+var myDiv = document.querySelector("#myDiv");
+
+//取得类为"selected"的第一个元素
+var selected = document.querySelector(".selected");
+
+//取得类为"button"的第一个图像元素
+var img = document.body.querySelector("img.button");
+```
+
+#### 11.1.2　querySelectorAll() 方法
+
+```js
+//取得某<div>中的所有<em>元素（类似于getElementsByTagName("em")）
+var ems = document.getElementById("myDiv").querySelectorAll("em");
+
+//取得类为"selected"的所有元素
+var selecteds = document.querySelectorAll(".selected");
+
+//取得所有<p>元素中的所有<strong>元素
+var strongs = document.querySelectorAll("p strong");
+
+var i, len, strong;
+for (i=0, len=strongs.length; i < len; i++){ 
+    strong = strongs[i];   //或者strongs.item(i)
+    strong.className = "important";
+}
+```
+
+#### 11.1.3　matchesSelector()方法
+
+```js
+// 在取得某个元素引用的情况下，使用这个方法能够方便地检测它是否会被querySelector() 或querySelectorAll() 方法返回。
+if (document.body.matchesSelector("body.page1")){ 
+    //true
+}
+```
+
+#### 11.2　元素遍历
+
+利用这些元素不必担心空白文本节点，从而可以更方便地查找DOM元素了。
+
+- childElementCount ：返回子元素（不包括文本节点和注释）的个数。
+- firstElementChild ：指向第一个子元素；firstChild 的元素版。
+- lastElementChild ：指向最后一个子元素；lastChild 的元素版。
+- previousElementSibling ：指向前一个同辈元素；previousSibling 的元素版。
+- nextElementSibling ：指向后一个同辈元素；nextSibling 的元素版。
+
+过去，要跨浏览器遍历某元素的所有子元素，需要像下面这样写代码:
+```js
+var i, 
+    len,
+    child = element.firstChild;
+while(child != element.lastChild){
+    if (child.nodeType == 1){   //检查是不是元素
+       processChild(child);
+    }
+    child = child.nextSibling;
+}
+```
+而使用Element Traversal新增的元素，代码会更简洁:
+```js
+var i, 
+    len,
+    child = element.firstElementChild;
+while(child != element.lastElementChild){
+    processChild(child);   //已知其是元素
+    child = child.nextElementSibling;
+}
+```
+
+### 10.3 HTML5
+
+#### 11.3.1 与类相关的扩充
+
+1. getElementsByClassName() 方法
+
+```js
+//取得所有类中包含"username"和"current"的元素，类名的先后顺序无所谓
+var allCurrentUsernames = document.getElementsByClassName("username current");
+
+//取得ID为"myDiv"的元素中带有类名"selected"的所有元素
+var selected = document.getElementById("myDiv").getElementsByClassName("selected");
+```
+
+2. classList 属性
+
+- add(value ) ：将给定的字符串值添加到列表中。如果值已经存在，就不添加了。
+- contains(value ) ：表示列表中是否存在给定的值，如果存在则返回true ，否则返回false 。
+- remove(value ) ：从列表中删除给定的字符串。
+- toggle(value ) ：如果列表中已经存在给定的值，删除它；如果列表中没有给定的值，添加它。
+
+```js
+//删除"disabled"类
+div.classList.remove("disabled");
+
+//添加"current"类
+div.classList.add("current");
+
+//切换"user"类
+div.classList.toggle("user");
+
+//确定元素中是否包含既定的类名
+if (div.classList.contains("bd") && !div.classList.contains("disabled")){
+    //执行操作
+}
+
+//迭代类名
+for (var i=0, len=div.classList.length; i < len; i++){
+    doSomething(div.classList[i]);
+}
+```
+
+#### 11.3.2　焦点管理
+
+```js
+// 这个属性始终会引用DOM中当前获得了焦点的元素。
+var button = document.getElementById("myButton");
+button.focus();
+alert(document.activeElement === button);   //true
+
+// 文档刚刚加载完成时，document.activeElement 中保存的是document.body 元素的引用。文档加载期间，document.activeElement 的值为null 。
+```
+
+```js
+var button = document.getElementById("myButton");
+button.focus();
+
+// 这个方法用于确定文档是否获得了焦点。
+alert(document.hasFocus());  //true
+```
+
+#### 11.3.3　HTMLDocument 的变化
+
+1. readyState 属性
+
+- loading ，正在加载文档；
+- complete ，已经加载完文档。
+
+```js
+// 通过它来实现一个指示文档已经加载完成的指示器。
+if (document.readyState == "complete"){ 
+    //执行操作
+}
+```
+
+2. 兼容模式
+
+#### 11.3.4　字符集属性
+
+```js
+alert(document.charset); //"UTF-16"
+document.charset = "UTF-8";
+```
+
+```js
+
+// 如果文档没有使用默认的字符集，那charset 和defaultCharset 属性的值可能会不一样
+if (document.charset != document.defaultCharset){ 
+    alert("Custom character set being used.");
+}
+```
+
+#### 11.3.5　自定义数据属性
+
+HTML5规定可以为元素添加非标准的属性，但要添加前缀data- ，目的是为元素提供与渲染无关的信息，或者提供语义信息。
+
+添加了自定义属性之后，可以通过元素的dataset 属性来访问自定义属性的值。
+
+```js
+// <div id="myDiv" data-appId="12345" data-myname="Nicholas"></div>
+
+var div = document.getElementById("myDiv");
+
+//取得自定义属性的值
+var appId = div.dataset.appId;
+var myName = div.dataset.myname;
+
+//设置值
+div.dataset.appId = 23456;
+div.dataset.myname = "Michael";
+
+//有没有"myname"值呢？
+if (div.dataset.myname){
+    alert("Hello, " + div.dataset.myname);
+}
+```
+
+#### 11.3.6　插入标记
+
+1. innerHTML 属性
+
+```html
+<div id="content"> 
+    <p>This is a <strong>paragraph</strong> with a list following it.</p>
+    <ul>
+        <li>Item 1</li>
+        <li>Item 2</li>
+        <li>Item 3</li>
+    </ul>
+</div>
+```
+对于上面的<div> 元素来说，它的innerHTML 属性会返回`<p>...</p>`字符串。
+
+
+```js
+div.innerHTML = "Hello world!";     // 在写模式下，innerHTML 的值会被解析为DOM子树
+```
+
+2. outerHTML 属性
+
+如果在<div> 元素上调用outer HTML，会返回包括<div> 本身字符串。
+```js
+div.outerHTML = "<p>This is a paragraph.</p>";      // 连 div 都被替换掉了
+```
+
+3. insertAdjacentHTML() 方法
+
+它接收两个参数：插入位置和要插入的HTML文本。第一个参数必须是下列值之一：
+- "beforebegin" ，在当前元素之前插入一个紧邻的同辈元素；
+- "afterbegin" ，在当前元素之下插入一个新的子元素或在第一个子元素之前再插入新的子元素；
+- "beforeend" ，在当前元素之下插入一个新的子元素或在最后一个子元素之后再插入新的子元素；
+- "afterend" ，在当前元素之后插入一个紧邻的同辈元素。
+
+```js
+//作为前一个同辈元素插入
+element.insertAdjacentHTML("beforebegin", "<p>Hello world!</p>");
+
+//作为第一个子元素插入
+element.insertAdjacentHTML("afterbegin", "<p>Hello world!</p>");
+
+//作为最后一个子元素插入
+element.insertAdjacentHTML("beforeend", "<p>Hello world!</p>");
+
+//作为后一个同辈元素插入
+element.insertAdjacentHTML("afterend", "<p>Hello world!</p>");
+```
+
+4. 内存与性能问题
+
+在使用前述某个属性将该元素从文档树中删除后，元素与**事件**处理程序（或JavaScript对象）之间的绑定关系在内存中**并没有一并删除。**
+
+因此，在使用innerHTML 、outerHTML 属性和insertAdjacentHTML() 方法时，**最好**先手工删除要被替换的元素的所有事件处理程序和JavaScript对象属性（第13章将进一步讨论事件处理程序）。
+
+不过，使用这几个属性——特别是使用innerHTML ，仍然还是可以为我们提供很多便利的。一般来说，在**插入大量新HTML标记**时，使用innerHTML 属性与通过多次DOM操作先创建节点再指定它们之间的关系相比，**效率要高得多**。这是因为在设置innerHTML 或outerHTML 时，就会**创建一个HTML解析器**。这个解析器是在浏览器级别的代码（通常是C++编写的）基础上运行的，因此比执行JavaScript快得多。不可避免地，**创建和销毁HTML解析器也会带来性能损失**，所以最好能够将设置innerHTML 或outerHTML 的次数控制在合理的范围内。
+
+#### 11.3.7　scrollIntoView() 方法
+
+scrollIntoView() 可以在所有HTML元素上调用，通过滚动浏览器窗口或某个容器元素，调用元素就可以出现在视口中。
+
+```
+//让元素可见
+document.forms[0].scrollIntoView();
+```
+
+### 11.4 专有扩展
+
+在发现某项功能缺失时，这些开发商都会一如既往地向DOM中添加**自己的**扩展，以弥补功能上的不足。
+
+#### 11.4.1　文档模式
+
+页面的文档模式决定了可以使用什么功能。
+
+#### 11.4.2 children 属性
+
+只包含元素中同样还是**元素**的子节点。
+
+#### 11.4.3　contains()方法
+
+调用contains() 方法的应该是祖先节点，也就是搜索开始的节点，这个方法接收一个参数，即要检测的后代节点。
+
+```js
+alert(document.documentElement.contains(document.body));    //true
+
+var result = document.documentElement.compareDocumentPosition(document.body);
+alert(!!(result & 16));
+```
+
+#### 11.4.4　插入文本
+
+1. innerText 属性
+
+通过innertText 属性可以操作元素中包含的所有文本内容，包括子文档树中的文本。
+
+2. outerText 属性
+
+除了作用范围扩大到了包含调用它的节点之外，outerText 与innerText 基本上没有多大区别。
+
+#### 11.4.5　滚动
+
+- scrollIntoViewIfNeeded(alignCenter ) ：只在当前元素在视口中不可见的情况下，才滚动浏览器窗口或容器元素，最终让它可见。如果当前元素在视口中可见，这个方法什么也不做。如果将可选的 alignCenter 参数设置为true ，则表示尽量将元素显示在视口中部（垂直方向）。Safari和Chrome实现了这个方法。
+- scrollByLines(lineCount ) ：将元素的内容滚动指定的行高， lineCount 值可以是正值，也可以是负值。Safari和Chrome实现了这个方法。
+- scrollByPages(pageCount ) ：将元素的内容滚动指定的页面高度，具体高度由元素的高度决定。Safari和Chrome实现了这个方法。
