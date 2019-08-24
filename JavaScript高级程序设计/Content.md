@@ -2831,10 +2831,10 @@ var radios = document.getElementsByName("color");
 
 4. 特殊集合
 
-- `document.anchors` ，包含文档中所有带name 特性的<a> 元素；
+- `document.anchors` ，包含文档中所有带name 特性的`<a>` 元素；
 - `document.forms` ，包含文档中所有的<form> 元素，与document.getElementsByTagName("form") 得到的结果相同；
 - `document.images` ，包含文档中所有的<img> 元素，与document.getElementsByTagName("img") 得到的结果相同；
-- `document.links` ，包含文档中所有带href 特性的<a> 元素。
+- `document.links` ，包含文档中所有带href 特性的`<a>` 元素。
 
 5. DOM一致性检测
 
@@ -3447,3 +3447,90 @@ alert(!!(result & 16));
 - scrollIntoViewIfNeeded(alignCenter ) ：只在当前元素在视口中不可见的情况下，才滚动浏览器窗口或容器元素，最终让它可见。如果当前元素在视口中可见，这个方法什么也不做。如果将可选的 alignCenter 参数设置为true ，则表示尽量将元素显示在视口中部（垂直方向）。Safari和Chrome实现了这个方法。
 - scrollByLines(lineCount ) ：将元素的内容滚动指定的行高， lineCount 值可以是正值，也可以是负值。Safari和Chrome实现了这个方法。
 - scrollByPages(pageCount ) ：将元素的内容滚动指定的页面高度，具体高度由元素的高度决定。Safari和Chrome实现了这个方法。
+
+## 第12章　DOM2和DOM3
+
+- DOM1级：主要定义的是HTML和XML文档的底层结构。
+- DOM2级
+    - 核心：在1级核心基础上构建，为节点添加了更多方法和属性。
+    - 视图：为文档定义了基于样式信息的不同视图。
+    - 事件：说明了如何使用事件与DOM文档交互。
+    - 样式：定义了如何以编程方式来访问和改变CSS样式信息。
+    - 遍历和范围：引入了遍历DOM文档和选择其特定部分的新接口。
+    - HTML：在1级HTML基础上构建，添加了更多属性、方法和新接口。
+- DOM3级：增加了“XPath”模块和“加载与保存”（Load and Save）模块。
+
+### 12.1　DOM变化
+
+#### 12.1.1　针对XML命名空间的变化
+
+### 12.2　样式
+
+#### 12.2.1　访问元素的样式
+
+任何支持style 特性的HTML元素在JavaScript中都有一个对应的style 属性。
+
+```js
+var myDiv = document.getElementById("myDiv");
+
+//设置背景颜色
+myDiv.style.backgroundColor = "red";        // 短线变驼峰
+
+//改变大小
+myDiv.style.width = "100px";
+myDiv.style.height = "200px";
+
+//指定边框
+myDiv.style.border = "1px solid black";
+
+```
+
+1. DOM样式属性和方法
+
+“DOM2级样式”规范还为style 对象定义了一些属性和方法。这些属性和方法在提供元素的style 特性值的同时，也可以修改样式。下面列出了这些属性和方法。
+
+- cssText ：如前所述，通过它能够访问到style 特性中的CSS代码。
+- length ：应用给元素的CSS属性的数量。
+- parentRule ：表示CSS信息的CSSRule 对象。本节后面将讨论CSSRule 类型。
+- getPropertyCSSValue(propertyName ) ：返回包含给定属性值的CSSValue 对象。
+- getPropertyPriority(propertyName ) ：如果给定的属性使用了!important 设置，则返回"important" ；否则，返回空字符串。
+- getPropertyValue(propertyName ) ：返回给定属性的字符串值。
+- item(index ) ：返回给定位置的CSS属性的名称。
+- removeProperty(propertyName ) ：从样式中删除给定属性。
+- setProperty(propertyName,value,priority ) ：将给定属性设置为相应的值，并加上优先权标志（"important" 或者一个空字符串）。
+
+```js
+myDiv.style.cssText = "width: 25px; height: 100px; background-color: green";        // 在写入模式下，赋给cssText 的值会重写整个style 特性的值
+alert(myDiv.style.cssText);
+
+for (var i=0, len=myDiv.style.length; i < len; i++){        // length 以便迭代在元素中定义的CSS属性。
+    prop = myDiv.style[i];    //或者 myDiv.style.item(i)
+
+    value = myDiv.style.getPropertyValue(prop);
+
+    alert(prop + " : " + value);
+}
+```
+
+#### 12.2.2　操作样式表
+
+CSSStyleSheet 继承自StyleSheet ，后者可以作为一个基础接口来定义非CSS样式表。从StyleSheet 接口继承而来的属性如下。
+
+- disabled ：表示样式表是否被禁用的布尔值。这个属性是可读/写的，将这个值设置为true 可以禁用样式表。
+- href ：如果样式表是通过`<link>` 包含的，则是样式表的URL；否则，是null 。
+- media ：当前样式表支持的所有媒体类型的集合。与所有DOM集合一样，这个集合也有一个length 属性和一个item() 方法。也可以使用方括号语法取得集合中特定的项。如果集合是空列表，表示样式表适用于所有媒体。在IE中，media 是一个反映`<link>` 和`<style>` 元素media 特性值的字符串。
+- ownerNode ：指向拥有当前样式表的节点的指针，样式表可能是在HTML中通过`<link>` 或`<style/>` 引入的（在XML中可能是通过处理指令引入的）。如果当前样式表是其他样式表通过@import 导入的，则这个属性值为null 。IE不支持这个属性。
+- parentStyleSheet ：在当前样式表是通过@import 导入的情况下，这个属性是一个指向导入它的样式表的指针。
+- title ：ownerNode 中title 属性的值。
+- type ：表示样式表类型的字符串。对CSS样式表而言，这个字符串是"type/css" 。
+
+#### 12.2.3　元素大小
+
+1. 偏移量
+2. 客户区大小
+3. 滚动大小
+4. 确定元素大小
+
+### 12.3 遍历
+
+### 12.4　范围
