@@ -3534,3 +3534,225 @@ CSSStyleSheet 继承自StyleSheet ，后者可以作为一个基础接口来定�
 ### 12.3 遍历
 
 ### 12.4　范围
+
+## 第13章　事件
+
+### 13.1 事件流
+
+事件流 描述的是从页面中接收事件的**顺序**。
+
+IE的事件流是事件**冒泡**流，而Netscape Communicator的事件流是事件**捕获**流。（完全相反）
+
+#### 13.1.1 事件冒泡
+
+从最底下往上触发事件。
+
+#### 13.1.2 事件捕获
+
+从最上面往下触发事件。
+
+#### 13.1.3 DOM 事件流
+
+### 13.2 事件处理程序
+
+#### 13.2.1 HTML 事件处理程序
+
+```html
+<!-- 首先，这样会创建一个封装着元素属性值的函数。这个函数中有一个局部变量event ，也就是事件对象 -->
+<!-- 输出 "click" -->
+<input type="button" value="Click Me" onclick="alert(event.type)">
+
+<!-- this 值等于事件的目标元素 -->
+<!-- 输出 "Click Me" -->
+<input type="button" value="Click Me" onclick="alert(this.value)">
+
+```
+
+#### 13.2.2　DOM0级事件处理程序
+
+通过JavaScript指定事件处理程序的传统方式，就是将一个函数赋值给一个事件处理程序属性。
+```js
+var btn = document.getElementById("myBtn");
+btn.onclick = function(){
+    alert("Clicked");
+};
+
+btn.onclick = null;     //删除事件处理程序
+```
+
+#### 13.2.3　DOM2级事件处理程序
+
+定义了两个方法，用于处理指定和删除事件处理程序的操作：addEventListener() 和removeEventListener() 。
+
+```js
+var btn = document.getElementById("myBtn");
+var handler = function(){
+    alert(this.id);
+};
+
+// 两个函数都接受3个参数：要处理的事件名、作为事件处理程序的函数和一个布尔值。
+// 最后这个布尔值参数如果是true ，表示在捕获阶段调用事件处理程序；如果是false ，表示在冒泡阶段调用事件处理程序。
+btn.addEventListener("click", handler, false);
+
+// 这里为按钮添加了两个事件处理程序。
+// 这两个事件处理程序会按照添加它们的顺序触发，因此首先会显示元素的ID，其次会显示"Hello world!" 消息。
+btn.addEventListener("click", function(){
+    alert("Hello world!");
+}, false);
+
+btn.removeEventListener("click", handler, false); //指向同一个函数，删除有效！
+```
+
+#### 13.2.4　IE事件处理程序
+
+IE实现了与DOM中类似的两个方法：attachEvent() 和detachEvent() 。
+```js
+// 这两个方法接受相同的两个参数：事件处理程序名称与事件处理程序函数。
+var btn = document.getElementById("myBtn");
+btn.attachEvent("onclick", function(){
+    alert("Clicked");
+});
+```
+
+#### 13.2.5　跨浏览器的事件处理程序
+
+在触发DOM上的某个事件时，会产生一个事件对象event ，这个对象中包含着所有与事件有关的信息。
+
+### 13.3 事件对象
+
+#### 13.3.1 DOM 中的事件对象
+
+属性/方法 | 类　　型 | 读/写 | 说　　明
+--- | --- | --- | --- 
+bubbles | Boolean | 只读 | 表明事件是否冒泡
+cancelable | Boolean | 只读| 表明是否可以取消事件的默认行为
+currentTarget | Element | 只读| 其事件处理程序当前正在处理事件的那个元素
+defaultPrevented | Boolean | 只读| 为true 表示已经调用了preventDefault() （DOM3级事件中新增）
+detail | Integer | 只读| 与事件相关的细节信息
+eventPhase | Integer | 只读| 调用事件处理程序的阶段：1表示捕获阶段，2表示“处于目标”，3表示冒泡阶段
+preventDefault() | Function | 只读| 取消事件的默认行为。如果cancelable 是true ，则可以使用这个方法
+stopImmediatePropagation() | Function | 只读| 取消事件的进一步捕获或冒泡，同时阻止任何事件处理程序被调用（DOM3级事件中新增）
+stopPropagation() | Function | 只读| 取消事件的进一步捕获或冒泡。如果bubbles 为true ，则可以使用这个方法
+target | Element | 只读| 事件的目标
+trusted | Boolean | 只读| 为true 表示事件是浏览器生成的。为false 表示事件是由开发人员通过JavaScript创建的（DOM3级事件中新增）
+type | String | 只读| 被触发的事件的类型
+view | AbstractView | 只读| 与事件关联的抽象视图。等同于发生事件的window 对象
+
+#### 13.3.2 IE中的事件对象
+
+#### 13.3.3　跨浏览器的事件对象
+
+### 13.4 事件类型
+
+“DOM3级事件”规定了以下几类事件：
+1. UI（User Interface，用户界面）事件，当用户与页面上的元素交互时触发；
+   - DOMActivate ：表示元素已经被用户操作（通过鼠标或键盘）激活。这个事件在DOM3级事件中被废弃，但Firefox 2+和Chrome支持它。考虑到不同浏览器实现的差异，不建议使用这个事件。
+   - load ：当页面完全加载后在window 上面触发，当所有框架都加载完毕时在框架集上面触发，当图像加载完毕时在`<img>` 元素上面触发，或者当嵌入的内容加载完毕时在`<object>` 元素上面触发。
+   - unload ：当页面完全卸载后在window 上面触发，当所有框架都卸载后在框架集上面触发，或者当嵌入的内容卸载完毕后在`<object>` 元素上面触发。
+   - abort ：在用户停止下载过程时，如果嵌入的内容没有加载完，则在`<object>` 元素上面触发。
+   - error ：当发生JavaScript错误时在window 上面触发，当无法加载图像时在`<img>` 元素上面触发，当无法加载嵌入内容时在`<object>` 元素上面触发，或者当有一或多个框架无法加载时在框架集上面触发。第17章将继续讨论这个事件。
+   - select ：当用户选择文本框（`<input>` 或`<texterea>` ）中的一或多个字符时触发。第14章将继续讨论这个事件。
+   - resize ：当窗口或框架的大小变化时在window 或框架上面触发。
+   - scroll ：当用户滚动带滚动条的元素中的内容时，在该元素上面触发。`<body>` 元素中包含所加载页面的滚动条。
+2. 焦点事件，当元素获得或失去焦点时触发；
+   - blur ：在元素失去焦点时触发。这个事件不会冒泡；所有浏览器都支持它。
+   - DOMFocusIn ：在元素获得焦点时触发。这个事件与HTML事件focus 等价，但它冒泡。只有Opera支持这个事件。DOM3级事件废弃了DOMFocusIn ，选择了focusin 。
+   - DOMFocusOut ：在元素失去焦点时触发。这个事件是HTML事件blur 的通用版本。只有Opera支持这个事件。DOM3级事件废弃了DOMFocusOut ，选择了focusout 。
+   - focus ：在元素获得焦点时触发。这个事件不会冒泡；所有浏览器都支持它。
+   - focusin ：在元素获得焦点时触发。这个事件与HTML事件focus 等价，但它冒泡。支持这个事件的浏览器有IE5.5+、Safari 5.1+、Opera 11.5+和Chrome。
+   - focusout ：在元素失去焦点时触发。这个事件是HTML事件blur 的通用版本。支持这个事件的浏览器有IE5.5+、Safari 5.1+、Opera 11.5+和Chrome。
+3. 鼠标事件，当用户通过鼠标在页面上执行操作时触发；
+   - click ：在用户单击主鼠标按钮（一般是左边的按钮）或者按下回车键时触发。这一点对确保易访问性很重要，意味着onclick 事件处理程序既可以通过键盘也可以通过鼠标执行。
+   - dblclick ：在用户双击主鼠标按钮（一般是左边的按钮）时触发。从技术上说，这个事件并不是DOM2级事件规范中规定的，但鉴于它得到了广泛支持，所以DOM3级事件将其纳入了标准。
+   - mousedown ：在用户按下了任意鼠标按钮时触发。不能通过键盘触发这个事件。
+   - mouseenter ：在鼠标光标从元素外部首次移动到元素范围之内时触发。这个事件不冒泡，而且在光标移动到后代元素上不会触发。DOM2级事件并没有定义这个事件，但DOM3级事件将它纳入了规范。IE、Firefox 9+和Opera支持这个事件。
+   - mouseleave ：在位于元素上方的鼠标光标移动到元素范围之外时触发。这个事件不冒泡，而且在光标移动到后代元素上不会触发。DOM2级事件并没有定义这个事件，但DOM3级事件将它纳入了规范。IE、Firefox 9+和Opera支持这个事件。
+   - mousemove ：当鼠标指针在元素内部移动时重复地触发。不能通过键盘触发这个事件。
+   - mouseout ：在鼠标指针位于一个元素上方，然后用户将其移入另一个元素时触发。又移入的另一个元素可能位于前一个元素的外部，也可能是这个元素的子元素。不能通过键盘触发这个事件。
+   - mouseover ：在鼠标指针位于一个元素外部，然后用户将其首次移入另一个元素边界之内时触发。不能通过键盘触发这个事件。
+   - mouseup ：在用户释放鼠标按钮时触发。不能通过键盘触发这个事件。
+4. 滚轮事件，当使用鼠标滚轮（或类似设备）时触发；
+5. 文本事件，当在文档中输入文本时触发；
+    - textInput 。这个事件是对keypress 的补充，用意是在将文本显示给用户之前更容易拦截文本。在文本插入文本框之前会触发textInput 事件。
+6. 键盘事件，当用户通过键盘在页面上执行操作时触发；
+   - keydown ：当用户按下键盘上的任意键时触发，而且如果按住不放的话，会重复触发此事件。
+   - keypress ：当用户按下键盘上的字符键时触发，而且如果按住不放的话，会重复触发此事件。按下Esc键也会触发这个事件。Safari 3.1之前的版本也会在用户按下非字符键时触发keypress 事件。
+   - keyup ：当用户释放键盘上的键时触发。
+7. 合成事件，当为IME（Input Method Editor，输入法编辑器）输入字符时触发；
+   - compositionstart ：在IME的文本复合系统打开时触发，表示要开始输入了。
+   - compositionupdate ：在向输入字段中插入新字符时触发。
+   - compositionend ：在IME的文本复合系统关闭时触发，表示返回正常键盘输入状态。
+8. 变动（mutation）事件，当底层DOM结构发生变化时触发。
+   - DOMSubtreeModified ：在DOM结构中发生任何变化时触发。这个事件在其他任何事件触发后都会触发。
+   - DOMNodeInserted ：在一个节点作为子节点被插入到另一个节点中时触发。
+   - DOMNodeRemoved ：在节点从其父节点中被移除时触发。
+   - DOMNodeInsertedIntoDocument ：在一个节点被直接插入文档或通过子树间接插入文档之后触发。这个事件在DOMNodeInserted之后触发。
+   - DOMNodeRemovedFromDocument ：在一个节点被直接从文档中移除或通过子树间接从文档中移除之前触发。这个事件在DOMNodeRemoved 之后触发。
+   - DOMAttrModified ：在特性被修改之后触发。
+   - DOMCharacterDataModified ：在文本节点的值发生变化时触发。
+9.  变动名称事件，当元素或属性名变动时触发。此类事件已经被废弃，没有任何浏览器实现它们，因此本章不做介绍。
+
+### 13.5 内存和性能
+
+#### 13.5.1 事件委托
+
+我们可以为整个页面指定一个onclick 事件处理程序，而不必给每个可单击的元素分别添加事件处理程序。
+```js
+// <ul id="myLinks">
+//     <li id="goSomewhere">Go somewhere</li>
+//     <li id="doSomething">Do something</li>
+//     <li id="sayHi">Say hi</li>
+// </ul>
+let list = document.getElementById("myLinks");
+
+EventUtil.addHandler(list, "click", function(event) {
+    event = EventUitl.getEvent(event);
+
+    let target = EventUtil.getTarget(event);        // 代理的关键，拿到 event.target 就是点击的对象，根据不同的 id 分别处理不同的事件。
+
+    switch(target.id) {
+        case "doSomething":
+            document.title = "I changed the document's title";
+            break;
+        case "goSomewhere":
+            location.href = "http://www.wrox.com";
+            break;
+        case "sayHi":
+            alert("hi");
+            break;
+    }
+});
+```
+
+#### 13.5.2 移除事件处理程序
+
+```js
+btn.onclick = null;    //移除事件处理程序
+```
+
+### 13.6　模拟事件
+
+#### 13.6.1　DOM中的事件模拟
+
+可以在document 对象上使用createEvent() 方法创建event 对象。这个方法接收一个参数，即表示要创建的事件类型的字符串。
+- UIEvents ：一般化的UI事件。鼠标事件和键盘事件都继承自UI事件。DOM3级中是UIEvent 。
+- MouseEvents ：一般化的鼠标事件。DOM3级中是MouseEvent 。
+- MutationEvents ：一般化的DOM变动事件。DOM3级中是MutationEvent 。
+- HTMLEvents ：一般化的HTML事件。没有对应的DOM3级事件（HTML事件被分散到其他类别中）。
+
+```js
+// 模拟鼠标事件为例
+
+var btn = document.getElementById("myBtn");
+
+//创建事件对象
+var event = document.createEvent("MouseEvents");
+
+//初始化事件对象
+event.initMouseEvent("click", true, true, document.defaultView, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+
+//触发事件
+btn.dispatchEvent(event);
+```
+
+#### 13.6.2 IE 中的事件模拟
