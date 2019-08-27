@@ -121,3 +121,115 @@ class MyObject implements comparable<MyObject> {
 #### 2.3.4 TypeScript中对JavaScript文件的编译时检查
 
 使用时，只需要在JavaScript文件的第一行添加一句`// @ts-check`，即可在JavaScript中使用一些类型和错误检测功能。
+
+## 第3章 数组
+
+- 学习了如何声明和初始化数组、给数组赋值，以及添加和删除数组元素，
+- 学习了二维、多维数组以及数组的主要方法。
+- 学习了ES2015和ES2016规范新增的Array方法和功能。
+- 学习了怎样使用`TypeScript`或`TypeScript`的编译时检测功能来确保JavaScript文件中的数组只包含具有相同类型的值。
+
+## 第4章 栈
+
+### 4.2 栈数据结构
+
+```js
+class Stack {
+  constructor() {
+    this.items = []; // {1}
+  }
+}
+```
+1. `push(element(s))`：添加一个（或几个）新元素到栈顶。
+    ```js
+    push(element) {
+        this.items.push(element);
+    }
+    ```
+2. `pop()`：移除栈顶的元素，同时返回被移除的元素。
+    ```js
+    pop() {
+        return this.items.pop();
+    }
+    ```
+3. `peek()`：返回栈顶的元素，不对栈做任何修改（该方法不会移除栈顶的元素，仅仅返回它）。
+    ```js
+    peek() {
+        return this.items[this.items.length - 1];
+    }
+    ```
+4. `isEmpty()`：如果栈里没有任何元素就返回true，否则返回false。
+   ```js
+   isEmpty() {
+        return this.items.length === 0;
+    }
+   ```
+5. `clear()`：移除栈里的所有元素。
+    ```js
+    clear() {
+        this.items = [];
+    }
+   ```
+6. `size()`：返回栈里的元素个数。该方法和数组的length属性很类似。
+   ```js
+    size() {
+        return this.items.length;
+    }
+   ```
+
+## 第5章 队列和双端队列
+
+### 5.1 队列数据结构
+
+```js
+class Queue {
+    constructor {
+        this.count = 0;         // 控制队列的大小
+        this.lowestCount = 0;   // 追踪第一个元素
+        this.items = {};        // 为了写出一个在获取元素时更高效的数据结构，我们将使用一个*对象*来存储我们的元素
+    }
+    // 1. 向队列添加元素
+    enqueue(element) {
+        this.items[this.count] = element;
+        this.count ++;
+    }
+    // 2. 从队列移除元素
+    dequeue() {
+        if(this.isEmpty()) {
+            return undefined;
+        }
+        const result = this.items[this.lowestCount];    // 暂存队列头部的值
+        delete this.items[this.lowestCount];
+        this.lowestCount ++;                            // 队头下标变化
+        return result;
+    }
+    // 3. 查看队列头元素
+    peek() {
+        if(this.isEmpty()) {
+            return undefined;
+        }
+        return this.items[this.lowestCount];
+    }
+    // 4. 检查队列是否为空并获取它的长度
+    isEmpty() {
+        return this.count - this.lowestCount === 0;
+    }
+    // 5. 清空队列
+    clear() {
+        this.items = {};
+        this.count = 0;
+        this.lowestCount = 0;
+    }
+    // 6. toString 方法
+    toString() {
+        if(this.isEmpty()) {
+            return "";
+        }
+        let objString = `${this.items[this.lowestCount]}`;
+        for(let i= this.lowestCount + 1; i < this.count; i ++) {
+            objString = `${objString}, ${this.items[i]}`;
+        }
+        return objString;
+    }
+}
+```
