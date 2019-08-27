@@ -1,6 +1,6 @@
 # 第一部分 基本知识
 
-## 第一章 面向对象的 JavaScript
+## 第1章 面向对象的 JavaScript
 
 ### 1.1 动态类型语言和鸭子类型
 
@@ -188,5 +188,122 @@ JavaScript给对象提供了一个名为`__proto__`的隐藏属性，某个对�
 
 #### 1.4.6 原型继承的未来
 
+## 第2章 this、call 和 apply
 
+## 第3章 闭包和高阶函数
 
+### 3.1 闭包
+
+### 3.2 高阶函数
+
+#### 3.2.1 函数作为参数传递
+
+#### 3.2.2 函数作为返回值输出
+
+#### 3.2.3 高阶函数实现 AOP
+
+AOP（面向切面编程）的主要作用是把一些跟核心业务逻辑模块无关的功能抽离出来，这些跟业务逻辑无关的功能通常包括日志统计、安全控制、异常处理等。
+
+```js
+Function.prototype.before = function(beforefn) {
+    let __self = this;                  // 保存原函数的引用
+
+    // 返回包含了原函数和新函数的“代理”函数
+    return function() {
+        beforefn.apply(this, arguments);    // 执行新函数，修正 this
+        return __self.apply(this, arguments);   // 执行原函数
+    }
+
+}
+
+Function.prototype.after = function(afterfn) {
+    let __self = this;
+    return function() {
+        let ret = __self.apply(this, arguments);
+        afterfn.apply(this, arguments);
+        return ret;
+    }
+}
+
+let func = function() {
+    console.log(2);
+};
+
+func = func.before(function() {
+    console.log(1);
+}).after(function() {
+    console.log(3);
+});
+
+func();
+// 1
+// 2
+// 3
+```
+
+#### 3.2.4 高阶函数的其他应用
+
+##### 3.2.4.1 currying
+
+currying 又称**部分求值**。
+
+假设我们要编写一个计算每月开销的函数。在每天结束之前，我们都要记录今天花掉了多少钱。代码如下：
+
+```js
+/**
+基础版
+**/
+// 但我们其实并不太关心每天花掉了多少钱，而只想知道到月底的时候会花掉多少钱。
+
+var monthlyCost = 0;
+
+var cost = function( money ){
+    monthlyCost += money;
+};
+
+cost( 100 );    // 第1天开销
+cost( 200 );    // 第2天开销
+cost( 300 );    // 第3天开销
+//cost( 700 );    // 第30天开销
+
+alert ( monthlyCost );      // 输出：600
+```
+
+```js
+/**
+currying 版
+**/
+let currying = function(fn) {
+    const args = [];
+
+    return function() {
+        if(arguments.length === 0) {        // 根据参数数量是否为 0，来确定是否执行 fn 求和。
+            return fn.apply(this, args);
+        } else {                            // 否则，就只是单纯地存值。
+            Array.prototype.push.apply(args, arguments);
+            return arguments.callee;        // 指向拥有这个 arguments 对象的*函数*的指针    // 可以如下调用 cost(100)(200)(300);
+        }
+    }
+};
+
+let cost = (function() {
+    let money = 0;      // 感觉只是为了闭包 money ，不被外界访问
+
+    return function() {
+        for (let i = 0; i < arguments.length; i ++) {
+            money += arguments[i];
+        }
+        return money;
+    }
+})();
+
+cost = currying(cost);      // 转换成 currying 函数
+
+cost(100);     // 未真正求值
+cost(200);     // 未真正求值
+cost(300);     // 未真正求值
+
+console.log(cost());     // 求值并输出：600
+```
+
+##### 3.2.4.2 uncurrying
