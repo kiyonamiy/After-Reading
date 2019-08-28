@@ -1,6 +1,6 @@
 # JavaScript高级程序设计
 
-## 第一章 JavaScript简介
+## 第 1 章 JavaScript简介
 
 ### 1.1 JavaScript简史
 
@@ -24,7 +24,7 @@ Javascript三部分组成
 - DOM，文档对象模型，提供访问和操作**网页**的方法和接口（W3C的推荐标准---1级、2级、3级）
 - BOM，浏览器对象模型，提供与**浏览器**交互的方法和接口
 
-## 第二章 在 HTML 中使用 JavaScript
+## 第 2 章 在 HTML 中使用 JavaScript
 
 ### 2.1 script 元素
 
@@ -46,7 +46,7 @@ Javascript三部分组成
 
 使用`<noscript>`元素可以指定在不支持脚本的浏览器中显示的替代内容。
 
-## 第三章 基本概念
+## 第 3 章 基本概念
 
 语法、数据类型、流控制语句、理解函数
 
@@ -114,7 +114,7 @@ ECMAScript 函数不介意传递进来多少个参数，即使你定义的函数
 
 在ECMAScript中定义两个名字相同的函数，则该名字只属于后定义的函数。
 
-## 第四章 变量、作用域和内存问题
+## 第 4 章 变量、作用域和内存问题
 
 ### 4.1 基本类型和引用类型
 
@@ -240,7 +240,7 @@ IE7 做出改变：各项临界值初始与 IE6 相等。如果垃圾回收例�
 - 引用类型的值是对象，保存在**堆**内存中
 - 全局环境不能直接访问局部环境中的任何数据
 
-## 第五章 引用类型
+## 第 5 章 引用类型
 
 ### 5.1 Object 类型
 
@@ -1054,7 +1054,7 @@ var num = Math.floor(Math.random() * 9 + 2);   //选一个 2-10 的数值
 - Math.sin(num)
 - Math.tan(num)
 
-## 第六章 面向对象的程序设计
+## 第 6 章 面向对象的程序设计
 
 可以把 ECMAScript 的对象（引用类型）想象成散列表：无非就是一组名值对，其中值可以是数据或函数。
 
@@ -1898,7 +1898,7 @@ SubType.prototype.sayAge = function() {
 
 ```
 
-## 第七章 函数表达式
+## 第 7 章 函数表达式
 
 定义函数的方式有两种：函数声明，函数表达式。
 
@@ -2226,7 +2226,7 @@ var application = function() {
 }();
 ```
 
-## 第8章　BOM （粗略）
+## 第 8 章　BOM （粗略）
 
 ### 8.1　window对象
 
@@ -2612,7 +2612,7 @@ if (history.length == 0){
 }
 ```
 
-## 第9章　客户端检测
+## 第 9 章　客户端检测
 
 ### 9.1　能力检测
 
@@ -2632,7 +2632,7 @@ if (history.length == 0){
 
 #### 9.3.2　用户代理字符串检测技术
 
-## 第十章 DOM
+## 第 10 章 DOM
 
 DOM（文档对象模型）是针对HTML和XML文档的一个API（应用程序编程接口）。
 
@@ -3144,7 +3144,7 @@ head.appendChild(link);     // 必须将<link> 元素添加到<head> 而不是<b
 #### 10.2.3 操作表格
 
 
-## 第11章 DOM 扩展
+## 第 11 章 DOM 扩展
 
 ### 11.1　选择符API
 
@@ -3448,7 +3448,7 @@ alert(!!(result & 16));
 - scrollByLines(lineCount ) ：将元素的内容滚动指定的行高， lineCount 值可以是正值，也可以是负值。Safari和Chrome实现了这个方法。
 - scrollByPages(pageCount ) ：将元素的内容滚动指定的页面高度，具体高度由元素的高度决定。Safari和Chrome实现了这个方法。
 
-## 第12章　DOM2和DOM3
+## 第 12 章　DOM2和DOM3
 
 - DOM1级：主要定义的是HTML和XML文档的底层结构。
 - DOM2级
@@ -3535,7 +3535,7 @@ CSSStyleSheet 继承自StyleSheet ，后者可以作为一个基础接口来定�
 
 ### 12.4　范围
 
-## 第13章　事件
+## 第 13 章　事件
 
 ### 13.1 事件流
 
@@ -3756,3 +3756,99 @@ btn.dispatchEvent(event);
 ```
 
 #### 13.6.2 IE 中的事件模拟
+
+## 第 14 章 表单脚本
+
+### 14.1　表单的基础知识
+
+#### 14.1.1　提交表单
+
+```html
+<!-- 通用提交按钮 -->
+<input type="submit" value="Submit Form">
+
+<!-- 自定义提交按钮 -->
+<button type="submit">Submit Form</button>
+
+<!-- 图像按钮 -->
+<input type="image" src="graphic.gif">
+```
+
+以这种方式提交表单时，浏览器会在将请求发送给服务器之前触发**submit 事件**。这样，我们就有机会验证表单数据，并据以决定是否允许表单提交。
+
+#### 14.1.2　重置表单
+```js
+<!-- 通用重置按钮 -->
+<input type="reset" value="Reset Form">
+
+<!-- 自定义重置按钮 -->
+<button type="reset">Reset Form</button>
+```
+
+用户单击重置按钮重置表单时，会触发**reset 事件**。利用这个机会，我们可以在必要时取消重置操作。
+
+#### 14.1.3　表单字段
+
+```js
+var form = document.getElementById("form1");
+
+//取得表单中的第一个字段
+var field1 = form.elements[0];
+
+//取得名为"textbox1"的字段
+var field2 = form.elements["textbox1"];
+
+//取得表单中包含的字段的数量
+var fieldCount = form.elements.length;
+```
+
+### 14.2　文本框脚本
+
+```html
+<input type="text" size="25" maxlength="50" value="initial value">
+
+<textarea rows="25" cols="5">initial value</textarea>
+```
+
+#### 14.2.1　选择文本
+
+```js
+var textbox = document.forms[0].elements["textbox1"];
+textbox.select();       // 用于选择文本框中的所有文本。
+
+extbox.value = "Hello world!"
+
+//选择所有文本
+textbox.setSelectionRange(0, textbox.value.length);  //"Hello world!"
+//选择前3个字符
+textbox.setSelectionRange(0, 3);  //"Hel"
+//选择第4到第6个字符
+textbox.setSelectionRange(4, 7);  //"o w"
+```
+
+1. 选择（select ）事件
+2. 取得选择的文本
+3. 选择部分文本
+
+#### 14.2.2　过滤输入
+
+1. 屏蔽字符
+2. 操作剪贴板
+
+#### 14.2.3　自动切换焦点
+
+#### 14.2.4　HTML5约束验证API
+
+1. 必填字段（required 属性
+2. 其他输入类型（"email" 和"url" 是两个得到支持最多的类型
+3. 数值范围（min 属性（最小的可能值）、max 属性（最大的可能值）和step 属性（从min 到max 的两个刻度间的差值）。
+4. 输入模式（pattern 属性
+5. 检测有效性
+
+### 14.3　选择框脚本
+
+### 14.4　表单序列化
+
+### 14.5　富文本编辑
+
+这一技术的本质，就是在页面中嵌入一个包含空HTML页面的iframe 。
