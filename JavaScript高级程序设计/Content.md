@@ -3852,3 +3852,175 @@ textbox.setSelectionRange(4, 7);  //"o w"
 ### 14.5　富文本编辑
 
 这一技术的本质，就是在页面中嵌入一个包含空HTML页面的iframe 。
+
+## 第 15 章 使用 Canvas 绘图
+
+### 15.1 基本用法
+
+```js
+/**
+<canvas d="drawing" width=" 200" height="200">
+</canvas>
+**/
+
+var drawing = document.getElementById("drawing");
+
+//确定浏览器支持<canvas>元素
+if (drawing.getContext){
+    var context = drawing.getContext("2d");
+    // ...
+
+    //取得图像的数据 URI
+    var imgURI = drawing.toDataURL("image/png");
+    //显示图像
+    var image = document.createElement("img");
+    image.src = imgURI;
+    document.body.appendChild(image);
+}
+```
+
+### 15.2 2D 上下文
+
+坐标开始于`<canvas>` 元素的左上角，原点坐标是(0,0)。x 值越大表示越靠右，y 值越大表示越靠下。
+
+#### 15.2.1　填充和描边
+
+- fillStyle = "red";
+- strokeStyle = "#0000ff";
+
+#### 15.2.2 绘制矩形
+
+- fillRect(x, y, width, height)
+- strokeRect(x, y, width, height)
+- clearRect(x, y, width, height) 
+
+#### 15.2.3 绘制路径
+
+要绘制路径，首先必须调用`beginPath()`方法，表示要开始绘制新路径。然后，再通过调用下列方法来实际地绘制路径。
+- `arc(x, y, radius, startAngle, endAngle, counterclockwise)` ：以(x,y ) 为圆心绘制一条弧线，弧线半径为radius ，起始和结束角度（用弧度表示）分别为startAngle 和endAngle 。最后一个参数表示startAngle 和endAngle 是否按逆时针方向计算，值为false 表示按顺时针方向计算。
+- `arcTo(x1, y1, x2, y2, radius)` ：从上一点开始绘制一条弧线，到(x2,y2 ) 为止，并且以给定的半径radius 穿过(x1,y1 ) 。
+- `bezierCurveTo(c1x, c1y, c2x, c2y, x, y)` ：从上一点开始绘制一条曲线，到(x,y ) 为止，并且以(c1x,c1y ) 和(c2x,c2y ) 为控制点。
+- `lineTo(x, y)` ：从上一点开始绘制一条直线，到(x,y) 为止。
+- `moveTo(x, y)` ：将绘图游标移动到(x,y ) ，不画线。
+- `quadraticCurveTo(cx, cy, x, y)` ：从上一点开始绘制一条二次曲线，到(x,y) 为止，并且以(cx,cy ) 作为控制点。
+- `rect(x, y, width, height)` ：从点(x,y ) 开始绘制一个矩形，宽度和高度分别由width 和height 指定。这个方法绘制的是矩形路径，而不是strokeRect() 和fillRect() 所绘制的独立的形状。
+
+#### 15.2.4 绘制文本
+
+- fillText()
+- strokeText() 
+
+这两个方法都可以接收4个参数：要绘制的文本字符串、x 坐标、y 坐标和可选的最大像素宽度。
+
+而且，这两个方法都以下列3个属性为基础：
+- font ：表示文本样式、大小及字体，用CSS中指定字体的格式来指定，例如"10px Arial" 。
+- textAlign ：表示文本对齐方式。可能的值有"start" 、"end" 、"left" 、"right" 和"center" 。建议使用"start" 和"end" ，不要使用"left" 和"right" ，因为前两者的意思更稳妥，能同时适合从左到右和从右到左显示（阅读）的语言。
+- textBaseline ：表示文本的基线。可能的值有"top" 、"hanging" 、"middle" 、"alphabetic" 、"ideographic" 和"bottom" 。
+
+#### 15.2.5　变换
+
+可以通过如下方法来修改变换矩阵：
+- rotate (angle ) ：围绕原点旋转图像 angle 弧度。
+- scale (scaleX, scaleY ) ：缩放图像，在x 方向乘以 scaleX ，在y 方向乘以 scaleY 。 scaleX 和 scaleY 的默认值都是1.0。
+- translate (x, y ) ：将坐标原点移动到(x,y ) 。执行这个变换之后，坐标(0,0)会变成之前由(x,y )表示的点。
+- transform (m1_1, m1_2, m2_1, m2_2, dx, dy ) ：直接修改变换矩阵，方式是乘以如下 矩阵。
+- setTransform(m1_1, m1_2, m2_1, m2_2, dx, dy ) ：将变换矩阵重置为默认状态，然后再调用 transform () 。
+
+#### 15.2.6　绘制图像
+
+- drawImage()
+
+#### 15.2.7　阴影
+
+2D上下文会根据以下几个属性的值，自动为形状或路径绘制出阴影：
+
+- shadowColor ：用CSS颜色格式表示的阴影颜色，默认为黑色。
+- shadowOffsetX ：形状或路径x 轴方向的阴影偏移量，默认为0。
+- shadowOffsetY ：形状或路径y 轴方向的阴影偏移量，默认为0。
+- shadowBlur ：模糊的像素数，默认0，即不模糊。
+
+这些属性都可以通过context 对象来修改。只要在绘制前为它们设置适当的值，就能自动产生阴影。
+
+#### 15.2.8　渐变
+
+渐变由`CanvasGradient`实例表示，很容易通过2D上下文来创建和修改。
+
+要创建一个新的线性渐变，可以调用`createLinearGradient()`方法。这个方法接收4个参数：起点的x 坐标、起点的y 坐标、终点的x 坐标、终点的y 坐标。
+
+创建了渐变对象后，下一步就是使用addColorStop() 方法来指定色标。这个方法接收两个参数：色标位置和CSS颜色值。色标位置是一个0（开始的颜色）到1（结束的颜色）之间的数字。
+
+```js
+var gradient = context.createLinearGradient(30, 30, 70, 70);
+
+gradient.addColorStop(0, "white");
+gradient.addColorStop(1, "black");
+
+//绘制红色矩形
+context.fillStyle = "#ff0000";
+context.fillRect(10, 10, 50, 50);
+
+//绘制渐变矩形
+context.fillStyle = gradient;
+```
+
+#### 15.2.9　模式
+
+模式其实就是重复的图像，可以用来填充或描边图形。
+
+要创建一个新模式，可以调用createPattern() 方法并传入两个参数：一个HTML `<img>` 元素和一个表示如何重复图像的字符串。其中，第二个参数的值与CSS的background-repeat 属性值相同，包括"repeat" 、"repeat-x" 、"repeat-y" 和"no-repeat" 。
+
+#### 15.2.10　使用图像数据
+
+2D上下文的一个明显的长处就是，可以通过`getImageData()`取得原始图像数据。这个方法接收4个参数：要取得其数据的画面区域的x 和y 坐标以及该区域的像素宽度和高度。
+
+```js
+var imageData = context.getImageData(10, 5, 50, 50);    // 对象都有三个属性：width 、height 和data 。
+
+var data = imageData.data,  // 其中data 属性是一个数组,保存着图像中每一个像素的数据。
+// 分别表示红、绿、蓝和透明度值。
+red = data[0],
+green = data[1],
+blue = data[2],
+alpha = data[3];
+
+```
+
+#### 15.2.11 合成
+
+还有两个会应用到2D上下文中所有绘制操作的属性：`globalAlpha`和`globalCompositionOperation` 。
+
+### 15.3 WebGL
+
+#### 15.3.1 类型化数组
+
+WebGL涉及的复杂计算需要提前知道数值的精度，而标准的JavaScript数值无法满足需要。
+
+类型化数组也是数组，只不过其元素被设置为**特定类型的值**。
+
+```js
+// 会在内存中分配20B。
+var buffer = new ArrayBuffer(20);
+var bytes = buffer.byteLength;
+```
+
+1. 视图
+2. 类型化视图
+
+#### 15.3.2 WebGL 上下文
+
+1. 常量
+2. 方法命名
+3. 准备绘图
+4. 视口与坐标
+5. 缓冲区
+6. 错误
+7. 着色器
+8. 编写着色器
+9. 编写着色器程序
+10. 为着色器传入值
+11. 调试着色器和程序
+12. 绘图
+13. 纹理
+14. 读取像素
+    
+#### 15.3.3 支持
