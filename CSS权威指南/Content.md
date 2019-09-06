@@ -421,3 +421,143 @@ none、inherit
 - 角度值：度（deg）、梯度（grad）和弧度（rad
 - 时间值：毫秒（ms），秒（s）
 - 频率值：赫兹（Hz）或兆赫（MHz）
+
+## 第 5 章 字体
+
+### 5.1 字体系列
+
+Times 实际上是一个字体系列（font family），而不只是单个的字体。
+
+**font-family**
+特性 | 值
+--- | ---
+值： | `[[<family-name>|<generic-family>]，]* [<family-name> | <generic-family>] | inherit`
+初始值： | 用户代理指定的值
+应用于： | 所有元素
+继承性： | 有
+计算值： | 根据指定确定
+
+#### 5.1.1 使用通用字体系列
+
+理论上讲，用户安装的任何字体系列都会落入到下述某种通用系列当中：
+1. Serif 字体（衬线）：成比例，而且有上下短线。例子包括Times' Georgia 和 New Century Schoolbook。
+2. Sans-serif 字体（非衬线）：是成比例的，而且没有上下短线。例子包括Helvetica、 Geneva、Verdana、Arial 和 Univers。
+3. Monospace 字体（等宽）：不是成比例的，每个字符的宽度都完全相同。例子包括Courier、Courier New和Andale Mono。
+4. Cursive 字体（圆体）：这些字体试图模仿人的手写体。例子包括Zapf Chancery、Author和Comic Sans。
+5. Fantasy 字体：无法很容易地将其划归到任何一种其他的字体系列当中。包括Western、Woodblock和 Klingon。
+
+```css
+body {font-family: sans-serif;}
+```
+
+#### 5.1.2 指定字体系列
+
+如果读者没有安装Georgia字体，但是安装了Times字体，用户代理就可能对h1元素使用Times，尽管Times与Georgia并不完全匹配，但至少足够接近。
+
+```css
+h1 {font-family: Georgia, serif;}
+```
+
+#### 5.1.3 使用引号
+
+只有当一个字体名中有一个或多个空格（如New York），或者如果字体名包括#或$之类的符号，才需要在font-family声明中加引号。
+
+```css
+h2 {font-family: Wedgie,'Karrank%', Klingon, fantasy;}
+```
+
+### 5.2 字体加粗
+
+**font-weight**
+特性 | 值
+--- | ---
+值： | `normal | bold | bolder | lighter | 100 | 200 | 300 | 400 | 500 | 600 | 700 | 800 | 900 | inherit`
+初始值： | normal
+应用于： | 所有元素
+继承性： | 有
+计算值： | 数字值（如100等等），或某个数字值加上某个相对数（bolder或 lighter）
+
+#### 5.2.1 加粗如何起作用
+
+关键字100-900：为字体指定了9级加粗度。（这些数字本身并没有固有的加粗度。
+
+#### 5.2.2 让字体更粗
+
+```css
+p {font-weight: normal;}
+
+p em {font-weight: bolder;}
+/* 用户代理将加粗从normal上移为bold，按数字来讲，它从400跳至700 */
+```
+
+### 5.3 字体大小
+
+font-weight 粗细，font-size 大小。
+
+**font-size**
+特性 | 值
+--- | ---
+值： | xx-small | x-small | small | medium | large | x-large | xx-large | smaller | larger | <length> | <percentage> | inherit
+初始值： | medium
+应用于： | 所有元素
+继承性： | 有
+百分数：| 根据父元素的字体大小来计算
+计算值： | 绝对长度
+
+实际上，font-size属性与你看到的实际字体大小之间的具体关系由字体的设计者来确定。这种关系设置为字体本身中的一个em方框（有人也称之为em框）。
+
+#### 5.3.1 绝对大小
+
+font-size有7个绝对大小值：xx-small、 x-small, small, medium, large, x-large和xx-large。
+
+#### 5.3.2 相对大小
+
+关键字larger和smaller很简单：这两个关键字使元素的大小相对于其父元素的大小在绝对大小梯度上上移或下移。
+
+#### 5.3.3 百分数和大小
+
+百分数值与相对大小关键字很相似，百分数值总是根据从父元素继承的大小来计算。
+
+#### 5.3.4 字体大小和继承
+
+继承的是计算值而不是百分数。
+
+#### 5.3.5 使用长度单位
+
+```css
+p.one (font-size: 36pt;}
+
+p.two {font-size: 3pc;}
+
+p.three {font-size: 0.5in;}
+
+p.four (font-size: 1.27cm;}
+
+p.five {font-size: 12.7mm;}
+```
+
+### 5.4 风格和变形
+
+**font-style**
+特性 | 值
+--- | ---
+值：  | `italic | oblique（əˈbliːk 倾斜） | normal | inherit`
+初始值：  | normal
+应用于：  | 所有元素
+继承性： | 有
+计算值：  | 根据指定确定
+
+**font-variant**
+特性 | 值
+--- | ---
+值： | `small-caps | font-variant | normal | inherit`
+初始值： | normal
+应用于：| 所有元素
+维承性： | 有
+计算值： | 根据指定确定
+
+对于font-variant，它只有两个非继承值：默认值normal和small-caps。
+
+normal描述正常文本，small-caps要求使用小型大写字母文本。
+
+### 5.5 拉伸和调整字体
